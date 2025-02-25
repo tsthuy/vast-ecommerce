@@ -1,0 +1,14 @@
+{
+  "return_to_shop": "Return to Shop",
+  "coupon_code": "Coupon Code",
+  "apply_coupon": "Apply Coupon",
+  "cart_total": "Cart Total",
+  "subtotal": "Subtotal",
+  "shipping": "Shipping",
+  "total": "Total",
+  "proceed_to_checkout": "Proceed to Checkout",
+  "no_item": "No items in your cart",
+  "product": "Product",
+  "price": "Price",
+  "quantity": "Quantity"
+}

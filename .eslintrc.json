@@ -1,0 +1,118 @@
+{
+  "extends": ["next", "next/core-web-vitals", "prettier"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "simple-import-sort",
+    "unused-imports",
+    "filenames",
+    "check-file"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "no-var": "error",
+    "prefer-const": "error",
+    "simple-import-sort/imports": "error",
+    "react/jsx-pascal-case": ["error", { "allowAllCaps": true, "ignore": [] }],
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "check-file/folder-naming-convention": [
+      "error",
+      {
+        "src/**/*": "KEBAB_CASE"
+      }
+    ],
+    "check-file/filename-naming-convention": [
+      "error",
+      {
+        "**/*.{ts,tsx}": "KEBAB_CASE"
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": ["block-like", "export", "function"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/{hooks,utils,services,components,constants,libs,types,stores,mocks}/*.ts"
+      ],
+      "rules": {
+        "check-file/filename-naming-convention": [
+          "error",
+          {
+            "**/hooks/**/*.ts": "use-**.hook",
+            "**/utils/**/*.ts": "**.util",
+            "**/services/**/*.ts": "**.service",
+            "**/components/**/*.ts": "**.component",
+            "**/constants/**/*.ts": "**.const",
+            "**/libs/**/*.ts": "**.lib",
+            "**/types/**/*.ts": "**.d",
+            "**/stores/**/*.ts": "**.store",
+            "**/mocks/**/*.ts": "**.mock"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.js", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "no-multiple-empty-lines": [
+          "error",
+          { "max": 1, "maxBOF": 0, "maxEOF": 0 }
+        ],
+
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              ["^react$", "^next", "^[a-z]"],
+              ["^~/components"],
+              ["^~/constants"],
+              ["^~/hooks"],
+              ["^~/libs"],
+              ["^~/pages"],
+              ["^~/service"],
+              ["^~/styles"],
+              ["^~/types"],
+              ["^~/utils"],
+              ["^~/store"],
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              ["^.+\\.s?css$"],
+              ["^\\u0000"]
+            ]
+          }
+        ],
+        "react/jsx-pascal-case": [
+          "error",
+          { "allowAllCaps": true, "ignore": [] }
+        ]
+      }
+    },
+    {
+      "files": ["src/**/index.ts", "src/**/_*.tsx", "src/**/4*.tsx"],
+      "rules": {
+        "check-file/filename-naming-convention": "off"
+      }
+    }
+  ]
+}
