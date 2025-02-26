@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 import PhoneInput from "../auto-complete-input/phone-input";
-import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import {
   Form,
@@ -34,6 +33,7 @@ const formSchema = z.object({
 export default function CheckOutForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onBlur",
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -51,6 +51,7 @@ export default function CheckOutForm() {
   }
 
   return (
+    
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -261,8 +262,9 @@ export default function CheckOutForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
       </form>
+
     </Form>
   );
+
 }

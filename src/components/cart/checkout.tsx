@@ -1,6 +1,11 @@
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 import { Slash } from "lucide-react";
+import { toast } from "sonner";
+
+import { cn } from "~/libs/utils";
 
 import Container from "../container";
 import MyButton from "../custom/button";
@@ -9,11 +14,33 @@ import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 import CheckOutForm from "./checkout-form";
+import { PaymentForm } from "./payment-form";
+import {  StripeProvider } from "./stripe-provider";
 
 export const CheckOut = () => {
+
+  const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">()
+  const [clientSecret, setClientSecret] = useState<string>()
+  const totalAmount = 9000
+
+  const handlePaymentMethodChange = async (value: string) => {
+    if (value === "bank") {
+      try {
+        const response = await axios.post("/api/create-payment-intent", {
+          amount : totalAmount 
+        })
+
+        setClientSecret(response.data.clientSecret)
+      } catch (error) {
+        toast.error("Failed to initialize payment")
+      }
+    }
+    setPaymentMethod(value as "bank" | "cash");
+  }
+
   return (
     <Container>
-      <nav className="flex items-start justify-start py-[80px]">
+      <nav className="flex items-start justify-start py-[80px]" >
         <ol className="text-muted-foreground flex items-center gap-2 text-sm">
           <li>
             <Link
@@ -73,7 +100,7 @@ export const CheckOut = () => {
 
       <h3 className="font-inter text-36 font-medium">Billing Details</h3>
 
-      <div className="flex flex-col md:flex-row justify-center md:justify-between items-center lg:items-start">
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center lg:items-start">
         <CheckOutForm />
 
         <div className="lg:pl-8 py-10 text-16 font-normal w-full md:w-[50%]">
@@ -137,7 +164,10 @@ export const CheckOut = () => {
 
               {/* Payment Method */}
               <div className="pt-6">
-                <RadioGroup className="space-y-3">
+                <RadioGroup
+                value={paymentMethod}
+                onValueChange={handlePaymentMethodChange}
+                className="space-y-3">
                   <div className="flex justify-between items-center space-x-2">
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="bank" id="bank" />
@@ -171,9 +201,18 @@ export const CheckOut = () => {
                 <MyButton className="max-w-fit pt-2">Apply Coupon</MyButton>
               </div>
 
+               {/* Stripe Payment Element */}
+              {paymentMethod === "bank" && clientSecret && (
+                <div className="pt-4">
+                  <StripeProvider clientSecret={clientSecret}>
+                    <PaymentForm />
+                  </StripeProvider>
+                </div>
+              )}
+
               {/* Place Order Button */}
               <div className="pt-2">
-                <MyButton className="w-full xl:w-fit">Place Order</MyButton>
+                <MyButton className={cn(paymentMethod === "bank" && "hidden" ,"w-full xl:w-fit")}>Place Order</MyButton>
               </div>
             </div>
           </div>
