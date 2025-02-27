@@ -41,7 +41,7 @@ export const SignIn = () => {
 
   return (
     <>
-      <div className="xl:bg-[url('/images/banner.png')] bg-no-repeat justify-left bg-left mt-[60px] mb-[140px]">
+      <div className="xl:bg-[url('/images/banner.png')] bg-no-repeat justify-end bg-left mt-[60px] mb-[140px]">
         <Container className="flex xl:justify-end justify-center">
           <div className="flex flex-col justify-end  py-[125px] ">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
