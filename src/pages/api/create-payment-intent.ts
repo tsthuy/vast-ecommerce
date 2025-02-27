@@ -11,11 +11,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { amount } = req.body
+    const { amount, userId, productId } = req.body
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), 
       currency: "usd",
+      metadata: {
+        userId,
+        productId,
+      }
     })
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret })

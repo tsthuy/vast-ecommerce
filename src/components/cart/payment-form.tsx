@@ -10,7 +10,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 
 import { ExpressCheckoutElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
-export function PaymentForm() {
+interface PaymentFormProps {
+  onPayNow: () => Promise<boolean>;
+}
+
+export function PaymentForm({ onPayNow }: PaymentFormProps) {
   const stripe = useStripe()
   const elements = useElements()
   const [isLoading, setIsLoading] = useState(false)
@@ -25,6 +29,12 @@ export function PaymentForm() {
     setIsLoading(true)
 
     try {
+      const isValid = await onPayNow();
+
+      if (!isValid) {
+        setIsLoading(false);
+        return;
+      }
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {

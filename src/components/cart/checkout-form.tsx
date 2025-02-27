@@ -1,5 +1,6 @@
 "use client";
 
+import { forwardRef, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -30,11 +31,21 @@ const formSchema = z.object({
   save_term: z.boolean().default(true).optional(),
 });
 
-export default function CheckOutForm() {
+export type CheckOutFormHandle = {
+  triggerFormValidation: () => Promise<boolean>;
+  getFormValues: () => z.infer<typeof formSchema>;
+};
+
+const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
   });
+
+  useImperativeHandle(ref, () => ({
+    triggerFormValidation: () => form.trigger(),
+    getFormValues: () => form.getValues(),
+  }));
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -268,3 +279,8 @@ export default function CheckOutForm() {
   );
 
 }
+);
+
+CheckOutForm.displayName = "CheckOutForm"; 
+
+export default CheckOutForm;

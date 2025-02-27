@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
@@ -7,27 +7,41 @@ import { toast } from "sonner";
 
 import { cn } from "~/libs/utils";
 
+import { useAuthStore } from "~/stores/auth.store";
+
 import Container from "../container";
 import MyButton from "../custom/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
-import CheckOutForm from "./checkout-form";
+import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
 import { PaymentForm } from "./payment-form";
 import {  StripeProvider } from "./stripe-provider";
 
 export const CheckOut = () => {
+  const {user} = useAuthStore();
+  const checkoutFormRef = useRef<CheckOutFormHandle>(null);
 
-  const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">()
+  const handleExternalValidation = async () => {
+    if (checkoutFormRef.current) {
+      const isValid = await checkoutFormRef.current.triggerFormValidation();
+      return isValid;
+    }
+  };
+
+  const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">("cash")
   const [clientSecret, setClientSecret] = useState<string>()
   const totalAmount = 9000
 
   const handlePaymentMethodChange = async (value: string) => {
+
     if (value === "bank") {
       try {
         const response = await axios.post("/api/create-payment-intent", {
-          amount : totalAmount 
+          amount : totalAmount ,
+          productId: "1234",
+          userId: user?.uid
         })
 
         setClientSecret(response.data.clientSecret)
@@ -38,6 +52,15 @@ export const CheckOut = () => {
     setPaymentMethod(value as "bank" | "cash");
   }
 
+  const handlePayNow = async () => {
+  const isValid = await handleExternalValidation();
+
+  if (!isValid) {
+    toast.error("Form validation failed. Please check the fields.");
+    return false;
+  }
+  return true;
+};
   return (
     <Container>
       <nav className="flex items-start justify-start py-[80px]" >
@@ -101,7 +124,7 @@ export const CheckOut = () => {
       <h3 className="font-inter text-36 font-medium">Billing Details</h3>
 
         <div className="flex flex-col md:flex-row justify-center md:justify-between items-center lg:items-start">
-        <CheckOutForm />
+        <CheckOutForm ref={checkoutFormRef} />
 
         <div className="lg:pl-8 py-10 text-16 font-normal w-full md:w-[50%]">
           <div className="bg-muted p-6 rounded-lg">
@@ -205,14 +228,14 @@ export const CheckOut = () => {
               {paymentMethod === "bank" && clientSecret && (
                 <div className="pt-4">
                   <StripeProvider clientSecret={clientSecret}>
-                    <PaymentForm />
+                    <PaymentForm onPayNow={handlePayNow} />
                   </StripeProvider>
                 </div>
               )}
 
               {/* Place Order Button */}
               <div className="pt-2">
-                <MyButton className={cn(paymentMethod === "bank" && "hidden" ,"w-full xl:w-fit")}>Place Order</MyButton>
+                <MyButton onClick={handleExternalValidation} className={cn(paymentMethod === "bank" && "hidden" ,"w-full xl:w-fit")}>Place Order</MyButton>
               </div>
             </div>
           </div>
