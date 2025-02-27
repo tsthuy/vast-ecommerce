@@ -52,7 +52,7 @@ export default function Header({ categories }: HeaderProps) {
 
   const navLinks = [
     { href: "/", label: t("home") },
-    { href: "#", label: t("contact") },
+    { href: "/contact", label: t("contact") },
     { href: "#", label: t("about") },
     { href: "signup", label: t("signup") },
   ];
