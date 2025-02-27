@@ -145,7 +145,7 @@ export default function Header({ categories }: HeaderProps) {
                       <UserRoundPen className="size-6" />
                     </button>
 
-                    <Link href={""} className="text-14 font-normal">
+                    <Link href={"/account"} className="text-14 font-normal">
                       Manage My Account
                     </Link>
                   </DropdownMenuItem>
