@@ -7,6 +7,6 @@ import { useQuery } from "@tanstack/react-query"
 export function usePromo(locale: string) {
   return useQuery({
     ...QUERY_KEYS.promo.all(locale),
-    queryFn: () => promoSliderApi.getPromoSlider(locale),
+    queryFn: () => promoSliderApi.getPromoSlider(),
   })
 }

@@ -4,8 +4,9 @@ import { categories, categories_grid } from "./data"
 
 export const setupCategoriesMock = (mock: MockAdapter) => {
   mock.onGet("/api/categories").reply((config) => {
-    console.log("Mocked /api/categories endpoint hit")
-    const locale = config.params?.locale || "en"
+    const locale = config.locale || "en";
+        console.log("locale at mock category", locale);
+
     const localizedCategories = categories.map((category) => ({
       ...category,
       name: category.name[locale as keyof typeof category.name],
@@ -14,7 +15,7 @@ export const setupCategoriesMock = (mock: MockAdapter) => {
   })
 
   mock.onGet("/api/categories-grid").reply((config) => {
-    const locale = config.params?.locale || "en"
+    const locale = config.locale || "en";
     const localizedCategories = categories_grid.map((cat) => ({
       ...cat,
       name: cat.name[locale as keyof typeof cat.name] || cat.name.en,

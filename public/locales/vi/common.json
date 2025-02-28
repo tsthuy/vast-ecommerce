@@ -22,5 +22,10 @@
   "variant_updated_in_wishlist": "Biến thể đã được cập nhật trong danh sách yêu thích",
   "variant_already_in_wishlist": "Biến thể đã có trong danh sách yêu thích",
   "failed_to_update_variant": "Không thể cập nhật biến thể",
-  "return_to_shop": "Quay lại Trang Chủ"
+  "return_to_shop": "Quay lại Trang Chủ",
+  "manage_my_account": "Quản Lý Tài Khoản",
+  "my_order": "Đơn Hàng Của Tôi",
+  "my_cancellation": "Đơn Hủy",
+  "my_reviews": "Đánh Giá Của Tôi",
+  "logout": "Đăng Xuất"
 }

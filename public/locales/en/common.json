@@ -22,5 +22,10 @@
   "variant_updated_in_wishlist": "Variant updated in wishlist",
   "variant_already_in_wishlist": "Variant already in wishlist",
   "failed_to_update_variant": "Failed to update variant",
-  "return_to_shop": "Return to shop"
+  "return_to_shop": "Return to shop",
+  "manage_my_account": "Manage My Account",
+  "my_order": "My Order",
+  "my_cancellation": "My Cancellation",
+  "my_reviews": "My Reviews",
+  "logout": "Logout"
 }

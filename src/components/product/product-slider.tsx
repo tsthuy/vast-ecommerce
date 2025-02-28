@@ -23,6 +23,7 @@ export default function ProductSlider() {
   const { data: products, isLoading } = useProductsFlashSales(
     router.locale || "en"
   )
+  console.log("products", products)
   if (isLoading)
     return (
       <div className="pt-[80px]">

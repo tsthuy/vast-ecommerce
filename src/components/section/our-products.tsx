@@ -7,9 +7,10 @@ import Paginator from "../paginator"
 import ProductList from "../product/product-list"
 import SectionHeading from "../section-heading"
 import TitleHeading from "../title-heading"
+import { NewProduct } from "~/types/product"
 
 interface OurProductsProps {
-  initialProductsExplore: ProductClient[]
+  initialProductsExplore: NewProduct[]
 }
 
 export default function OurProducts({
@@ -21,7 +22,7 @@ export default function OurProducts({
   const [isLoading, setIsLoading] = useState(false)
 
   const limit = 8
-  const totalProducts = initialProductsExplore.length
+  const totalProducts = initialProductsExplore && initialProductsExplore.length
   const totalPages = Math.ceil(totalProducts / limit)
 
   const handlePageChange = async (direction: "prev" | "next") => {

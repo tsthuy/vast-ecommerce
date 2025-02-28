@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { toast } from "sonner";
 
-import { wishlistApi } from "~/services";
+import { useProductsJustForU } from "~/hooks";
+import { useMoveWishlistToCart } from "~/hooks/use-carts.hook";
+import { useWishlists } from "~/hooks/use-wishlists.hook";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -11,49 +14,45 @@ import { ProductCard, ProductList } from "../product";
 import SectionHeading from "../section-heading";
 import { Button } from "../ui/button";
 
-import { new_products_schema } from "~/mocks/data/new_product_schema";
-
 export const WishList = () => {
-  const [wishlist, setWishlist] = useState<WishlistResponse | null>(null);
+  const router = useRouter();
 
   const { t } = useTranslation(["wishlist", "common"]);
   const { user } = useAuthStore();
 
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      if (user?.uid) {
-        try {
-          const data = await wishlistApi.getWishlist(user.uid);
-          setWishlist(data);
-          console.log("Wishlist data:", data);
-        } catch (error) {
-          console.error("Failed to fetch wishlist:", error);
-        }
-      }
-    };
+  const {data: products_for_u} = useProductsJustForU(user?.uid || "", router.locale || "en");
+  const { data: wishlist} = useWishlists(user?.uid || "", router.locale || "en");
 
-    fetchWishlist();
-  }, [user?.uid]);
+  const moveWishlistToCartMutation = useMoveWishlistToCart(user?.uid || "", router.locale || "en");
 
-  const handleRemoveFromWishlist = (wishlistItemId: string) => {
-    setWishlist((prevWishlist) => {
-      if (!prevWishlist) return prevWishlist;
+  const handleMoveAllToBag = () => {
+    if (!user?.uid) {
+      toast.error(t("common:please_login"));
+      return;
+    }
 
-      return {
-        ...prevWishlist,
-        wishlist_items: prevWishlist.wishlist_items.filter(
-          (item) => item.wishlist_item_id !== wishlistItemId
-        ),
-      };
-    });
+    if (!wishlist || wishlist.wishlist_items.length === 0) {
+      toast.error(t("wishlist_empty"));
+      return;
+    }
+
+    const itemsToMove = wishlist.wishlist_items.map((item) => ({
+      product_id: item.product_id,
+      variant_id: item.variant_id,
+      quantity: 1, 
+    }));
+
+    moveWishlistToCartMutation.mutate(itemsToMove);
   };
-
   return (
     <Container className="pb-[140px] pt-[80px]">
       <div className="flex items-center justify-between pb-[60px]">
-        <h3>{t("wishlist")} (4)</h3>
+        <h3>{t("wishlist")} ({wishlist?.wishlist_items.length || 0})</h3>
 
-        <MyButton className="border bg-transparent text-black">
+        <MyButton
+        onClick={handleMoveAllToBag}
+          disabled={moveWishlistToCartMutation.isPending}
+        className="border bg-transparent text-black">
           {t("move_all_to_bag")}
         </MyButton>
       </div>
@@ -67,12 +66,13 @@ export const WishList = () => {
       ) : (
         <div className="flex flex-wrap justify-center sm:justify-start gap-[30px] pt-[60px] lg:justify-start">
           {wishlist?.wishlist_items.map((item) => (
+            <div key={item.product_id} className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]">
             <ProductCard
               key={item.wishlist_item_id}
               product={item.product}
               variantId={item.variant_id}
-              onRemoveFromWishlist={handleRemoveFromWishlist}
             />
+            </div>
           ))}
         </div>
       )}
@@ -85,7 +85,7 @@ export const WishList = () => {
         </MyButton>
       </div>
 
-      <ProductList products={new_products_schema || []} limit={4} />
+      <ProductList products={products_for_u || []} limit={4} />
     </Container>
   );
 };

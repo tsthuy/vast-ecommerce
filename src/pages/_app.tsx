@@ -51,15 +51,19 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       : `${poppins.variable} ${inter.variable}`;
 
   const Layout = Component.Layout ? Component.Layout : React.Fragment;
-
+  console.log("fontVariables", fontVariables);
   return (
     <>
-      {/* <style jsx global>{`
+      <style jsx global>{`
         html {
-          --font-inter: ${inter.style.fontFamily};
           --font-poppins: ${poppins.style.fontFamily};
         }
-      `}</style> */}
+
+        body {
+        font-family: var(--font-sans);
+        };
+        }
+      `}</style>
 
       <main className={`${fontVariables} overflow-hidden font-sans`}>
         <QueryClientProvider client={queryClient}>
@@ -74,4 +78,4 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Toaster position="top-center" />
     </>
   );
-}
+};

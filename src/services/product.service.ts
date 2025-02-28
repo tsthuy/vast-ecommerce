@@ -1,20 +1,31 @@
+import { NewProduct } from "~/types/product";
+
 import axiosInstance from "~/mocks";
 
 export const productApi = {
-  getProducts: async (): Promise<ProductClient[]> => {
-    const response = await axiosInstance.get<ProductClient[]>("/api/products");
+  //server
+  getProductsBestSales: async (locale: string): Promise<NewProduct[]> => {
+    const response = await axiosInstance.get<NewProduct[]>("/api/products/best-sales",{locale});
     return response.data;
   },
 
-  getProductsExplore: async (): Promise<ProductClient[]> => {
+  //client
+   getProductsFlashSales: async (): Promise<NewProduct[]> => {
+    const response = await axiosInstance.get<NewProduct[]>("/api/products/flash-sales");
+    return response.data;
+  },
+
+  getProductsExplore: async (locale: string): Promise<ProductClient[]> => {
     const response = await axiosInstance.get<ProductClient[]>(
-      "/api/products-explore"
+      "/api/products-explore", {
+        locale
+      }
     );
     return response.data;
   },
 
-  getProductsJustForU: async (userId: string): Promise<ProductClient[]> => {
-    const response = await axiosInstance.get<ProductClient[]>(
+  getProductsJustForU: async (userId: string): Promise<NewProduct[]> => {
+    const response = await axiosInstance.get<NewProduct[]>(
       `/api/products/just-for-u/${userId}`
     );
     return response.data;

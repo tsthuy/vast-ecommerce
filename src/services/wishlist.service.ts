@@ -39,7 +39,10 @@ export const wishlistApi = {
     return response.data;
   },
 
-  removeFromWishlist: async (wishlist_item_id: string): Promise<void> => {
-    await axiosInstance.delete(`/api/wishlist/items/${wishlist_item_id}`);
+  removeFromWishlist: async (user_id: string ,wishlist_item_id: string): Promise<{wishlist_item_id: string }> => {
+   const response = await axiosInstance.delete(`/api/wishlist/items/${wishlist_item_id}`, {
+     data: { user_id },
+   });
+    return response.data; 
   },
 };

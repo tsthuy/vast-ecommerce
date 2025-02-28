@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -17,6 +17,9 @@ import {
   X,
   XCircle,
 } from "lucide-react";
+
+import { useCarts } from "~/hooks/use-carts.hook";
+import { useWishlists } from "~/hooks/use-wishlists.hook";
 
 import { logout } from "~/libs/auth.lib";
 
@@ -41,20 +44,36 @@ export default function Header({ categories }: HeaderProps) {
   const { user } = useAuthStore();
   const router = useRouter();
 
-  const wishlist = useWishlistStore((state) => state.items);
-  const cart = useCartStore((state) => state.items);
-  const { t } = useTranslation("header");
+  const { t } = useTranslation(["header", "common"]);
 
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
+  const { cartItems, setCartItems } = useCartStore();
+  const { wishlistItems, setWishlistItems } = useWishlistStore();
+
+  const { data: cartData } = useCarts(user?.uid || "", router.locale || "en");
+  const { data: wishlistData } = useWishlists(user?.uid || "", router.locale || "en");
+
+  useEffect(() => {
+    if (cartData?.cart_items) {
+      setCartItems(cartData.cart_items);
+    }
+  }, [cartData, setCartItems]);
+
+  useEffect(() => {
+    if (wishlistData?.wishlist_items) {
+      setWishlistItems(wishlistData.wishlist_items);
+    }
+  }, [wishlistData, setWishlistItems]);
+
   const navLinks = [
     { href: "/", label: t("home") },
     { href: "/contact", label: t("contact") },
     { href: "/about", label: t("about") },
-    { href: "signup", label: t("signup") },
+    { href: "/signup", label: t("signup") },
   ];
 
   return (
@@ -102,9 +121,9 @@ export default function Header({ categories }: HeaderProps) {
             >
               <Heart className="size-6" />
 
-              {wishlist.length > 0 && (
+              { wishlistItems.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {wishlist.length}
+                  {wishlistItems.length}
                 </span>
               )}
             </Button>
@@ -117,9 +136,9 @@ export default function Header({ categories }: HeaderProps) {
             >
               <ShoppingCart className="size-6" />
 
-              {cart && cart.length > 0 && (
+              {cartItems.length > 0 &&  (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {cart.length}
+                  {cartItems.length}
                 </span>
               )}
             </Button>
@@ -138,7 +157,7 @@ export default function Header({ categories }: HeaderProps) {
 
                 <DropdownMenuContent
                   align="end"
-                  className="w-56 backdrop-blur-3xl bg-transparent/30 border-none pt-[18px] pb-[10px] pl-[20px] pr-[12px] text-white space-y-2"
+                  className="w-64 backdrop-blur-3xl bg-transparent/50 border-none pt-[18px] pb-[10px] pl-[20px] pr-[12px] text-white space-y-2"
                 >
                   <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
                     <button>
@@ -146,7 +165,7 @@ export default function Header({ categories }: HeaderProps) {
                     </button>
 
                     <Link href={"/account"} className="text-14 font-normal">
-                      Manage My Account
+                      {t("common:manage_my_account")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -156,7 +175,7 @@ export default function Header({ categories }: HeaderProps) {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      My Order
+                      {t("common:my_order")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -166,7 +185,8 @@ export default function Header({ categories }: HeaderProps) {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      My Cancellations
+                      {t("common:my_cancellation")}
+                      
                     </Link>
                   </DropdownMenuItem>
 
@@ -176,7 +196,8 @@ export default function Header({ categories }: HeaderProps) {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      My Reviews
+                      {t("common:my_reviews")}
+                      
                     </Link>
                   </DropdownMenuItem>
 
@@ -190,7 +211,8 @@ export default function Header({ categories }: HeaderProps) {
                       className="text-14 font-normal"
                       onClick={logout}
                     >
-                      Logout
+                      {t("common:logout")}
+                      
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

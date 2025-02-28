@@ -2,7 +2,7 @@ import MockAdapter from "axios-mock-adapter";
 
 import { new_products_schema } from "./data/new_product_schema";
 
-const wishlistItems: Array<{
+export const wishlistItems: Array<{
   wishlist_item_id: string;
   user_id: string;
   product_id: number;
@@ -10,7 +10,6 @@ const wishlistItems: Array<{
 }> = [];
 
 export const setupWishlistsMock = (mock: MockAdapter) => {
-  // Create wishlist item
   mock.onPost("/api/wishlist/items").reply((config) => {
     const { user_id, product_id, variant_id } = JSON.parse(config.data);
 
@@ -53,7 +52,6 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
     }
   });
 
-  // Get wishlist items
   mock.onGet("/api/wishlist/items").reply((config) => {
     const { user_id } = config.params;
     const userWishlistItems = wishlistItems.filter(
@@ -74,7 +72,6 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
     return [200, { wishlist_items: wishlistItemsDetails }];
   });
 
-  // Update wishlist item variant
   mock.onPut(/\/api\/wishlist\/items\/\w+/).reply((config) => {
     const wishlistItemId = config.url?.split("/").pop();
     const { variant_id } = JSON.parse(config.data);
@@ -107,23 +104,26 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
   });
 
   // Delete wishlist item
-  mock.onDelete(/\/api\/wishlist\/items\/\w+/).reply((config) => {
-    const wishlistItemId = config.url?.split("/").pop();
+mock.onDelete(/\/api\/wishlist\/items\/\w+/).reply((config) => {
+  const wishlistItemId = config.url?.match(/\/api\/wishlist\/items\/(\w+)/)?.[1]; // Extract from URL
+  const { user_id } = JSON.parse(config.data || "{}"); // Only user_id in body
+  console.log(user_id, wishlistItemId);
 
-    if (!wishlistItemId) {
-      return [400, { error: "Invalid wishlist item id" }];
-    }
+  if (!wishlistItemId || !user_id) {
+    return [400, { error: "User or wishlist Id is missing!" }];
+  }
 
-    const index = wishlistItems.findIndex(
-      (item) => item.wishlist_item_id === wishlistItemId
-    );
+  const index = wishlistItems.findIndex(
+    (item) => item.wishlist_item_id === wishlistItemId && item.user_id === user_id
+  );
 
-    if (index === -1) {
-      return [404, { error: "Wishlist item not found" }];
-    }
+  if (index === -1) { 
+    return [404, { error: "Wishlist item not found" }];
+  }
 
-    wishlistItems.splice(index, 1);
+  wishlistItems.splice(index, 1);
 
-    return [200, { wishlist_item_id: wishlistItemId }];
-  });
+  return [200, { wishlist_item_id: wishlistItemId }];
+});
+
 };

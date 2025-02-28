@@ -1,31 +1,21 @@
-// stores/wishlistStore.ts
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
 interface WishlistState {
-  items: number[];
-  addToWishlist: (product_id: number) => void;
-  removeFromWishlist: (product_id: number) => void;
+  wishlistItems: WishlistItem[];
+  setWishlistItems: (items: WishlistItem[]) => void;
+  addWishlistItem: (item: WishlistItem) => void;
+  removeWishlistItem: (wishlistItemId: string) => void;
 }
 
-export const useWishlistStore = create<WishlistState>()(
-  persist(
-    (set) => ({
-      items: [],
-      addToWishlist: (product_id) =>
-        set((state) => {
-          if (state.items.includes(product_id)) {
-            return state; // Product already in wishlist
-          }
-          return { items: [...state.items, product_id] };
-        }),
-      removeFromWishlist: (product_id) =>
-        set((state) => ({
-          items: state.items.filter((id) => id !== product_id),
-        })),
-    }),
-    {
-      name: "wishlist-storage", // Name for localStorage
-    }
-  )
-);
+export const useWishlistStore = create<WishlistState>((set) => ({
+  wishlistItems: [],
+  setWishlistItems: (items) => set({ wishlistItems: items }),
+  addWishlistItem: (item) =>
+    set((state) => ({
+      wishlistItems: [...state.wishlistItems, item],
+    })),
+  removeWishlistItem: (wishlistItemId) =>
+    set((state) => ({
+      wishlistItems: state.wishlistItems.filter((item) => item.wishlist_item_id !== wishlistItemId),
+    })),
+}));
+

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,23 +9,19 @@ import { Eye, Heart, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
-
 import { cn } from "~/libs/utils";
-
-import { cartApi, wishlistApi } from "~/services";
-
 import type { NewProduct, ProductVariant } from "~/types/product";
-
 import { renderStars } from "~/utils/render-stars";
-
 import { useAuthStore } from "~/stores/auth.store";
-
+import { useWishlistStore } from "~/stores/wishlist.store";
 import VariantSelector from "./product-variant-selector";
+import { useAddWishlist, useRemoveWishlist } from "~/hooks/use-wishlists.hook";
+import { useAddToCart } from "~/hooks/use-carts.hook";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: NewProduct;
   variantId?: string;
-  quantity?: number;
   onRemoveFromWishlist?: (wishlistItemId: string) => void;
 }
 
@@ -34,52 +31,29 @@ export default function ProductCard({
   onRemoveFromWishlist,
 }: ProductCardProps) {
   const { user } = useAuthStore();
+  const { wishlistItems } = useWishlistStore();
   const { t } = useTranslation("common");
   const pathname = usePathname();
   const isInWishListPage = pathname === "/wishlist";
+  const router = useRouter();
 
+  // Select initial variant
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     product.variants.find((variant) => variant.id === variantId) ||
       product.variants.find((variant) => variant.stock > 0) ||
       product.variants[0]
   );
 
-  const router = useRouter();
+  // Check if the current variant is in the wishlist
+  const wishlistItem = wishlistItems.find(
+    (item) => item.product_id === product.id && item.variant_id === selectedVariant.id
+  );
+  const isInWishlist = !!wishlistItem;
+  const wishlistItemId = wishlistItem?.wishlist_item_id || null;
 
-  const [isInWishlist, setIsInWishlist] = useState(false);
-  const [wishlistItemId, setWishlistItemId] = useState<string | null>(null);
-  const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
-
-  const isGetDiscountedPrice = product.price - selectedVariant.price;
-  console.log(isGetDiscountedPrice);
-  const discountPercentage =
-    isGetDiscountedPrice > 0
-      ? Math.round(
-          ((product.price - selectedVariant.price) / product.price) * 100
-        )
-      : 0;
-
-  useEffect(() => {
-    const checkWishlistStatus = async () => {
-      if (!user?.uid) return;
-
-      try {
-        const wishlistData = await wishlistApi.getWishlist(user.uid);
-        const wishlistItem = wishlistData.wishlist_items.find(
-          (item) =>
-            item.product_id === product.id &&
-            item.variant_id === selectedVariant.id
-        );
-
-        setIsInWishlist(!!wishlistItem);
-        setWishlistItemId(wishlistItem?.wishlist_item_id || null);
-      } catch (error) {
-        console.error("Failed to check wishlist status:", error);
-      }
-    };
-
-    checkWishlistStatus();
-  }, [user?.uid, product.id, selectedVariant.id, wishlistItemId]);
+  const addWishlistMutation = useAddWishlist(user?.uid || "", router.locale || "en");
+  const removeWishlistMutation = useRemoveWishlist(user?.uid || "", router.locale || "en");
+  const addToCartMutation = useAddToCart(user?.uid || "", router.locale || "en");
 
   const handleToggleWishlist = async () => {
     if (!user?.uid) {
@@ -88,37 +62,24 @@ export default function ProductCard({
     }
 
     try {
-      setIsTogglingWishlist(true);
-
       if (isInWishlist && wishlistItemId) {
-        await wishlistApi.removeFromWishlist(wishlistItemId);
-        setIsInWishlist(false);
-        setWishlistItemId(null);
+        await removeWishlistMutation.mutateAsync(wishlistItemId);
         toast.success(t("removed_from_wishlist"));
-
-        if (onRemoveFromWishlist) {
+        if (onRemoveFromWishlist && isInWishListPage) {
           onRemoveFromWishlist(wishlistItemId);
         }
       } else {
-        const response = await wishlistApi.addToWishlist({
-          user_id: user.uid,
-          product_id: product.id,
-          variant_id: selectedVariant.id,
+        await addWishlistMutation.mutateAsync({
+          productId: product.id,
+          variantId: selectedVariant.id,
         });
-        setIsInWishlist(true);
-        setWishlistItemId(response.wishlist_item_id);
         toast.success(t("added_to_wishlist"));
       }
     } catch (error: any) {
       console.error("Failed to toggle wishlist:", error);
-
-      if (error.response?.status === 400) {
-        toast.error(t("already_in_wishlist"));
-      } else {
-        toast.error(t("failed_to_toggle_wishlist"));
-      }
-    } finally {
-      setIsTogglingWishlist(false);
+      toast.error(
+        error.response?.status === 400 ? t("already_in_wishlist") : t("failed_to_toggle_wishlist")
+      );
     }
   };
 
@@ -127,20 +88,17 @@ export default function ProductCard({
       toast.error(t("please_login"));
       return;
     }
-
     if (selectedVariant.stock <= 0) {
       toast.error(t("out_of_stock"));
       return;
     }
 
     try {
-      await cartApi.addToCart({
-        user_id: user.uid,
+      await addToCartMutation.mutateAsync({
         product_id: product.id,
         variant_id: selectedVariant.id,
         quantity: 1,
       });
-
       toast.success(t("added_to_cart"));
     } catch (error) {
       console.error("Failed to add to cart:", error);
@@ -148,56 +106,27 @@ export default function ProductCard({
     }
   };
 
-  const handleVariantChange = async (newVariant: ProductVariant) => {
-    if (!user?.uid || !isInWishListPage || !wishlistItemId) {
-      setSelectedVariant(newVariant);
-      return;
-    }
-
-    try {
-      setIsTogglingWishlist(true);
-
-      await wishlistApi.removeFromWishlist(wishlistItemId);
-
-      const response = await wishlistApi.addToWishlist({
-        user_id: user.uid,
-        product_id: product.id,
-        variant_id: newVariant.id,
-      });
-
-      setSelectedVariant(newVariant);
-      setWishlistItemId(response.wishlist_item_id);
-      toast.success(t("variant_updated_in_wishlist"));
-    } catch (error: any) {
-      console.error("Failed to update variant in wishlist:", error);
-
-      if (error.response?.status === 400) {
-        toast.error(t("variant_already_in_wishlist"));
-      } else {
-        toast.error(t("failed_to_update_variant"));
-
-        setSelectedVariant(selectedVariant);
-      }
-    } finally {
-      setIsTogglingWishlist(false);
-    }
+  const handleVariantChange = (newVariant: ProductVariant) => {
+    setSelectedVariant(newVariant);
   };
 
+  const isGetDiscountedPrice = product.price - selectedVariant.price;
+  const discountPercentage =
+    isGetDiscountedPrice > 0
+      ? Math.round(((product.price - selectedVariant.price) / product.price) * 100)
+      : 0;
+
   return (
-    <div className="group overflow-hidden rounded-lg bg-white sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]">
+    <div className="group overflow-hidden rounded-lg bg-white w-full">
       <div className="relative overflow-hidden">
         {/* Product Image */}
-        <div className="relative aspect-square items-center justify-center flex overflow-hidden rounded-lg bg-gray-100">
+        <div className="relative aspect-square flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
           <div className="relative size-[65%]">
             <Image
               src={selectedVariant.image.url || "/placeholder.svg"}
               alt={product.name}
               layout="fill"
-              className={`transition-transform duration-300${
-                isInWishListPage
-                  ? "-translate-y-[20px]"
-                  : "group-hover:-translate-y-[20px]"
-              } hover:drop-shadow-[0_0_20px_var(--color-button-1)]`}
+              className={`transition-transform duration-200 -translate-y-[10px] hover:drop-shadow-[0_0_20px_var(--color-button-1)]`}
             />
           </div>
         </div>
@@ -209,7 +138,6 @@ export default function ProductCard({
               NEW
             </div>
           )}
-
           {isGetDiscountedPrice > 0 && (
             <div className="rounded bg-red-500 px-3 py-1 text-12 font-normal text-white">
               -{discountPercentage}%
@@ -217,24 +145,24 @@ export default function ProductCard({
           )}
         </div>
 
-        {/* Add to wishlist */}
-
+        {/* Wishlist Toggle */}
         <div className="absolute right-3 top-2 flex flex-col gap-1">
           {isInWishListPage ? (
             isInWishlist ? (
               <button
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
                 onClick={handleToggleWishlist}
-                disabled={isTogglingWishlist}
+                disabled={removeWishlistMutation.isPending}
               >
                 <Trash className="size-5" />
               </button>
             ) : (
               <button
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
-                onClick={() => router.push(`/product/${product.id}`)}
+                onClick={handleToggleWishlist}
+                disabled={addWishlistMutation.isPending}
               >
-                <Eye className="size-5" />
+                <Heart className="size-5" />
               </button>
             )
           ) : (
@@ -242,12 +170,10 @@ export default function ProductCard({
               <button
                 onClick={handleToggleWishlist}
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
+                disabled={addWishlistMutation.isPending || removeWishlistMutation.isPending}
               >
-                <Heart
-                  className={`size-5 ${isInWishlist ? "fill-red-500" : ""}`}
-                />
+                <Heart className={`size-5 ${isInWishlist ? "fill-red-500" : ""}`} />
               </button>
-
               <button
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
                 onClick={() => router.push(`/product/${product.id}`)}
@@ -262,13 +188,11 @@ export default function ProductCard({
         {!isInWishListPage ? (
           <div className="absolute inset-x-0 bottom-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <Button
-              disabled={selectedVariant.stock === 0}
+              disabled={selectedVariant.stock === 0 || addToCartMutation.isPending}
               onClick={handleAddToCart}
               className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
             >
-              {selectedVariant.stock === 0
-                ? t("out_of_stock")
-                : t("add-to-cart")}
+              {selectedVariant.stock === 0 ? t("out_of_stock") : t("add-to-cart")}
             </Button>
           </div>
         ) : (
@@ -276,6 +200,7 @@ export default function ProductCard({
             <Button
               onClick={handleAddToCart}
               className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
+              disabled={addToCartMutation.isPending}
             >
               {t("add-to-cart")}
             </Button>
@@ -289,13 +214,8 @@ export default function ProductCard({
           {product.name}
         </Link>
 
-        {/* price & discountPrice */}
-
-        <div
-          className={`flex ${
-            isGetDiscountedPrice < 0 ? "flex-col" : ""
-          } mt-2 gap-3`}
-        >
+        {/* Price & Discount Price */}
+        <div className={`flex ${isGetDiscountedPrice < 0 ? "flex-col" : ""} mt-2 gap-3`}>
           <div className="flex gap-4">
             {isGetDiscountedPrice > 0 && (
               <span className="text-16 font-medium text-button-2">
@@ -307,7 +227,6 @@ export default function ProductCard({
                     })}
               </span>
             )}
-
             <span
               className={cn(
                 "text-16 font-medium text-black",
@@ -324,14 +243,11 @@ export default function ProductCard({
           </div>
         </div>
 
-        {/* review */}
+        {/* Review */}
         {!isInWishListPage && (
           <div className="flex items-center gap-1">
             <div className="flex">{renderStars(product.ratings)}</div>
-
-            <span className="text-muted-foreground text-sm">
-              ({product.reviews})
-            </span>
+            <span className="text-muted-foreground text-sm">({product.reviews})</span>
           </div>
         )}
 

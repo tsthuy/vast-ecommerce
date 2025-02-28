@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { cartApi } from "~/services";
+import { useCarts, useRemoveFromCart, useUpdateCartItemQuantity } from "~/hooks/use-carts.hook";
+
+import { cn } from "~/libs/utils";
+
 import { couponApi } from "~/services/coupons.service";
 
 import { Coupon } from "~/types/coupons";
 
 import { useAuthStore } from "~/stores/auth.store";
 
+import Breadcrumbs from "../breadcrumbs";
 import Container from "../container";
 import MyButton from "../custom/button";
 import { Button } from "../ui/button";
@@ -27,25 +32,21 @@ import {
 } from "../ui/table";
 
 export const Cart = () => {
+  const router = useRouter();
   const { t } = useTranslation(["common", "cart"]);
-  const [cart, setCart] = useState<CartResponse | null>(null);
   const { user } = useAuthStore();
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
-  const [discountValue, setDiscountValue] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const cartData = await cartApi.getCart(user?.uid || "");
-        setCart(cartData);
-      } catch (error) {
-        console.error("Failed to fetch cart:", error);
-      }
-    };
-    fetchCart();
-  }, [user?.uid]);
+  const {data: cart, } = useCarts(user?.uid || "", router.locale || "");
+  const  updateCartMutation = useUpdateCartItemQuantity(user?.uid || "", router.locale || "");
+
+  const removeFromCartMutation = useRemoveFromCart(user?.uid || "", router.locale || "");
+
+  const handleCartUpdate = (cartItemId: string, quantity: number) => {
+    updateCartMutation.mutate({ cartItemId, quantity });
+  };
 
   const handleQuantityChange = async (
     cart_item_id: string,
@@ -53,10 +54,7 @@ export const Cart = () => {
   ) => {
     if (newQuantity > 0) {
       try {
-        await cartApi.updateCartItemQuantity(cart_item_id, newQuantity);
-
-        const updatedCart = await cartApi.getCart(user?.uid || "");
-        setCart(updatedCart);
+        handleCartUpdate(cart_item_id, newQuantity);
       } catch (error) {
         console.error("Failed to update quantity:", error);
       }
@@ -103,15 +101,9 @@ export const Cart = () => {
 
   return (
     <Container>
-      <nav className="flex items-center gap-2 py-[80px] text-sm">
-        <Link href="/" className="hover:text-primary">
-          Home
-        </Link>
-
-        <span>/</span>
-
-        <span className="text-foreground">Cart</span>
-      </nav>
+      <div className="pb-[40px]">
+     <Breadcrumbs/>
+     </div>
 
       {!cart || cart.cart_items.length === 0 ? (
         <div className="py-12 text-center">
@@ -147,7 +139,8 @@ export const Cart = () => {
                 {cart.cart_items.map((item) => (
                   <TableRow key={item.cart_item_id}>
                     <TableCell className="text-center">
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-4 relative">
+                        <div className="relative">
                         <Image
                           src={item.product.images[0] || "/placeholder.svg"}
                           alt={item.product.name || "Product image"}
@@ -156,33 +149,40 @@ export const Cart = () => {
                           className="rounded-lg object-cover"
                         />
 
-                        <div className="flex flex-col text-left">
-                          <span className="font-medium">
+                        <button
+                            className={cn( item.quantity!==1  && "hidden","absolute top-2 left-0 bg-button-2 rounded-full")}
+                            onClick={() => removeFromCartMutation.mutate(item.cart_item_id)}
+                            disabled={removeFromCartMutation.isPending}
+                          >
+                            <X className="size-5 text-white" />
+                          </button>
+                        </div>
+
+                       <div className="flex flex-col text-left">
+                          <span className="font-bold pb-2 font-inter">
                             {item.product.name}
                           </span>
 
-                          {/* Display variant attributes */}
                           {Object.entries(item.variant).map(([key, value]) => (
-                            <span
+                            <div
                               key={key}
-                              className="text-sm text-muted-foreground"
+                              className="text-sm text-muted-foreground flex gap-2"
                             >
-                              <span className="capitalize"> {key}</span> :{" "}
-                              <span className="capitalize">{value}</span>
-                            </span>
+                              <span className="capitalize font-medium min-w-[50px] block"> {key}</span> : 
+                              <span className="capitalize pl-1"> { value}</span>
+                            </div>
                           ))}
                         </div>
                       </div>
                     </TableCell>
 
                     <TableCell className="text-center">
-                      {/* Now using the variant's price */}$
                       {item.product.price.toFixed(2)}
-                    </TableCell>
+                    </TableCell> 
 
                     <TableCell className="flex justify-center">
-                      <div className="mt-6 flex max-w-fit flex-row items-center justify-center gap-2 rounded border px-2">
-                        <div className="flex items-center justify-center">
+                      <div className="mt-6 flex  flex-row items-center justify-center gap-2 rounded border px-2">
+                        <div className="flex items-center justify-center min-w-[20px]">
                           <span className="text-center">{item.quantity}</span>
                         </div>
 

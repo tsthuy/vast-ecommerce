@@ -73,7 +73,7 @@ export function ManagerCarousel() {
       api.off("select", handleSelect);
       window.removeEventListener("resize", updateTotalPages);
     };
-  }, [api, teamMembers.length]);
+  }, [api]);
 
 function StatCard({ stat }: StatCardProps) {
   return (

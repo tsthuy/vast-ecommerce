@@ -104,7 +104,7 @@ export default function CountTimer({
         :
       </span>
 
-      <div className="relative flex flex-col items-center text-left">
+      <div className="relative flex flex-col items-center text-left min-w-[44px]">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
           {t("minutes")}
         </span>
@@ -118,7 +118,7 @@ export default function CountTimer({
         :
       </span>
 
-      <div className="relative flex flex-col items-center text-left">
+      <div className="relative flex flex-col items-center text-left min-w-[44px]">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
           {t("seconds")}
         </span>

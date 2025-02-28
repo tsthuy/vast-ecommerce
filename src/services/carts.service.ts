@@ -1,7 +1,7 @@
 import axiosInstance from "~/mocks";
 
 export const cartApi = {
-  getCart: async (user_id: string): Promise<CartResponse> => {
+  getCarts: async (user_id: string): Promise<CartResponse> => {
     const response = await axiosInstance.get<CartResponse>("/api/cart/items", {
       params: { user_id },
     });
@@ -39,5 +39,17 @@ export const cartApi = {
       }
     );
     return response.data;
+  },
+
+  removeFromCart: async (userId: string, cartItemId: string) => {
+    await axiosInstance.delete(`/api/cart/${userId}/items/${cartItemId}`);
+    return { success: true }; 
+  },
+
+  moveWishlistToCart: async (userId: string, wishlistItems: { product_id: number; variant_id: string; quantity: number }[]) => {
+    const response = await axiosInstance.post(`/api/cart/${userId}/move-from-wishlist`, {
+      items: wishlistItems,
+    });
+    return response.data; 
   },
 };

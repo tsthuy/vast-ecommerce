@@ -28,20 +28,20 @@ export default function ProductList({
     }
     const startIndex = (currentPage - 1) * limit;
     const endIndex = startIndex + limit;
-    return products.slice(startIndex, endIndex);
+    return products && products.slice(startIndex, endIndex);
   };
 
   return (
-    <Container>
       <div className="relative">
         <div
           className={`flex flex-wrap justify-center sm:justify-start gap-[30px] pt-[60px] lg:justify-start ${className}`}
         >
-          {getCurrentProducts().map((product) => (
+          {getCurrentProducts()&& getCurrentProducts().map((product) => (
+            <div className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]">
             <ProductCard key={product.id} product={product} />
+            </div>
           ))}
         </div>
       </div>
-    </Container>
   );
 }

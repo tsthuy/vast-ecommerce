@@ -9,18 +9,20 @@ import { FixedHeader } from "~/components/header/fixed-header";
 import {
   BestSelling,
   CategorySection,
+  FlashSales,
   Hero,
   NewArrival,
+  OurProducts,
   ServiceFeatures,
 } from "~/components/section";
 
 import { categoryApi, productApi } from "~/services";
 
-import { new_products_schema } from "~/mocks/data/new_product_schema";
-
 export default function Home({
   initialCategories,
   initialCategoriesGird,
+  productsBestSales,
+  productsExplore
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
@@ -33,7 +35,7 @@ export default function Home({
           <PromoSlider />
         </div>
 
-        {/* <FlashSales /> */}
+        <FlashSales />
       </Container>
 
       <Container>
@@ -41,16 +43,16 @@ export default function Home({
       </Container>
 
       <Container>
-        <BestSelling initialProducts={new_products_schema}></BestSelling>
+        <BestSelling initialProducts={productsBestSales}></BestSelling>
       </Container>
 
       <Container className="pt-[150px]">
         <Hero />
       </Container>
 
-      {/* <Container>
-        <OurProducts initialProductsExplore={initialProductsExplore} />
-      </Container> */}
+      <Container>
+        <OurProducts initialProductsExplore={productsExplore} />
+      </Container>
 
       <Container>
         <NewArrival />
@@ -70,7 +72,6 @@ export default function Home({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  console.log("locale", locale);
 
   if (!locale) {
     return {
@@ -81,8 +82,8 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   const initialCategories = await categoryApi.getCategories(locale);
   const initialCategoriesGird = await categoryApi.getCategoriesGrid(locale);
 
-  const initialProducts = await productApi.getProducts();
-  const initialProductsExplore = await productApi.getProductsExplore();
+  const productsBestSales = await productApi.getProductsBestSales(locale);
+  const productsExplore = await productApi.getProductsExplore(locale);
 
   return {
     props: {
@@ -99,8 +100,8 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
       ])),
 
       initialCategories,
-      initialProducts,
-      initialProductsExplore,
+      productsBestSales,
+      productsExplore,
       initialCategoriesGird,
     },
   };
