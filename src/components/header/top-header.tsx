@@ -3,8 +3,6 @@ import { useTranslation } from "next-i18next";
 
 import { setLocale } from "~/services/axios-instance.service";
 
-import { useAuthStore } from "~/stores/auth.store";
-
 import Container from "../container";
 import { Button } from "../ui/button";
 import {
@@ -16,8 +14,6 @@ import {
 } from "../ui/select";
 
 export default function TopHeader() {
-  const user = useAuthStore((state) => state.user);
-  console.log("user", user?.displayName);
 
   const { t } = useTranslation(["common", "header"]);
   const router = useRouter();
@@ -47,11 +43,11 @@ export default function TopHeader() {
 
         <div className="flex flex-1 justify-end">
           <Select defaultValue={router.locale} onValueChange={changeLanguage}>
-            <SelectTrigger className="size-auto border-0 bg-transparent p-0 text-sm text-white hover:text-button-2 focus:ring-0 [&>svg]:ml-2 [&>svg]:opacity-100">
+            <SelectTrigger className="bg-bu size-auto border-0 bg-transparent p-0 text-sm text-white hover:text-button-2 focus:ring-0 [&>svg]:ml-2 [&>svg]:opacity-100">
               <SelectValue placeholder={t("language")} className="" />
             </SelectTrigger>
 
-            <SelectContent className="">
+            <SelectContent className="backdrop-blur-3xl bg-transparent/50">
               <SelectItem value="en">English</SelectItem>
 
               <SelectItem value="vi">Vietnamese</SelectItem>

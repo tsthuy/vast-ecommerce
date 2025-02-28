@@ -1,6 +1,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useTranslation } from "next-i18next"
 
 import { Card } from "../ui/card"
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "../ui/carousel"
@@ -14,35 +15,9 @@ interface StatCardProps {
   stat: StatItem
 }
 
-const teamMembers: StatItem[] = [
-    {
-      name: "Tom Cruise",
-      position: "Founder & Chairman",
-    
-    },
-    {
-      name: "Emma Watson",
-      position: "Founder & Chairman",
-      
-    },
-    {
-      name: "Will Smith",
-      position: "Founder & Chairman",
-      
-    },
-      {
-      name: "Emma Watson",
-      position: "Founder & Chairman",
-      
-    },
-    {
-      name: "Will Smith",
-      position: "Founder & Chairman",
-      
-    }
-  ]
-
 export function ManagerCarousel() {
+  const {t} = useTranslation("about");
+  
     const [activeIndex, setActiveIndex] = React.useState(0)
     const [api, setApi] = React.useState<CarouselApi>();
     const [totalPages, setTotalPages] = React.useState(0);
@@ -74,6 +49,34 @@ export function ManagerCarousel() {
       window.removeEventListener("resize", updateTotalPages);
     };
   }, [api]);
+
+  const teamMembers: StatItem[] = [
+    {
+      name: "Tom Cruise",
+      position: `${t("founder")} & ${t("chairman")}`,
+    
+    },
+    {
+      name: "Emma Watson",
+      position: `${t("founder")} & ${t("chairman")}`,
+      
+    },
+    {
+      name: "Will Smith",
+      position: `${t("founder")} & ${t("chairman")}`,
+      
+    },
+      {
+      name: "Emma Watson",
+      position: `${t("founder")} & ${t("chairman")}`,
+      
+    },
+    {
+      name: "Will Smith",
+      position: `${t("founder")} & ${t("chairman")}`,
+      
+    }
+  ]
 
 function StatCard({ stat }: StatCardProps) {
   return (

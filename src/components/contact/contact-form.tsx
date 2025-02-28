@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslation } from "next-i18next"
 import {
   useForm
 } from "react-hook-form"
@@ -38,6 +39,7 @@ const formSchema = z.object({
 });
 
 export default function ContactForm() {
+  const {t} = useTranslation("contact");
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
@@ -85,7 +87,7 @@ export default function ContactForm() {
               field.value ? "opacity-0" : "opacity-70")
             }
           >
-            Your Name<span className="text-red-500">*</span>
+            {t("ur_name")}<span className="text-red-500">*</span>
           </span>
         </div>
               </FormControl>
@@ -116,7 +118,7 @@ export default function ContactForm() {
               field.value ? "opacity-0" : "opacity-70")
             }
           >
-            Your Email<span className="text-red-500">*</span>
+            {t("ur_email")}<span className="text-red-500">*</span>
           </span>
         </div>
               </FormControl>
@@ -147,7 +149,7 @@ export default function ContactForm() {
               field.value ? "opacity-0" : "opacity-70")
             }
           >
-            Your Phone<span className="text-red-500">*</span>
+            {t("ur_phone")}<span className="text-red-500">*</span>
           </span>
         </div>
               </FormControl>
@@ -169,7 +171,7 @@ export default function ContactForm() {
               <FormControl>
                 <Textarea
                   rows={8}
-                  placeholder="Your Message"
+                  placeholder={t("ur_message")}
                   className="resize-none bg-secondary-2"
                   {...field}
                 />
@@ -180,7 +182,7 @@ export default function ContactForm() {
           )}
         />
         <div className="flex justify-end">
-        <MyButton>Send Messages</MyButton>
+        <MyButton>{t("send_messages")}</MyButton>
         </div>
       </form>
     </Form>

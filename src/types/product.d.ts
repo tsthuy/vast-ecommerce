@@ -4,6 +4,7 @@ import { z } from "zod";
 interface ProductImage {
   url: string;
   isDefault?: boolean;
+  variantId?: string;
 }
 
 // Value type for attributes
@@ -47,6 +48,11 @@ interface NewProduct {
   images: ProductImage[];
   attributes: ProductAttribute[];
   variants: ProductVariant[];
+}
+
+interface ProductDetailsResponse {
+  product: NewProduct;
+  images: ProductImage[];
 }
 
 export const productImageSchema = z.object({
@@ -96,4 +102,5 @@ export type {
   AttributeValue,
   VariantAttribute,
   ProductVariant,
+  ProductDetailsResponse,
 };

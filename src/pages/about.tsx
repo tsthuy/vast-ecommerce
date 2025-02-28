@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["header", "footer", "service"])),
+      ...(await serverSideTranslations(locale, ["header", "footer", "service", "about", "common"])),
       initialCategories,
     },
     revalidate: 60,

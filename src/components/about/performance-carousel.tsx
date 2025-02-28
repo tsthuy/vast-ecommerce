@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useTranslation } from "next-i18next"
 import { DollarSign, ShoppingBag, Store, Wallet } from "lucide-react"
 
 import { Card } from "../ui/card"
@@ -14,29 +15,30 @@ interface StatCardProps {
 }
 
 export function PerformancesCarousel() {
+  const {t} = useTranslation("about");
    const stats: StatItem[] = [
     {
       icon: <Store className="h-8 w-8 text-white" />,
       value: "10.5k",
-      label: "Sallers active our site",
+      label: `${t("sallers_active")}`,
     
     },
     {
       icon: <DollarSign className="h-8 w-8 text-white" />,
       value: "33k",
-      label: "Mopnthly Produduct Sale",
+      label: `${t("monthly_profit")}`,
       
     },
     {
       icon: <ShoppingBag className="h-8 w-8 text-white" />,
       value: "45.5k",
-      label: "Customer active in our site",
+      label: `${t("customer_active")}`,
       
     },
     {
       icon: <Wallet className="h-8 w-8 text-white" />,
       value: "25k",
-      label: "Anual gross sale in our site",
+      label: `${t("annual_gross")}`,
       
     }
   ]

@@ -1,8 +1,3 @@
-interface ProductImage {
-  url: string
-  color?: string
-}
-
 interface Product {
   id: number
   name: { en: string; vi: string }

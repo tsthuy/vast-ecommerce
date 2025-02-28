@@ -1,0 +1,20 @@
+{
+  "welcome": "Welcome!",
+  "my_profile": "My Profile",
+  "address_book": "Address Book",
+  "my_payment_options": "My Payment Options",
+  "my_orders": "My Orders",
+  "my_returns": "My Returns",
+  "my_cancellations": "My Cancellations",
+  "my_wishlist": "My Wishlist",
+  "edit_ur_profile": "Edit Your Profile",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "address": "Address",
+  "password_changes": "Password Changes",
+  "new_password": "New Password",
+  "confirm_new_password": "Confirm New Password",
+  "current_password": "Current Password",
+  "save_changes": "Save Changes",
+  "cancel": "Cancel"
+}

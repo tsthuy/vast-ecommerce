@@ -157,7 +157,7 @@ export default function Header({ categories }: HeaderProps) {
 
                 <DropdownMenuContent
                   align="end"
-                  className="w-64 backdrop-blur-3xl bg-transparent/50 border-none pt-[18px] pb-[10px] pl-[20px] pr-[12px] text-white space-y-2"
+                  className="max-w-64 backdrop-blur-3xl bg-transparent/50 border-none pt-[18px] pb-[10px] pl-[20px] pr-[12px] text-white space-y-2"
                 >
                   <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
                     <button>

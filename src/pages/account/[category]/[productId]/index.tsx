@@ -4,7 +4,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 import { Container } from "~/components"
 import Breadcrumbs from "~/components/breadcrumbs"
-import { ProductDetails } from "~/components/product/product-details"
+import ProductDetails from "~/components/product/product-details"
 
 import { categoryApi } from "~/services"
 
@@ -30,18 +30,22 @@ export default function ProductDetailsPage({
 
       <DynamicHeader categories={initialCategories} />
        <Container> 
-        
+        <div className="pb-[80px]">
       <Breadcrumbs/>
+      </div>
       </Container>
-        
+      
+        <Container>
       <ProductDetails />
+      </Container>
+      
       <DynamicFooter />
     </>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale, params }) => {
-  if (!locale || !params) {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  if (!locale) {
     return {
       notFound: true,
     };
@@ -51,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale, params })
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["header", "footer", "service"])),
+      ...(await serverSideTranslations(locale, ["header", "footer", "service", "common"])),
       initialCategories,
     },
   };

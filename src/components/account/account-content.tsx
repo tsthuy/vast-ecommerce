@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 // Firebase imports
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -40,6 +41,7 @@ const formSchema = z
   });
 
 export default function AccountContent() {
+  const {t} = useTranslation(["account", "common"]);
   const { user } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,7 +87,7 @@ export default function AccountContent() {
     <div className="w-3/4 lg:shadow py-10 flex-1 px-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-w-2xl mx-auto">
-          <h2 className="text-20 font-medium text-button-2">Edit Your Profile</h2>
+          <h2 className="text-20 font-medium text-button-2">{t("edit_ur_profile")}</h2>
 
           <div className="grid md:grid-cols-12 gap-4">
             <div className="col-span-6">
@@ -94,7 +96,7 @@ export default function AccountContent() {
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-16 font-normal">First Name</FormLabel>
+                    <FormLabel className="text-16 font-normal">{t("first_name")}</FormLabel>
                     <FormControl>
                       <Input
                         className="py-5 bg-secondary-2"
@@ -115,7 +117,7 @@ export default function AccountContent() {
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-16 font-normal">Last Name</FormLabel>
+                    <FormLabel className="text-16 font-normal">{t("last_name")}</FormLabel>
                     <FormControl>
                       <Input
                         className="py-5 bg-secondary-2"
@@ -159,7 +161,7 @@ export default function AccountContent() {
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-16 font-normal">Address</FormLabel>
+                    <FormLabel className="text-16 font-normal">{t("address")}</FormLabel>
                     <FormControl>
                       <Input
                         className="py-5 bg-secondary-2"
@@ -180,11 +182,11 @@ export default function AccountContent() {
             name="current_password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-16 font-normal">Password Changes</FormLabel>
+                <FormLabel className="text-16 font-normal">{t("password_changes")}</FormLabel>
                 <FormControl>
                   <Input
                     className="py-5 bg-secondary-2"
-                    placeholder="Current Password"
+                    placeholder={t("current_password")}
                     type="password"
                     {...field}
                   />
@@ -199,11 +201,11 @@ export default function AccountContent() {
             name="new_password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-16 font-normal">New Password</FormLabel>
+                <FormLabel className="text-16 font-normal">{t("new_password")}</FormLabel>
                 <FormControl>
                   <Input
                     className="py-5 bg-secondary-2"
-                    placeholder="New Password"
+                    placeholder={t("new_password")}
                     type="password"
                     {...field}
                   />
@@ -218,7 +220,7 @@ export default function AccountContent() {
             name="confirm_new_password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-16 font-normal">Confirm New Password</FormLabel>
+                <FormLabel className="text-16 font-normal">{t("account:confirm_new_password")}</FormLabel>
                 <FormControl>
                   <Input
                     className="py-5 bg-secondary-2"
@@ -233,8 +235,8 @@ export default function AccountContent() {
           />
 
           <div className="flex justify-end items-center gap-8">
-            <Button variant={"ghost"}>Cancel</Button>
-            <MyButton type="submit">Save Changes</MyButton>
+            <Button variant={"ghost"}>{t("cancel")}</Button>
+            <MyButton type="submit">{t("save_changes")}</MyButton>
           </div>
         </form>
       </Form>

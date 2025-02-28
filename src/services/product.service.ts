@@ -1,4 +1,4 @@
-import { NewProduct } from "~/types/product";
+import { NewProduct, ProductDetailsResponse } from "~/types/product";
 
 import axiosInstance from "~/mocks";
 
@@ -28,6 +28,11 @@ export const productApi = {
     const response = await axiosInstance.get<NewProduct[]>(
       `/api/products/just-for-u/${userId}`
     );
+    return response.data;
+  },
+
+  getProductById: async (productId: string): Promise<ProductDetailsResponse> => {
+    const response = await axiosInstance.get(`/api/products/${productId}`);
     return response.data;
   },
 };

@@ -1,7 +1,7 @@
 import MockAdapter from "axios-mock-adapter";
 
 import { new_products_schema, products_jus_for_u } from "./data/new_product_schema";
-import { products, products_explore } from "./data";
+import { products } from "./data";
 
 export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet("/api/products").reply((config) => {
@@ -24,4 +24,38 @@ export const setupProductsMock = (mock: MockAdapter) => {
 
   mock.onGet("/api/products/best-sales").reply(200, new_products_schema);
   mock.onGet("/api/products/flash-sales").reply(200, new_products_schema);
+
+  mock.onGet(/\/api\/products\/[^/]+/).reply((config) => {
+    const urlParts = config.url?.split("/");
+    const productId = urlParts?.[3]; // Lấy productId từ URL
+
+    // Tìm sản phẩm theo ID
+    const product = new_products_schema.find((p) => p.id.toString() === productId);
+
+    if (!product) {
+      return [404, { error: "Product not found" }];
+    }
+
+    // Tạo mảng images
+    const images = [
+      // Ảnh gốc của sản phẩm (isDefault: true)
+      ...product.images.map((img) => ({
+        url: img.url,
+        isDefault: true,
+      })),
+      // Ảnh từ các variant (gắn variantId)
+      ...product.variants.map((variant) => ({
+        url: variant.image.url,
+        variantId: variant.id,
+      })),
+    ];
+
+    return [
+      200,
+      {
+        product,
+        images,
+      },
+    ];
+  });
 };

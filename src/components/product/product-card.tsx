@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,15 +10,20 @@ import { Eye, Heart, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
+
+import { useAddToCart } from "~/hooks/use-carts.hook";
+import { useAddWishlist, useRemoveWishlist } from "~/hooks/use-wishlists.hook";
+
 import { cn } from "~/libs/utils";
+
 import type { NewProduct, ProductVariant } from "~/types/product";
+
 import { renderStars } from "~/utils/render-stars";
+
 import { useAuthStore } from "~/stores/auth.store";
 import { useWishlistStore } from "~/stores/wishlist.store";
+
 import VariantSelector from "./product-variant-selector";
-import { useAddWishlist, useRemoveWishlist } from "~/hooks/use-wishlists.hook";
-import { useAddToCart } from "~/hooks/use-carts.hook";
-import { useState } from "react";
 
 interface ProductCardProps {
   product: NewProduct;
@@ -65,6 +71,7 @@ export default function ProductCard({
       if (isInWishlist && wishlistItemId) {
         await removeWishlistMutation.mutateAsync(wishlistItemId);
         toast.success(t("removed_from_wishlist"));
+
         if (onRemoveFromWishlist && isInWishListPage) {
           onRemoveFromWishlist(wishlistItemId);
         }
@@ -88,6 +95,7 @@ export default function ProductCard({
       toast.error(t("please_login"));
       return;
     }
+
     if (selectedVariant.stock <= 0) {
       toast.error(t("out_of_stock"));
       return;
@@ -210,7 +218,7 @@ export default function ProductCard({
 
       {/* Product Info */}
       <div className="space-y-2 pt-4">
-        <Link href={`product/${product.id}`} className="text-16 font-medium">
+        <Link href={`account/gaming/${product.id}`} className="text-16 font-medium">
           {product.name}
         </Link>
 
