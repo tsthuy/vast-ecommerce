@@ -3,10 +3,8 @@ import MockAdapter from "axios-mock-adapter";
 import { coupons } from "./data/coupons";
 
 export const setupCouponsMock = (mock: MockAdapter) => {
-  // Get all coupons
   mock.onGet("/api/coupons").reply(200, { coupons });
 
-  // Get a specific coupon by ID
   mock.onGet(/\/api\/coupons\/\w+/).reply((config) => {
     const couponId = config.url?.split("/").pop();
     const coupon = coupons.find((c) => c.id === couponId);
@@ -18,7 +16,6 @@ export const setupCouponsMock = (mock: MockAdapter) => {
     return [200, coupon];
   });
 
-  // Apply a coupon
   mock.onPost("/api/coupons/apply").reply((config) => {
     const { couponCode, productPrice } = JSON.parse(config.data);
     const coupon = coupons.find((c) => c.code === couponCode);
@@ -51,7 +48,6 @@ export const setupCouponsMock = (mock: MockAdapter) => {
     return [200, coupon];
   });
 
-  // Validate a coupon
   mock.onPost("/api/coupons/validate").reply((config) => {
     const { couponCode } = JSON.parse(config.data);
     const coupon = coupons.find((c) => c.code === couponCode);

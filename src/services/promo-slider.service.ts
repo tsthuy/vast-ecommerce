@@ -1,8 +1,8 @@
-import axiosInstance from "~/mocks"
+import axiosInstance from "~/mocks";
 
 export const promoSliderApi = {
-  getPromoSlider: async (): Promise<SlideClient[]> => {
-    const response = await axiosInstance.get<SlideClient[]>("/api/slides")
-    return response.data
+  getPromoSlider: async (): Promise<Slide[]> => {
+    const response = await axiosInstance.get<Slide[]>("/api/slides");
+    return response.data;
   },
-}
+};

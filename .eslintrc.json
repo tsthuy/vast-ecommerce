@@ -41,13 +41,9 @@
         "**/*.{ts,tsx}": "KEBAB_CASE"
       }
     ],
-    "padding-line-between-statements": [
+    "react/jsx-newline": [
       "error",
-      {
-        "blankLine": "always",
-        "prev": "*",
-        "next": ["block-like", "export", "function"]
-      }
+      { "prevent": false, "allowMultilines": false }
     ]
   },
   "overrides": [
@@ -77,7 +73,7 @@
       "rules": {
         "no-multiple-empty-lines": [
           "error",
-          { "max": 1, "maxBOF": 0, "maxEOF": 0 }
+          { "max": 2, "maxBOF": 0, "maxEOF": 0 }
         ],
 
         "simple-import-sort/imports": [

@@ -1,37 +1,37 @@
-import * as React from "react"
-import { useRouter } from "next/router"
+import * as React from "react";
+import { useRouter } from "next/router";
 
-import { useProductsFlashSales } from "~/hooks"
+import { useProductsFlashSales } from "~/hooks";
 
-import CountTimer from "../countdown-timer"
-import SectionHeading from "../section-heading"
-import { FlashSalesSkeleton } from "../skeletons"
-import TitleHeading from "../title-heading"
+import CountTimer from "../countdown-timer";
+import SectionHeading from "../section-heading";
+import { FlashSalesSkeleton } from "../skeletons";
+import TitleHeading from "../title-heading";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel"
+} from "../ui/carousel";
 
-import ProductCard from "./product-card"
+import ProductCard from "./product-card";
 
 export default function ProductSlider() {
-  const router = useRouter()
+  const router = useRouter();
 
   const { data: products, isLoading } = useProductsFlashSales(
     router.locale || "en"
-  )
-  console.log("products", products)
+  );
+  console.log("products", products);
   if (isLoading)
     return (
       <div className="pt-[80px]">
         <FlashSalesSkeleton />
       </div>
-    )
+    );
 
-  const targetDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+  const targetDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
 
   return (
     <>
@@ -72,5 +72,5 @@ export default function ProductSlider() {
         </Carousel>
       </div>
     </>
-  )
+  );
 }

@@ -13,7 +13,6 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
   mock.onPost("/api/wishlist/items").reply((config) => {
     const { user_id, product_id, variant_id } = JSON.parse(config.data);
 
-    // Find if the same product exists in user's wishlist (regardless of variant)
     const existingWishlistItem = wishlistItems.find(
       (item) =>
         item.user_id === user_id &&
@@ -21,9 +20,10 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
         item.variant_id === variant_id
     );
 
-    // Find product and variant to check existence
     const product = new_products_schema.find((p) => p.id === product_id);
-    const variant = product?.variants.find((v) => v.id === variant_id);
+    const variant = product?.variants.find(
+      (v: ProductVariant) => v.id === variant_id
+    );
 
     if (!product || !variant) {
       return [404, { error: "Product or variant not found" }];
@@ -88,11 +88,12 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
       return [404, { error: "Wishlist item not found" }];
     }
 
-    // Verify the variant exists
     const product = new_products_schema.find(
       (p) => p.id === wishlistItem.product_id
     );
-    const variant = product?.variants.find((v) => v.id === variant_id);
+    const variant = product?.variants.find(
+      (v: ProductVariant) => v.id === variant_id
+    );
 
     if (!variant) {
       return [404, { error: "Variant not found" }];
@@ -103,27 +104,28 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
     return [200, { wishlist_item_id: wishlistItemId, variant_id }];
   });
 
-  // Delete wishlist item
-mock.onDelete(/\/api\/wishlist\/items\/\w+/).reply((config) => {
-  const wishlistItemId = config.url?.match(/\/api\/wishlist\/items\/(\w+)/)?.[1]; // Extract from URL
-  const { user_id } = JSON.parse(config.data || "{}"); // Only user_id in body
-  console.log(user_id, wishlistItemId);
+  mock.onDelete(/\/api\/wishlist\/items\/\w+/).reply((config) => {
+    const wishlistItemId = config.url?.match(
+      /\/api\/wishlist\/items\/(\w+)/
+    )?.[1];
+    const { user_id } = JSON.parse(config.data || "{}");
+    console.log(user_id, wishlistItemId);
 
-  if (!wishlistItemId || !user_id) {
-    return [400, { error: "User or wishlist Id is missing!" }];
-  }
+    if (!wishlistItemId || !user_id) {
+      return [400, { error: "User or wishlist Id is missing!" }];
+    }
 
-  const index = wishlistItems.findIndex(
-    (item) => item.wishlist_item_id === wishlistItemId && item.user_id === user_id
-  );
+    const index = wishlistItems.findIndex(
+      (item) =>
+        item.wishlist_item_id === wishlistItemId && item.user_id === user_id
+    );
 
-  if (index === -1) { 
-    return [404, { error: "Wishlist item not found" }];
-  }
+    if (index === -1) {
+      return [404, { error: "Wishlist item not found" }];
+    }
 
-  wishlistItems.splice(index, 1);
+    wishlistItems.splice(index, 1);
 
-  return [200, { wishlist_item_id: wishlistItemId }];
-});
-
+    return [200, { wishlist_item_id: wishlistItemId }];
+  });
 };

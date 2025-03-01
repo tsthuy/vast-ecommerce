@@ -2,12 +2,12 @@ import Header from "./header";
 import TopHeader from "./top-header";
 
 type FixedHeaderProps = {
-  initialCategories: CategoryClient[];
+  initialCategories: Category[];
 };
 
 export const FixedHeader = ({ initialCategories }: FixedHeaderProps) => {
   return (
-    <div className="fixed top-0 right-0 w-full z-50 bg-white shadow-sm">
+    <div className="fixed right-0 top-0 z-50 w-full bg-white shadow-sm">
       <TopHeader />
 
       <div className="border-b">

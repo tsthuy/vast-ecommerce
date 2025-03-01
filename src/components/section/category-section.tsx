@@ -1,9 +1,9 @@
-import { CategoryGrid } from "../category"
-import SectionHeading from "../section-heading"
-import TitleHeading from "../title-heading"
+import { CategoryGrid } from "../category";
+import SectionHeading from "../section-heading";
+import TitleHeading from "../title-heading";
 
 interface CategorySectionProps {
-  initialCategoriesGird: CategoryGridClient[]
+  initialCategoriesGird: CategoryGrid[];
 }
 
 export default function CategorySection({
@@ -21,5 +21,5 @@ export default function CategorySection({
         <CategoryGrid initialCategoriesGird={initialCategoriesGird} />
       </div>
     </>
-  )
+  );
 }

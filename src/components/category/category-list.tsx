@@ -1,9 +1,9 @@
-import Link from "next/link"
+import Link from "next/link";
 
-import { cn } from "~/libs/utils"
+import { cn } from "~/libs/utils";
 
 interface CategoryListProps {
-  categories: CategoryClient[]
+  categories: Category[];
 }
 
 export function CategoryList({ categories }: CategoryListProps) {
@@ -12,7 +12,7 @@ export function CategoryList({ categories }: CategoryListProps) {
       {categories.map((category) => (
         <Link
           key={category.id}
-          href={category.href}
+          href={"#"}
           className={cn(
             "block rounded-lg py-2 font-normal",
             "text-16 transition-colors duration-200 hover:text-button-2"
@@ -22,5 +22,5 @@ export function CategoryList({ categories }: CategoryListProps) {
         </Link>
       ))}
     </nav>
-  )
+  );
 }

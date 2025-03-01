@@ -37,7 +37,7 @@ import {
 import { Input } from "../ui/input";
 
 interface HeaderProps {
-  categories: CategoryClient[];
+  categories: Category[];
 }
 
 export default function Header({ categories }: HeaderProps) {
@@ -55,7 +55,10 @@ export default function Header({ categories }: HeaderProps) {
   const { wishlistItems, setWishlistItems } = useWishlistStore();
 
   const { data: cartData } = useCarts(user?.uid || "", router.locale || "en");
-  const { data: wishlistData } = useWishlists(user?.uid || "", router.locale || "en");
+  const { data: wishlistData } = useWishlists(
+    user?.uid || "",
+    router.locale || "en"
+  );
 
   useEffect(() => {
     if (cartData?.cart_items) {
@@ -121,7 +124,7 @@ export default function Header({ categories }: HeaderProps) {
             >
               <Heart className="size-6" />
 
-              { wishlistItems.length > 0 && (
+              {wishlistItems.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                   {wishlistItems.length}
                 </span>
@@ -136,7 +139,7 @@ export default function Header({ categories }: HeaderProps) {
             >
               <ShoppingCart className="size-6" />
 
-              {cartItems.length > 0 &&  (
+              {cartItems.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                   {cartItems.length}
                 </span>
@@ -157,9 +160,9 @@ export default function Header({ categories }: HeaderProps) {
 
                 <DropdownMenuContent
                   align="end"
-                  className="max-w-64 backdrop-blur-3xl bg-transparent/50 border-none pt-[18px] pb-[10px] pl-[20px] pr-[12px] text-white space-y-2"
+                  className="max-w-64 space-y-2 border-none bg-transparent/50 pb-[10px] pl-[20px] pr-[12px] pt-[18px] text-white backdrop-blur-3xl"
                 >
-                  <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
+                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>
                       <UserRoundPen className="size-6" />
                     </button>
@@ -169,7 +172,7 @@ export default function Header({ categories }: HeaderProps) {
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
+                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>
                       <Package className="size-6" />
                     </button>
@@ -179,29 +182,27 @@ export default function Header({ categories }: HeaderProps) {
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
+                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>
                       <XCircle className="size-6" />
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
                       {t("common:my_cancellation")}
-                      
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
+                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>
                       <Star className="size-6" />
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
                       {t("common:my_reviews")}
-                      
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className="flex items-center gap-4 cursor-pointer">
+                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>
                       <LogOut className="size-6" />
                     </button>
@@ -212,7 +213,6 @@ export default function Header({ categories }: HeaderProps) {
                       onClick={logout}
                     >
                       {t("common:logout")}
-                      
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -233,7 +233,7 @@ export default function Header({ categories }: HeaderProps) {
 
       {/* Mobile Sidebar */}
       {isSidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden text-center">
+        <div className="fixed inset-0 z-50 text-center lg:hidden">
           <div
             className="absolute inset-0 bg-black/50"
             onClick={toggleSidebar}
@@ -293,10 +293,8 @@ export default function Header({ categories }: HeaderProps) {
                 {categories.map((link) => (
                   <Link
                     key={link.id}
-                    href={link.href}
-                    className={`text-sm font-normal underline-offset-4 hover:underline ${
-                      pathname === link.href && "underline underline-offset-4"
-                    }`}
+                    href="#"
+                    className={`text-sm font-normal underline-offset-4 hover:underline`}
                     onClick={toggleSidebar}
                   >
                     {link.name}

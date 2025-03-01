@@ -52,14 +52,24 @@ export default function ProductCard({
 
   // Check if the current variant is in the wishlist
   const wishlistItem = wishlistItems.find(
-    (item) => item.product_id === product.id && item.variant_id === selectedVariant.id
+    (item) =>
+      item.product_id === product.id && item.variant_id === selectedVariant.id
   );
   const isInWishlist = !!wishlistItem;
   const wishlistItemId = wishlistItem?.wishlist_item_id || null;
 
-  const addWishlistMutation = useAddWishlist(user?.uid || "", router.locale || "en");
-  const removeWishlistMutation = useRemoveWishlist(user?.uid || "", router.locale || "en");
-  const addToCartMutation = useAddToCart(user?.uid || "", router.locale || "en");
+  const addWishlistMutation = useAddWishlist(
+    user?.uid || "",
+    router.locale || "en"
+  );
+  const removeWishlistMutation = useRemoveWishlist(
+    user?.uid || "",
+    router.locale || "en"
+  );
+  const addToCartMutation = useAddToCart(
+    user?.uid || "",
+    router.locale || "en"
+  );
 
   const handleToggleWishlist = async () => {
     if (!user?.uid) {
@@ -85,7 +95,9 @@ export default function ProductCard({
     } catch (error: any) {
       console.error("Failed to toggle wishlist:", error);
       toast.error(
-        error.response?.status === 400 ? t("already_in_wishlist") : t("failed_to_toggle_wishlist")
+        error.response?.status === 400
+          ? t("already_in_wishlist")
+          : t("failed_to_toggle_wishlist")
       );
     }
   };
@@ -121,20 +133,22 @@ export default function ProductCard({
   const isGetDiscountedPrice = product.price - selectedVariant.price;
   const discountPercentage =
     isGetDiscountedPrice > 0
-      ? Math.round(((product.price - selectedVariant.price) / product.price) * 100)
+      ? Math.round(
+          ((product.price - selectedVariant.price) / product.price) * 100
+        )
       : 0;
 
   return (
-    <div className="group overflow-hidden rounded-lg bg-white w-full">
+    <div className="group w-full overflow-hidden rounded-lg bg-white">
       <div className="relative overflow-hidden">
         {/* Product Image */}
-        <div className="relative aspect-square flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-gray-100">
           <div className="relative size-[65%]">
             <Image
               src={selectedVariant.image.url || "/placeholder.svg"}
               alt={product.name}
               layout="fill"
-              className={`transition-transform duration-200 -translate-y-[10px] hover:drop-shadow-[0_0_20px_var(--color-button-1)]`}
+              className={`-translate-y-[10px] transition-transform duration-200 hover:drop-shadow-[0_0_20px_var(--color-button-1)]`}
             />
           </div>
         </div>
@@ -146,6 +160,7 @@ export default function ProductCard({
               NEW
             </div>
           )}
+
           {isGetDiscountedPrice > 0 && (
             <div className="rounded bg-red-500 px-3 py-1 text-12 font-normal text-white">
               -{discountPercentage}%
@@ -178,10 +193,16 @@ export default function ProductCard({
               <button
                 onClick={handleToggleWishlist}
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
-                disabled={addWishlistMutation.isPending || removeWishlistMutation.isPending}
+                disabled={
+                  addWishlistMutation.isPending ||
+                  removeWishlistMutation.isPending
+                }
               >
-                <Heart className={`size-5 ${isInWishlist ? "fill-red-500" : ""}`} />
+                <Heart
+                  className={`size-5 ${isInWishlist ? "fill-red-500" : ""}`}
+                />
               </button>
+
               <button
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
                 onClick={() => router.push(`/product/${product.id}`)}
@@ -196,11 +217,15 @@ export default function ProductCard({
         {!isInWishListPage ? (
           <div className="absolute inset-x-0 bottom-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <Button
-              disabled={selectedVariant.stock === 0 || addToCartMutation.isPending}
+              disabled={
+                selectedVariant.stock === 0 || addToCartMutation.isPending
+              }
               onClick={handleAddToCart}
               className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
             >
-              {selectedVariant.stock === 0 ? t("out_of_stock") : t("add-to-cart")}
+              {selectedVariant.stock === 0
+                ? t("out_of_stock")
+                : t("add-to-cart")}
             </Button>
           </div>
         ) : (
@@ -218,12 +243,17 @@ export default function ProductCard({
 
       {/* Product Info */}
       <div className="space-y-2 pt-4">
-        <Link href={`account/gaming/${product.id}`} className="text-16 font-medium">
+        <Link
+          href={`account/gaming/${product.id}`}
+          className="text-16 font-medium"
+        >
           {product.name}
         </Link>
 
         {/* Price & Discount Price */}
-        <div className={`flex ${isGetDiscountedPrice < 0 ? "flex-col" : ""} mt-2 gap-3`}>
+        <div
+          className={`flex ${isGetDiscountedPrice < 0 ? "flex-col" : ""} mt-2 gap-3`}
+        >
           <div className="flex gap-4">
             {isGetDiscountedPrice > 0 && (
               <span className="text-16 font-medium text-button-2">
@@ -235,6 +265,7 @@ export default function ProductCard({
                     })}
               </span>
             )}
+
             <span
               className={cn(
                 "text-16 font-medium text-black",
@@ -255,7 +286,10 @@ export default function ProductCard({
         {!isInWishListPage && (
           <div className="flex items-center gap-1">
             <div className="flex">{renderStars(product.ratings)}</div>
-            <span className="text-muted-foreground text-sm">({product.reviews})</span>
+
+            <span className="text-muted-foreground text-sm">
+              ({product.reviews})
+            </span>
           </div>
         )}
 

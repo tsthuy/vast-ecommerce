@@ -12,23 +12,24 @@ const cartItems: Array<{
 }> = [];
 
 export const setupCartsMock = (mock: MockAdapter) => {
-  
   mock.onPost("/api/cart/items").reply((config) => {
     const { user_id, product_id, variant_id, quantity } = JSON.parse(
       config.data
     );
     console.log("user_id", user_id);
     console.log("product_id", product_id);
-    
+
     const existingCartItem = cartItems.find(
       (item) =>
         item.user_id === user_id &&
         item.product_id === product_id &&
         item.variant_id === variant_id
     );
-    
+
     const product = new_products_schema.find((p) => p.id === product_id);
-    const variant = product?.variants.find((v) => v.id === variant_id);
+    const variant = product?.variants.find(
+      (v: ProductVariant) => v.id === variant_id
+    );
 
     if (!product || !variant) {
       return [404, { error: "Product or variant not found" }];
@@ -70,8 +71,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
         ];
       }
 
-       const cart_item_id = `cart_${Date.now()}`;
-       cartItems.push({
+      const cart_item_id = `cart_${Date.now()}`;
+      cartItems.push({
         cart_item_id,
         user_id,
         product_id,
@@ -85,26 +86,28 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
   mock.onGet("/api/cart/items").reply((config) => {
     const user_id = config.params?.user_id;
-    console.log("user_id", user_id);
-    console.log("cartItems", cartItems[0].user_id);
     const userCartItems = cartItems.filter((item) => item.user_id === user_id);
     const cartItemsWithDetails = userCartItems
       .map((item) => {
         const product = new_products_schema.find(
           (p) => p.id === item.product_id
         );
-        const variant = product?.variants.find((v) => v.id === item.variant_id);
+        const variant = product?.variants.find(
+          (v: ProductVariant) => v.id === item.variant_id
+        );
 
         if (!product || !variant) {
-          return null; 
+          return null;
         }
-        
+
         const variantAttributes = variant.attributes.reduce(
-          (acc, attr) => {
+          (acc: Record<string, string>, attr: VariantAttribute) => {
             const attribute = product.attributes.find(
-              (a) => a.id === attr.attributeId
+              (a: ProductAttribute) => a.id === attr.attributeId
             );
-            const value = attribute?.values.find((v) => v.id === attr.valueId);
+            const value = attribute?.values.find(
+              (v: AttributeValue) => v.id === attr.valueId
+            );
 
             if (attribute && value) {
               acc[attribute.name.toLowerCase()] = value.label;
@@ -129,7 +132,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
           variant: variantAttributes,
         };
       })
-      .filter(Boolean); 
+      .filter(Boolean);
 
     const total_items = userCartItems.reduce(
       (sum, item) => sum + item.quantity,
@@ -137,7 +140,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
     );
     const total_price = userCartItems.reduce((sum, item) => {
       const product = new_products_schema.find((p) => p.id === item.product_id);
-      const variant = product?.variants.find((v) => v.id === item.variant_id);
+      const variant = product?.variants.find(
+        (v: ProductVariant) => v.id === item.variant_id
+      );
       return sum + (variant?.price || 0) * item.quantity;
     }, 0);
 
@@ -164,16 +169,18 @@ export const setupCartsMock = (mock: MockAdapter) => {
     if (!cartItem) {
       return [404, { error: "Cart item not found" }];
     }
-    
+
     const product = new_products_schema.find(
       (p) => p.id === cartItem.product_id
     );
-    const variant = product?.variants.find((v) => v.id === cartItem.variant_id);
+    const variant = product?.variants.find(
+      (v: ProductVariant) => v.id === cartItem.variant_id
+    );
 
     if (!product || !variant) {
       return [404, { error: "Product or variant not found" }];
     }
-    
+
     if (quantity > variant.stock) {
       return [
         400,
@@ -190,8 +197,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
   mock.onDelete(/\/api\/cart\/[^/]+\/items\/[^/]+/).reply((config) => {
     const urlParts = config.url?.split("/");
-    const user_id = urlParts?.[3]; 
-    const cart_item_id = urlParts?.[5]; 
+    const user_id = urlParts?.[3];
+    const cart_item_id = urlParts?.[5];
     console.log(urlParts);
     console.log("user_id", user_id);
     console.log("cart_item_id", cart_item_id);
@@ -206,42 +213,62 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     cartItems.splice(cartItemIndex, 1);
     console.log(cartItems);
-    return [200, { success: true }]; 
-  });
-
-mock.onPost(/\/api\/cart\/[^/]+\/move-from-wishlist/).reply((config) => {
-    const urlParts = config.url?.split("/");
-    const user_id = urlParts?.[3];
-    const { items } = JSON.parse(config.data);
-    
-    if(!items || !user_id)  {
-      return [400, { error: "Invalid request" }];
-    }
-    
-    items.forEach(({ product_id, variant_id, quantity }: { product_id: number; variant_id: string; quantity: number }) => {
-      const existingCartItem = cartItems.find(
-        (item) => item.user_id === user_id && item.product_id === product_id && item.variant_id === variant_id
-      );
-      const product = new_products_schema.find((p) => p.id === product_id);
-      const variant = product?.variants.find((v) => v.id === variant_id);
-
-      if (!product || !variant) return;
-
-      if (existingCartItem) {
-        const newQuantity = existingCartItem.quantity + quantity;
-
-        if (newQuantity <= variant.stock) {
-          existingCartItem.quantity = newQuantity;
-        }
-      } else {
-        if (quantity <= variant.stock) {
-          const cart_item_id = `cart_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-          cartItems.push({ cart_item_id, user_id, product_id, variant_id, quantity });
-        }
-      }
-    });
-    wishlistItems.splice(0, wishlistItems.length);
     return [200, { success: true }];
   });
 
+  mock.onPost(/\/api\/cart\/[^/]+\/move-from-wishlist/).reply((config) => {
+    const urlParts = config.url?.split("/");
+    const user_id = urlParts?.[3];
+    const { items } = JSON.parse(config.data);
+
+    if (!items || !user_id) {
+      return [400, { error: "Invalid request" }];
+    }
+
+    items.forEach(
+      ({
+        product_id,
+        variant_id,
+        quantity,
+      }: {
+        product_id: number;
+        variant_id: string;
+        quantity: number;
+      }) => {
+        const existingCartItem = cartItems.find(
+          (item) =>
+            item.user_id === user_id &&
+            item.product_id === product_id &&
+            item.variant_id === variant_id
+        );
+        const product = new_products_schema.find((p) => p.id === product_id);
+        const variant = product?.variants.find(
+          (v: ProductVariant) => v.id === variant_id
+        );
+
+        if (!product || !variant) return;
+
+        if (existingCartItem) {
+          const newQuantity = existingCartItem.quantity + quantity;
+
+          if (newQuantity <= variant.stock) {
+            existingCartItem.quantity = newQuantity;
+          }
+        } else {
+          if (quantity <= variant.stock) {
+            const cart_item_id = `cart_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+            cartItems.push({
+              cart_item_id,
+              user_id,
+              product_id,
+              variant_id,
+              quantity,
+            });
+          }
+        }
+      }
+    );
+    wishlistItems.splice(0, wishlistItems.length);
+    return [200, { success: true }];
+  });
 };

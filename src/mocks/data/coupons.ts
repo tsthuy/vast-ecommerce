@@ -1,4 +1,5 @@
 const currentDate = new Date();
+
 const pastDate = new Date(currentDate);
 pastDate.setMonth(pastDate.getMonth() - 1);
 

@@ -1,14 +1,13 @@
 /* eslint-disable check-file/filename-naming-convention */
 
-import { NewProduct } from "~/types/product";
-
 export const new_products_schema: NewProduct[] = [
   {
     id: 1,
-    name: "Stylish T-Shirt ",
+    name: "Laptop ",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -97,10 +96,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 2,
-    name: "Stylish T-Shirt 2",
+    name: "Laptop 2",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -189,10 +189,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 3,
-    name: "Stylish T-Shirt 3",
+    name: "Laptop 3",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -281,10 +282,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 4,
-    name: "Stylish T-Shirt 4",
+    name: "Laptop 4",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -373,10 +375,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 5,
-    name: "Stylish T-Shirt 5",
+    name: "Laptop 5",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -465,10 +468,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 6,
-    name: "Stylish T-Shirt 6",
+    name: "Laptop 6",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -557,10 +561,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 7,
-    name: "Stylish T-Shirt 7",
+    name: "Laptop 7",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -649,10 +654,11 @@ export const new_products_schema: NewProduct[] = [
   },
   {
     id: 8,
-    name: "Stylish T-Shirt 8",
+    name: "Laptop 8",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -742,12 +748,13 @@ export const new_products_schema: NewProduct[] = [
 ];
 
 export const products_jus_for_u = [
-   {
+  {
     id: 5,
-    name: "Stylish T-Shirt 5",
+    name: "Laptop 5",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -836,10 +843,11 @@ export const products_jus_for_u = [
   },
   {
     id: 6,
-    name: "Stylish T-Shirt 6",
+    name: "Laptop 6",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -928,10 +936,11 @@ export const products_jus_for_u = [
   },
   {
     id: 7,
-    name: "Stylish T-Shirt 7",
+    name: "Laptop 7",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -1020,10 +1029,11 @@ export const products_jus_for_u = [
   },
   {
     id: 8,
-    name: "Stylish T-Shirt 8",
+    name: "Laptop 8",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
+    category: "6",
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -1110,4 +1120,4 @@ export const products_jus_for_u = [
       },
     ],
   },
-]
+];

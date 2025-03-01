@@ -1,13 +1,13 @@
-import { useTranslation } from "next-i18next"
+import { useTranslation } from "next-i18next";
 
-import resources from "~/types/resources"
+import resources from "~/utils/resources.util";
 
 interface SectionHeadingProps {
-  section_key: keyof typeof resources.section
+  section_key: keyof typeof resources.section;
 }
 
 export default function SectionHeading({ section_key }: SectionHeadingProps) {
-  const { t } = useTranslation("section")
+  const { t } = useTranslation("section");
   return (
     <section className="pb-5 pt-20">
       <div className="">
@@ -20,5 +20,5 @@ export default function SectionHeading({ section_key }: SectionHeadingProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -3,8 +3,6 @@ import * as React from "react";
 
 import { NewProduct } from "~/types/product";
 
-import Container from "../container";
-
 import ProductCard from "./product-card";
 
 interface ProductListProps {
@@ -32,16 +30,20 @@ export default function ProductList({
   };
 
   return (
-      <div className="relative">
-        <div
-          className={`flex flex-wrap justify-center sm:justify-start gap-[30px] pt-[60px] lg:justify-start ${className}`}
-        >
-          {getCurrentProducts()&& getCurrentProducts().map((product) => (
-            <div className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]">
-            <ProductCard key={product.id} product={product} />
+    <div className="relative">
+      <div
+        className={`flex flex-wrap justify-center gap-[30px] pt-[60px] sm:justify-start lg:justify-start ${className}`}
+      >
+        {getCurrentProducts() &&
+          getCurrentProducts().map((product) => (
+            <div
+              key={product.id}
+              className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]"
+            >
+              <ProductCard key={product.id} product={product} />
             </div>
           ))}
-        </div>
       </div>
+    </div>
   );
 }

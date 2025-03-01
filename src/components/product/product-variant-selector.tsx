@@ -115,11 +115,11 @@ export default function VariantSelector({
                   key={color.id}
                   onClick={() => handleColorChange(color)}
                   className={cn(
-                    "h-6 w-6 rounded-full border-2 transition-all hover:border-black relative",
+                    "relative h-6 w-6 rounded-full border-2 transition-all hover:border-black",
                     selectedColor.id === color.id
                       ? "border-black"
                       : "border-gray-200 hover:border-gray-300",
-                    stock === 0 && "opacity-50 cursor-not-allowed"
+                    stock === 0 && "cursor-not-allowed opacity-50"
                   )}
                   disabled={disabled || stock === 0}
                 >
@@ -169,9 +169,9 @@ export default function VariantSelector({
                   className={cn(
                     "flex h-10 min-w-[2rem] items-center justify-center rounded-md border-2 px-2 text-xs transition-all",
                     selectedSize.id === size.id
-                      ? "border-black bg-black group text-white"
-                      : "border-gray-200 hover:border-gray-300 text-12",
-                    stock === 0 && "opacity-50 cursor-not-allowed"
+                      ? "group border-black bg-black text-white"
+                      : "border-gray-200 text-12 hover:border-gray-300",
+                    stock === 0 && "cursor-not-allowed opacity-50"
                   )}
                   disabled={disabled || stock === 0}
                 >

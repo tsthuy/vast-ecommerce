@@ -1,19 +1,19 @@
-import { Smartphone } from "lucide-react"
-import type React from "react"
+import { Smartphone } from "lucide-react";
+import type React from "react";
 
-import { cn } from "~/libs/utils"
+import { cn } from "~/libs/utils";
 
-import { Card } from "../ui/card"
+import { Card } from "../ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../ui/carousel"
+} from "../ui/carousel";
 
 interface CategoryGridProps {
-  initialCategoriesGird: CategoryGridClient[]
+  initialCategoriesGird: CategoryGrid[];
 }
 
 export function CategoryGrid({ initialCategoriesGird }: CategoryGridProps) {
@@ -29,11 +29,11 @@ export function CategoryGrid({ initialCategoriesGird }: CategoryGridProps) {
           {initialCategoriesGird.map((category, index) => (
             <CarouselItem
               key={index}
-              className="xs:basis-[calc((100%-30px)/2)] md:basis-[calc((100%-60px)/3)] lg:basis-[calc((100%-90px)/4)] xl:basis-[calc((100%-150px)/6)] "
+              className="xs:basis-[calc((100%-30px)/2)] md:basis-[calc((100%-60px)/3)] lg:basis-[calc((100%-90px)/4)] xl:basis-[calc((100%-150px)/6)]"
             >
               <Card
                 className={cn(
-                  "flex cursor-pointer flex-col hover:text-white items-center justify-center rounded p-8 transition-colors hover:bg-button-2"
+                  "flex cursor-pointer flex-col items-center justify-center rounded p-8 transition-colors hover:bg-button-2 hover:text-white"
                 )}
               >
                 <Smartphone className="size-9" />
@@ -53,5 +53,5 @@ export function CategoryGrid({ initialCategoriesGird }: CategoryGridProps) {
         </div>
       </Carousel>
     </div>
-  )
+  );
 }

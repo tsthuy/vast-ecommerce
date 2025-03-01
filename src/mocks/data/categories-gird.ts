@@ -1,4 +1,4 @@
-export const categories_grid: CategoryGrid[] = [
+export const categories_grid: CategoryGridBackend[] = [
   {
     id: "1",
     name: { en: "Phones", vi: "Điện thoại" },
@@ -53,4 +53,4 @@ export const categories_grid: CategoryGrid[] = [
     id: "18",
     name: { en: "Projector", vi: "Máy chiếu" },
   },
-]
+];
