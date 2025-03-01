@@ -6,16 +6,13 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     let locale: string;
 
-    if (typeof window !== 'undefined') {
-      
-      locale = localStorage.getItem('locale') || 'en';
+    if (typeof window !== "undefined") {
+      locale = localStorage.getItem("locale") || "en";
     } else {
-      
-      locale = config.locale || 'en'; 
+      locale = config.locale || "en";
     }
 
-    console.log(config.locale, "locale o day ne");
-    config.headers['Accept-Language'] = locale;
+    config.headers["Accept-Language"] = locale;
 
     return config;
   },
@@ -45,10 +42,10 @@ export const setLocale = (locale: string) => {
 //   ) {
 //     this.instance = axios.create({
 //       baseURL,
-//       headers: new AxiosHeaders(headers), 
+//       headers: new AxiosHeaders(headers),
 //       timeout,
 //     });
-    
+
 //     this.instance.interceptors.request.use(
 //       (config: InternalAxiosRequestConfig) => {
 //         let locale: string;
@@ -56,19 +53,19 @@ export const setLocale = (locale: string) => {
 //         if (typeof window !== 'undefined') {
 //           locale = localStorage.getItem('locale') || 'en';
 //         } else {
-//           locale = config.locale || 'en'; 
+//           locale = config.locale || 'en';
 //         }
-        
+
 //         config.headers = new AxiosHeaders({
-//           ...config.headers.toJSON(), 
+//           ...config.headers.toJSON(),
 //           'Accept-Language': locale,
 //         });
-        
+
 //         return customInterceptors?.request ? customInterceptors.request(config) : config;
 //       },
 //       (error) => Promise.reject(error)
 //     );
-    
+
 //     this.instance.interceptors.response.use(
 //       (response) => {
 //         return customInterceptors?.response

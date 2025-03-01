@@ -51,7 +51,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       : `${poppins.variable} ${inter.variable}`;
 
   const Layout = Component.Layout ? Component.Layout : React.Fragment;
-  console.log("fontVariables", fontVariables);
   return (
     <>
       <style jsx global>{`
@@ -78,4 +77,4 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <Toaster position="top-center" />
     </>
   );
-};
+}
