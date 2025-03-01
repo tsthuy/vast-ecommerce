@@ -1,11 +1,11 @@
-import Image from "next/image"
-import Link from "next/link"
-import { useTranslation } from "next-i18next"
+import Image from "next/image";
+import Link from "next/link";
+import { useTranslation } from "next-i18next";
 
-import { Input } from "./ui/input"
+import { Input } from "./ui/input";
 
 export default function Footer() {
-  const { t } = useTranslation("footer")
+  const { t } = useTranslation("footer");
 
   return (
     <footer className="bg-black text-white">
@@ -47,9 +47,9 @@ export default function Footer() {
                     <path
                       d="M8.91199 9.99999H2.99999L1.02299 2.13499C1.01033 2.08928 1.00262 2.04234 0.999989 1.99499C0.977989 1.27399 1.77199 0.773987 2.45999 1.10399L21 9.99999L2.45999 18.896C1.77999 19.223 0.995989 18.737 0.999989 18.029C1.00201 17.9657 1.01313 17.9031 1.03299 17.843L2.49999 13"
                       stroke="white"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </button>
@@ -200,9 +200,9 @@ export default function Footer() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-facebook"
                 >
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -220,11 +220,10 @@ export default function Footer() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-twitter"
-                  text-secondary-2
                 >
                   <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
                 </svg>
@@ -241,9 +240,9 @@ export default function Footer() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-instagra"
                 >
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
@@ -265,9 +264,9 @@ export default function Footer() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-linkedin"
                 >
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -290,5 +289,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

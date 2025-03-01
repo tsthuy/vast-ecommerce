@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { appWithTranslation } from "next-i18next";
 import { Toaster } from "sonner";
 
+import EmptyLayout from "~/components/layout/empty-layout";
+
 import queryClient from "~/utils/query-client.util";
 
 import "../styles/globals.css";
@@ -50,31 +52,28 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       ? `${roboto.variable} ${quicksand.variable}`
       : `${poppins.variable} ${inter.variable}`;
 
-  const Layout = Component.Layout ? Component.Layout : React.Fragment;
+  const Layout = Component.Layout ? Component.Layout : EmptyLayout;
   return (
-    <>
+    <main className={`${fontVariables} overflow-hidden font-sans`}>
       <style jsx global>{`
         html {
           --font-poppins: ${poppins.style.fontFamily};
         }
 
         body {
-        font-family: var(--font-sans);
-        };
+          font-family: var(--font-sans);
         }
       `}</style>
 
-      <main className={`${fontVariables} overflow-hidden font-sans`}>
-        <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+      <QueryClientProvider client={queryClient}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
 
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </main>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
 
       <Toaster position="top-center" />
-    </>
+    </main>
   );
 }

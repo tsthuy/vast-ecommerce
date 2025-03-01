@@ -14,6 +14,8 @@ import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
 
+import ZoomAbleImage from "./zoomable-image-product";
+
 interface ProductDetailsProps {
   product: NewProduct;
   images: ProductImage[];
@@ -121,10 +123,14 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         const thumbnail = thumbnailRefs.current[imageIndex];
         if (thumbnail && thumbnailsContainerRef.current) {
           const containerHeight = thumbnailsContainerRef.current.clientHeight;
+          console.log("containerHeight", containerHeight);
           const thumbnailHeight = thumbnail.clientHeight;
+          console.log("thumbnailHeight", thumbnailHeight);
           const thumbnailTop = thumbnail.offsetTop;
+          console.log("thumbnailTop", thumbnailTop);
           const scrollPosition =
             thumbnailTop - containerHeight / 2 + thumbnailHeight / 2;
+          console.log("scrollPosition", scrollPosition);
           thumbnailsContainerRef.current.scrollTo({
             top: scrollPosition,
             behavior: "smooth",
@@ -173,15 +179,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
           </div>
 
           {/* Main Image */}
-          <div className="flex h-[600px] w-full items-center justify-center bg-secondary-2">
-            <Image
-              src={selectedImage.url}
-              alt={product.name}
-              width={400}
-              height={400}
-              className="w-[70%] object-contain"
-            />
-          </div>
+          <ZoomAbleImage alt={product.name} src={selectedImage.url} />
         </div>
       </div>
 
