@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import {
   useCarts,
+  useCreateCheckoutCart,
   useRemoveFromCart,
   useUpdateCartItemQuantity,
 } from "~/hooks/use-carts.hook";
@@ -15,8 +16,6 @@ import {
 import { cn } from "~/libs/utils";
 
 import { couponApi } from "~/services/coupons.service";
-
-import { Coupon } from "~/types/coupons";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -41,10 +40,13 @@ export const Cart = () => {
   const { user } = useAuthStore();
 
   const [couponCode, setCouponCode] = useState<string>("");
-  const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<Coupon>();
 
   const { data: cart } = useCarts(user?.uid || "", router.locale || "");
-  console.log(cart);
+  const createCheckoutCartMutation = useCreateCheckoutCart(
+    user?.uid || "",
+    router.locale || ""
+  );
   const updateCartMutation = useUpdateCartItemQuantity(
     user?.uid || "",
     router.locale || ""
@@ -93,6 +95,28 @@ export const Cart = () => {
     }
   };
 
+  const handleProceedToCheckout = async () => {
+    if (!user?.uid) {
+      toast.error(t("common:please_login"));
+      return;
+    }
+
+    if (!cart || cart.cart_items.length === 0) {
+      toast.error(t("cart:no_item"));
+      return;
+    }
+
+    try {
+      const { temp_cart_id } = await createCheckoutCartMutation.mutateAsync({
+        cartItems: cart.cart_items,
+        appliedCoupon: appliedCoupon,
+      });
+      router.push(`/checkout/${temp_cart_id}`);
+    } catch (error) {
+      toast.error("Failed to proceed to checkout.");
+    }
+  };
+
   const calculateTotalPrice = () => {
     if (!cart) return 0;
 
@@ -130,17 +154,19 @@ export const Cart = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[300px] text-center">
-                    Product
-                  </TableHead>
-
-                  <TableHead className="w-[300px] text-center">Price</TableHead>
-
-                  <TableHead className="w-[300px] text-center">
-                    Quantity
+                    {t("cart:product")}
                   </TableHead>
 
                   <TableHead className="w-[300px] text-center">
-                    Subtotal
+                    {t("cart:price")}
+                  </TableHead>
+
+                  <TableHead className="w-[300px] text-center">
+                    {t("cart:quantity")}
+                  </TableHead>
+
+                  <TableHead className="w-[300px] text-center">
+                    {t("cart:subtotal")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -313,9 +339,9 @@ export const Cart = () => {
                     <span>${calculateTotalPrice()}</span>
                   </div>
                   <div className="flex justify-center">
-                    <Link href={"/checkout"}>
-                      <MyButton>{t("cart:proceed_to_checkout")}</MyButton>
-                    </Link>
+                    <MyButton onClick={handleProceedToCheckout}>
+                      {t("cart:proceed_to_checkout")}
+                    </MyButton>
                   </div>
                 </div>
               </div>

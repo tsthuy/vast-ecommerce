@@ -86,4 +86,33 @@ export const cartApi = {
     const response = await axiosInstance.get(`/api/cart/temp/${tempCartId}`);
     return response.data;
   },
+
+  // Áp dụng coupon trong checkout
+  applyCouponInCheckout: async (
+    tempCartId: string,
+    couponCode: string,
+    totalPrice: number
+  ): Promise<Coupon> => {
+    const response = await axiosInstance.post(
+      `/api/cart/apply-coupon/temp/${tempCartId}`,
+      {
+        coupon_code: couponCode,
+        total_price: totalPrice,
+      }
+    );
+    return response.data;
+  },
+
+  completeCheckout: async (
+    tempCartId: string,
+    success: boolean
+  ): Promise<{ message: string; order_id?: string }> => {
+    const response = await axiosInstance.post(
+      `/api/cart/complete-checkout/${tempCartId}`,
+      {
+        success,
+      }
+    );
+    return response.data;
+  },
 };

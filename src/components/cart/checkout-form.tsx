@@ -19,6 +19,7 @@ import {
 import { Input } from "../ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "next-i18next";
 
 const formSchema = z.object({
   first_name: z.string().min(1),
@@ -37,6 +38,8 @@ export type CheckOutFormHandle = {
 };
 
 const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
+  const { t } = useTranslation("form");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
@@ -72,7 +75,8 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                First Name<span className="text-red-600">*</span>
+                {t("first_name")}
+                <span className="text-red-600">*</span>
               </FormLabel>
 
               <FormControl>
@@ -94,7 +98,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="company"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company Name</FormLabel>
+              <FormLabel>{t("company_name")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -134,7 +138,8 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Street Address<span className="text-red-600">*</span>
+                {t("street_address")}
+                <span className="text-red-600">*</span>
               </FormLabel>
 
               <FormControl>
@@ -156,7 +161,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="apartment"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Apartment, floor, etc. (optional)</FormLabel>
+              <FormLabel>{t("apartment")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -178,7 +183,8 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Town/City<span className="text-red-600">*</span>
+                {t("city")}
+                <span className="text-red-600">*</span>
               </FormLabel>
 
               <FormControl>
@@ -202,7 +208,8 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Phone Number<span className="text-red-600">*</span>
+                {t("phone_number")}
+                <span className="text-red-600">*</span>
               </FormLabel>
 
               <FormControl>
@@ -232,7 +239,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>{t("email_address")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -263,7 +270,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <div className="space-y-1 leading-none">
                 <FormDescription className="text-16 font-normal">
-                  Save this information for faster check-out next time
+                  {t("save_this_information_for_next_time")}
                 </FormDescription>
 
                 <FormMessage />

@@ -128,3 +128,52 @@ export function useCreateCheckoutCart(userId: string, locale: string) {
     },
   });
 }
+
+// Hook để lấy dữ liệu giỏ hàng tạm thời (dành cho checkout)
+export function useCheckoutCart(tempCartId: string) {
+  return useQuery({
+    ...QUERY_KEYS.carts.checkout(tempCartId),
+    queryFn: () => cartApi.getCheckoutCart(tempCartId),
+    enabled: !!tempCartId,
+  });
+}
+
+export function useApplyCouponInCheckout(tempCartId: string) {
+  return useMutation({
+    mutationFn: (data: { couponCode: string; totalPrice: number }) =>
+      cartApi.applyCouponInCheckout(
+        tempCartId,
+        data.couponCode,
+        data.totalPrice
+      ),
+    onSuccess: () => {
+      console.log("Coupon applied successfully!123");
+      console.log("queryClient", queryClient);
+      console.log("QUERY_KEYS", tempCartId);
+      console.log("QUERY_KEYS", QUERY_KEYS.carts.checkout(tempCartId));
+      queryClient.invalidateQueries(QUERY_KEYS.carts.checkout(tempCartId));
+    },
+    onError: (error) => {
+      console.error("Error applying coupon in checkout:", error);
+      toast.error("Failed to apply coupon.");
+    },
+  });
+}
+
+// Hook để hoàn tất checkout
+export function useCompleteCheckout(userId: string, tempCartId: string) {
+  return useMutation({
+    mutationFn: (success: boolean) =>
+      cartApi.completeCheckout(tempCartId, success),
+    onSuccess: (data, success) => {
+      if (success) {
+        queryClient.invalidateQueries({
+          queryKey: QUERY_KEYS.carts.all(userId, "en"),
+        });
+        toast.success("Checkout completed successfully!");
+      } else {
+        toast.error("Checkout failed or canceled.");
+      }
+    },
+  });
+}

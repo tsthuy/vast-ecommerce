@@ -17,11 +17,38 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
 import { PaymentForm } from "./payment-form";
-import {  StripeProvider } from "./stripe-provider";
+import { StripeProvider } from "./stripe-provider";
+import { useParams } from "next/navigation";
+import {
+  useApplyCouponInCheckout,
+  useCheckoutCart,
+  useCompleteCheckout,
+} from "~/hooks/use-carts.hook";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 export const CheckOut = () => {
-  const {user} = useAuthStore();
+  const { t } = useTranslation("cart");
+  const { user } = useAuthStore();
+  const router = useRouter();
+  const params = useParams();
+  const tempCartId = params.tempCartId as string;
+
   const checkoutFormRef = useRef<CheckOutFormHandle>(null);
+
+  const {
+    data: cart,
+    error: cartError,
+    isLoading: cartLoading,
+  } = useCheckoutCart(tempCartId);
+  console.log(cart);
+  const applyCouponMutation = useApplyCouponInCheckout(tempCartId);
+  const completeCheckoutMutation = useCompleteCheckout(
+    user?.uid || "",
+    tempCartId
+  );
+
+  const [couponCode, setCouponCode] = useState<string>("");
 
   const handleExternalValidation = async () => {
     if (checkoutFormRef.current) {
@@ -30,40 +57,92 @@ export const CheckOut = () => {
     }
   };
 
-  const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">("cash")
-  const [clientSecret, setClientSecret] = useState<string>()
-  const totalAmount = 9000
+  const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">("cash");
+  const [clientSecret, setClientSecret] = useState<string>();
 
   const handlePaymentMethodChange = async (value: string) => {
-
+    const totalAmount = parseFloat(calculateTotalPrice());
     if (value === "bank") {
       try {
         const response = await axios.post("/api/create-payment-intent", {
-          amount : totalAmount ,
+          amount: totalAmount,
           productId: "1234",
-          userId: user?.uid
-        })
+          userId: user?.uid,
+        });
 
-        setClientSecret(response.data.clientSecret)
+        setClientSecret(response.data.clientSecret);
       } catch (error) {
-        toast.error("Failed to initialize payment")
+        toast.error("Failed to initialize payment");
       }
     }
     setPaymentMethod(value as "bank" | "cash");
-  }
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = cart?.meta?.total_price || 0;
+    if (cart?.applied_coupon) {
+      if (cart.applied_coupon.type === "fixed") {
+        totalPrice -= cart.applied_coupon.value;
+      } else {
+        totalPrice -= (totalPrice * cart.applied_coupon.value) / 100;
+      }
+    }
+    totalPrice += 10; // Shipping fee
+    return totalPrice.toFixed(2);
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode) {
+      toast("Please enter a coupon code.");
+      return;
+    }
+
+    try {
+      applyCouponMutation.mutate({
+        couponCode,
+        totalPrice: cart?.meta?.total_price || 0,
+      });
+      toast.success("Coupon applied successfully.");
+      setCouponCode("");
+      console.log("Coupon applied successfully.", cart);
+    } catch (error: any) {
+      toast(
+        `Failed to apply coupon: ${error.response?.data?.error || "Unknown error"}`
+      );
+    }
+  };
 
   const handlePayNow = async () => {
-  const isValid = await handleExternalValidation();
+    const isValid = await handleExternalValidation();
+    if (!isValid) {
+      toast.error("Form validation failed. Please check the fields.");
+      return false;
+    }
 
-  if (!isValid) {
-    toast.error("Form validation failed. Please check the fields.");
-    return false;
-  }
-  return true;
-};
+    return true;
+  };
+
+  const handlePayOnDelivery = async () => {
+    const isValid = await handleExternalValidation();
+    if (!isValid) {
+      toast.error("Form validation failed. Please check the fields.");
+      return;
+    }
+    router.push(`/payment/success?tempCartId=${tempCartId}`);
+  };
+
+  const handleCancelCheckout = async () => {
+    try {
+      await completeCheckoutMutation.mutateAsync(false);
+      router.push("/cart");
+    } catch (error) {
+      toast.error("Failed to cancel checkout.");
+    }
+  };
+
   return (
     <Container>
-      <nav className="flex items-start justify-start py-[80px]" >
+      <nav className="flex items-start justify-start py-[80px]">
         <ol className="text-muted-foreground flex items-center gap-2 text-sm">
           <li>
             <Link
@@ -121,89 +200,115 @@ export const CheckOut = () => {
         </ol>
       </nav>
 
-      <h3 className="font-inter text-36 font-medium">Billing Details</h3>
+      <h3 className="font-inter text-36 font-medium">
+        {t("billings_details")}
+      </h3>
 
-        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center lg:items-start">
+      <div className="flex flex-col items-center justify-center md:flex-row md:justify-between lg:items-start">
         <CheckOutForm ref={checkoutFormRef} />
 
-        <div className="lg:pl-8 py-10 text-16 font-normal w-full md:w-[50%]">
-          <div className="bg-muted p-6 rounded-lg">
+        <div className="w-full py-10 text-16 font-normal md:w-[50%] lg:pl-8">
+          <div className="bg-muted rounded-lg p-6">
             <div className="space-y-4">
               {/* Order Items */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Image
-                      src="/images/car.png"
-                      alt="LCD Monitor"
-                      width={50}
-                      height={50}
-                      className="rounded-md"
-                    />
-
-                    <span>LCD Monitor</span>
-                  </div>
-
-                  <span className="font-medium">${"650"}</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Image
-                      src="/images/car.png"
-                      alt="LCD Monitor"
-                      width={50}
-                      height={50}
-                      className="rounded-md"
-                    />
-
-                    <span>H1 Gamepad</span>
-                  </div>
-
-                  <span className="font-medium">${"1100"}</span>
-                </div>
+                {cart &&
+                  cart.cart_items.map((item) => (
+                    <div
+                      key={item.cart_item_id}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Image
+                          src={item.product.images[0] || "/placeholder.svg"}
+                          alt={item.product.name}
+                          width={50}
+                          height={50}
+                          className="rounded-md"
+                        />
+                        <div className="flex flex-col">
+                          <span>
+                            {item.product.name} (x{item.quantity})
+                          </span>
+                          {Object.entries(item.variant).map(([key, value]) => (
+                            <span
+                              key={key}
+                              className="text-muted-foreground text-sm"
+                            >
+                              {key}: {value}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <span className="font-medium">
+                        ${(item.product.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
               </div>
 
               {/* Order Summary */}
               <div className="space-y-2 pt-4">
                 <div className="flex justify-between border-b border-black pb-[16px]">
-                  <span className="">Subtotal:</span>
+                  <span className="">{t("subtotal")}:</span>
 
-                  <span className="font-medium">${"1750"}</span>
+                  <span>${cart && cart.meta.total_price.toFixed(2)}</span>
                 </div>
 
-                <div className="flex justify-between py-[16px] border-b border-black">
-                  <span>Shipping:</span>
+                <div className="flex justify-between border-b border-black py-[16px]">
+                  <span>{t("shipping")}:</span>
 
-                  <span className="text-green-600">Free</span>
+                  <span className="">$10</span>
                 </div>
+                {cart && cart.applied_coupon && (
+                  <div className="flex justify-between">
+                    <span>
+                      {cart.applied_coupon.type === "fixed"
+                        ? "Discount:"
+                        : `Discount (${cart.applied_coupon.value}%):`}
+                    </span>
+                    <span>
+                      -$
+                      {cart.applied_coupon.type === "fixed"
+                        ? cart.applied_coupon.value
+                        : (
+                            (cart.meta.total_price *
+                              cart.applied_coupon.value) /
+                            100
+                          ).toFixed(2)}
+                    </span>
+                  </div>
+                )}
 
                 <div className="flex justify-between pt-2">
-                  <span>Total:</span>
+                  <span>{t("total")}:</span>
 
-                  <span>${"1750"}</span>
+                  <span className="font-inter font-bold">
+                    ${calculateTotalPrice()}
+                  </span>
                 </div>
               </div>
 
               {/* Payment Method */}
               <div className="pt-6">
                 <RadioGroup
-                value={paymentMethod}
-                onValueChange={handlePaymentMethodChange}
-                className="space-y-3">
-                  <div className="flex justify-between items-center space-x-2">
+                  value={paymentMethod}
+                  onValueChange={handlePaymentMethodChange}
+                  className="space-y-3"
+                >
+                  <div className="flex items-center justify-between space-x-2">
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="bank" id="bank" />
 
-                      <Label htmlFor="bank">Bank</Label>
+                      <Label htmlFor="bank">{t("bank")}</Label>
                     </div>
 
-                    <div className="flex items-center space-x-2 ml-auto">
+                    <div className="ml-auto flex items-center space-x-2">
                       {["bkash", "visa", "mastercard", "discover"].map(
                         (card) => (
                           <div
                             key={card}
-                            className="w-8 h-5 bg-gray-200 rounded"
+                            className="h-5 w-8 rounded bg-gray-200"
                           />
                         )
                       )}
@@ -213,30 +318,51 @@ export const CheckOut = () => {
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem className="" value="cash" id="cash" />
 
-                    <Label htmlFor="cash">Cash on delivery</Label>
+                    <Label htmlFor="cash">{t("cash_on_delivery")}</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               {/* Coupon Code */}
-              <div className="flex flex-col lg:flex-row  pt-4 gap-2">
-                <Input className="py-6" placeholder="Coupon Code " />
+              <div className="flex flex-col gap-2 pt-4 lg:flex-row">
+                <Input
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  className="py-6"
+                  placeholder={t("coupon_code")}
+                />
 
-                <MyButton className="max-w-fit pt-2">Apply Coupon</MyButton>
+                <MyButton
+                  onClick={handleApplyCoupon}
+                  className="max-w-fit pt-2"
+                >
+                  {t("apply_coupon")}
+                </MyButton>
               </div>
 
-               {/* Stripe Payment Element */}
+              {/* Stripe Payment Element */}
               {paymentMethod === "bank" && clientSecret && (
                 <div className="pt-4">
                   <StripeProvider clientSecret={clientSecret}>
-                    <PaymentForm onPayNow={handlePayNow} />
+                    <PaymentForm
+                      tempCartId={tempCartId}
+                      onPayNow={handlePayNow}
+                    />
                   </StripeProvider>
                 </div>
               )}
 
               {/* Place Order Button */}
               <div className="pt-2">
-                <MyButton onClick={handleExternalValidation} className={cn(paymentMethod === "bank" && "hidden" ,"w-full xl:w-fit")}>Place Order</MyButton>
+                <MyButton
+                  onClick={handlePayOnDelivery}
+                  className={cn(
+                    paymentMethod === "bank" && "hidden",
+                    "w-full xl:w-fit"
+                  )}
+                >
+                  {t("place_order")}
+                </MyButton>
               </div>
             </div>
           </div>

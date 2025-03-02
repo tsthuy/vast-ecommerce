@@ -2,6 +2,36 @@ import MockAdapter from "axios-mock-adapter";
 
 import { new_products_schema } from "./data/new_product_schema";
 import { wishlistItems } from "./wishlists.mock";
+import { coupons } from "./data/coupons";
+
+// Mảng toàn cục cho cart tạm thời (dành cho checkout)
+const tempCarts: Array<{
+  temp_cart_id: string;
+  user_id: string;
+  cart_items: Array<{
+    cart_item_id: string;
+    product_id: number;
+    variant_id: string;
+    quantity: number;
+  }>;
+  applied_coupon?: { code: string; type: string; value: number };
+  created_at: number;
+}> = [];
+
+// Mảng toàn cục cho đơn hàng (orders)
+const orders: Array<{
+  order_id: string;
+  user_id: string;
+  cart_items: Array<{
+    cart_item_id: string;
+    product_id: number;
+    variant_id: string;
+    quantity: number;
+  }>;
+  applied_coupon?: { code: string; type: string; value: number };
+  total_price: number;
+  created_at: number;
+}> = [];
 
 const cartItems: Array<{
   cart_item_id: string;
@@ -268,5 +298,255 @@ export const setupCartsMock = (mock: MockAdapter) => {
     );
 
     return [200, { success: true }];
+  });
+
+  mock.onPost("/api/cart/create-checkout").reply((config) => {
+    const { user_id, cart_items, applied_coupon } = JSON.parse(config.data);
+
+    if (!user_id || !cart_items) {
+      return [400, { error: "User ID or cart items are missing" }];
+    }
+
+    const tempCartId = `temp_cart_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+    const tempCart = {
+      temp_cart_id: tempCartId,
+      user_id,
+      cart_items,
+      applied_coupon,
+      created_at: Date.now(),
+    };
+
+    // Xóa temp cart cũ nếu đã tồn tại
+    const existingTempCartIndex = tempCarts.findIndex(
+      (c) => c.user_id === user_id
+    );
+    if (existingTempCartIndex !== -1) {
+      tempCarts.splice(existingTempCartIndex, 1);
+    }
+
+    tempCarts.push(tempCart);
+    console.log("tempCarts", tempCarts);
+
+    return [
+      200,
+      {
+        temp_cart_id: tempCartId,
+        user_id,
+      },
+    ];
+  });
+
+  // Mock cho GET /api/cart/temp/[tempCartId] (lấy cart tạm thời cho checkout)
+  mock.onGet(/\/api\/cart\/temp\/\w+/).reply((config) => {
+    const tempCartId = config.url?.match(/\/api\/cart\/temp\/(\w+)/)?.[1];
+    if (!tempCartId) {
+      return [400, { error: "Temp cart ID is missing" }];
+    }
+
+    const tempCart = tempCarts.find((c) => c.temp_cart_id === tempCartId);
+    if (!tempCart) {
+      return [404, { error: "Temporary cart not found" }];
+    }
+
+    const cartItemsWithDetails = tempCart.cart_items
+      .map((item) => {
+        const product = new_products_schema.find(
+          (p) => p.id === item.product_id
+        );
+        const variant = product?.variants.find(
+          (v: ProductVariant) => v.id === item.variant_id
+        );
+
+        if (!product || !variant) {
+          return null;
+        }
+
+        const variantAttributes = variant.attributes.reduce(
+          (acc: Record<string, string>, attr: VariantAttribute) => {
+            const attribute = product.attributes.find(
+              (a: ProductAttribute) => a.id === attr.attributeId
+            );
+            const value = attribute?.values.find(
+              (v: AttributeValue) => v.id === attr.valueId
+            );
+
+            if (attribute && value) {
+              acc[attribute.name.toLowerCase()] = value.label;
+            }
+            return acc;
+          },
+          {} as Record<string, string>
+        );
+
+        return {
+          cart_item_id: item.cart_item_id,
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          quantity: item.quantity,
+          product: {
+            name: product.name,
+            description: product.description,
+            price: variant.price,
+            images: [variant.image.url],
+            stock: variant.stock,
+          },
+          variant: variantAttributes,
+        };
+      })
+      .filter(Boolean);
+
+    const total_items = tempCart.cart_items.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+    let total_price = tempCart.cart_items.reduce((sum, item) => {
+      const product = new_products_schema.find((p) => p.id === item.product_id);
+      const variant = product?.variants.find(
+        (v: ProductVariant) => v.id === item.variant_id
+      );
+      return sum + (variant?.price || 0) * item.quantity;
+    }, 0);
+
+    if (tempCart.applied_coupon) {
+      if (tempCart.applied_coupon.type === "fixed") {
+        total_price -= tempCart.applied_coupon.value;
+      } else if (tempCart.applied_coupon.type === "percentage") {
+        total_price -= (total_price * tempCart.applied_coupon.value) / 100;
+      }
+    }
+
+    return [
+      200,
+      {
+        cart_items: cartItemsWithDetails,
+        applied_coupon: tempCart.applied_coupon,
+        meta: {
+          total_items,
+          total_price,
+        },
+      },
+    ];
+  });
+
+  // Mock cho POST /api/cart/apply-coupon/temp/[tempCartId] (áp dụng coupon trong checkout)
+  mock.onPost(/\/api\/cart\/apply-coupon\/temp\/\w+/).reply((config) => {
+    const tempCartId = config.url?.match(
+      /\/api\/cart\/apply-coupon\/temp\/(\w+)/
+    )?.[1];
+    const { coupon_code, total_price } = JSON.parse(config.data);
+
+    if (!tempCartId || !coupon_code || total_price === undefined) {
+      return [
+        400,
+        { error: "Missing temp_cart_id, coupon_code, or total_price" },
+      ];
+    }
+
+    const tempCart = tempCarts.find((c) => c.temp_cart_id === tempCartId);
+    if (!tempCart) {
+      return [404, { error: "Temporary cart not found" }];
+    }
+
+    const coupon = coupons.find((c) => c.code === coupon_code);
+    if (!coupon) {
+      return [400, { error: "Invalid coupon code" }];
+    }
+
+    if (total_price < coupon.minPurchaseAmount) {
+      return [
+        400,
+        {
+          error: `Minimum order value for this coupon is $${coupon.minPurchaseAmount}`,
+        },
+      ];
+    }
+
+    tempCart.applied_coupon = {
+      code: coupon.code,
+      type: coupon.type,
+      value: coupon.value,
+    };
+
+    return [
+      200,
+      {
+        code: coupon.code,
+        type: coupon.type,
+        value: coupon.value,
+      },
+    ];
+  });
+
+  // Mock cho POST /api/cart/complete-checkout/[tempCartId] (hoàn tất checkout)
+  mock.onPost(/\/api\/cart\/complete-checkout\/\w+/).reply((config) => {
+    const tempCartId = config.url?.match(
+      /\/api\/cart\/complete-checkout\/(\w+)/
+    )?.[1];
+    const { success } = JSON.parse(config.data);
+
+    if (!tempCartId) {
+      return [400, { error: "Temp cart ID is missing" }];
+    }
+
+    const tempCartIndex = tempCarts.findIndex(
+      (c) => c.temp_cart_id === tempCartId
+    );
+    if (tempCartIndex === -1) {
+      return [404, { error: "Temporary cart not found" }];
+    }
+
+    const tempCart = tempCarts[tempCartIndex];
+    const userId = tempCart.user_id;
+
+    if (success) {
+      // Thanh toán thành công: Xóa cart chính và lưu vào orders
+      const order = {
+        order_id: `order_${Date.now()}`,
+        user_id: userId,
+        cart_items: tempCart.cart_items,
+        applied_coupon: tempCart.applied_coupon,
+        total_price: tempCart.cart_items.reduce((sum, item) => {
+          const product = new_products_schema.find(
+            (p) => p.id === item.product_id
+          );
+          const variant = product?.variants.find(
+            (v: ProductVariant) => v.id === item.variant_id
+          );
+          return sum + (variant?.price || 0) * item.quantity;
+        }, 0),
+        created_at: Date.now(),
+      };
+
+      if (order.applied_coupon) {
+        if (order.applied_coupon.type === "fixed") {
+          order.total_price -= order.applied_coupon.value;
+        } else if (order.applied_coupon.type === "percentage") {
+          order.total_price -=
+            (order.total_price * order.applied_coupon.value) / 100;
+        }
+      }
+
+      orders.push(order);
+
+      // Xóa cart chính
+      for (let i = cartItems.length - 1; i >= 0; i--) {
+        if (cartItems[i].user_id === userId) {
+          cartItems.splice(i, 1);
+        }
+      }
+    }
+
+    // Xóa temp cart (dù thành công hay thất bại)
+    tempCarts.splice(tempCartIndex, 1);
+
+    return [
+      success ? 200 : 400,
+      {
+        message: success
+          ? "Checkout completed successfully"
+          : "Checkout failed or canceled",
+        order_id: success ? orders[orders.length - 1].order_id : undefined,
+      },
+    ];
   });
 };

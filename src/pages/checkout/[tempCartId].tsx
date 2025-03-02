@@ -41,8 +41,8 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
         "collection",
         "section",
         "heading",
-        "cart",
         "form",
+        "cart",
       ])),
 
       initialCategories,

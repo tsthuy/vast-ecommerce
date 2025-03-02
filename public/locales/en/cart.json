@@ -10,5 +10,14 @@
   "no_item": "No items in your cart",
   "product": "Product",
   "price": "Price",
-  "quantity": "Quantity"
+  "quantity": "Quantity",
+  "billings_details": "Billing Details",
+  "bank": "Bank",
+  "cash_on_delivery": "Cash on Delivery",
+  "place_order": "Place Order",
+  "complete_payment": "Complete Payment",
+  "choose_ur_preferred_payment": "Choose your preferred payment method",
+  "pay_now": "Pay Now",
+  "standard_checkout": "Standard Checkout",
+  "express_checkout": "Express Checkout"
 }

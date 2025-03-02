@@ -10,5 +10,14 @@
   "no_item": "Không có sản phẩm nào trong giỏ hàng của bạn",
   "product": "Sản phẩm",
   "price": "Giá",
-  "quantity": "Số lượng"
+  "quantity": "Số lượng",
+  "billings_details": "Thông tin thanh toán",
+  "bank": "Ngân hàng",
+  "cash_on_delivery": "Thanh toán khi nhận hàng",
+  "place_order": "Đặt hàng",
+  "complete_payment": "Hoàn tất thanh toán",
+  "choose_ur_preferred_payment": "Chọn phương thức thanh toán ưa thích của bạn",
+  "pay_now": "Thanh toán ngay",
+  "standard_checkout": "Thanh toán tiêu chuẩn",
+  "express_checkout": "Thanh toán nhanh"
 }
