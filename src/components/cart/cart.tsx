@@ -6,7 +6,11 @@ import { useTranslation } from "next-i18next";
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { useCarts, useRemoveFromCart, useUpdateCartItemQuantity } from "~/hooks/use-carts.hook";
+import {
+  useCarts,
+  useRemoveFromCart,
+  useUpdateCartItemQuantity,
+} from "~/hooks/use-carts.hook";
 
 import { cn } from "~/libs/utils";
 
@@ -39,10 +43,16 @@ export const Cart = () => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
 
-  const {data: cart, } = useCarts(user?.uid || "", router.locale || "");
-  const  updateCartMutation = useUpdateCartItemQuantity(user?.uid || "", router.locale || "");
+  const { data: cart } = useCarts(user?.uid || "", router.locale || "");
+  const updateCartMutation = useUpdateCartItemQuantity(
+    user?.uid || "",
+    router.locale || ""
+  );
 
-  const removeFromCartMutation = useRemoveFromCart(user?.uid || "", router.locale || "");
+  const removeFromCartMutation = useRemoveFromCart(
+    user?.uid || "",
+    router.locale || ""
+  );
 
   const handleCartUpdate = (cartItemId: string, quantity: number) => {
     updateCartMutation.mutate({ cartItemId, quantity });
@@ -102,8 +112,8 @@ export const Cart = () => {
   return (
     <Container>
       <div className="pb-[40px]">
-     <Breadcrumbs/>
-     </div>
+        <Breadcrumbs />
+      </div>
 
       {!cart || cart.cart_items.length === 0 ? (
         <div className="py-12 text-center">
@@ -139,37 +149,48 @@ export const Cart = () => {
                 {cart.cart_items.map((item) => (
                   <TableRow key={item.cart_item_id}>
                     <TableCell className="text-center">
-                      <div className="flex items-center gap-4 relative">
+                      <div className="relative flex items-center gap-4">
                         <div className="relative">
-                        <Image
-                          src={item.product.images[0] || "/placeholder.svg"}
-                          alt={item.product.name || "Product image"}
-                          width={80}
-                          height={80}
-                          className="rounded-lg object-cover"
-                        />
+                          <Image
+                            src={item.product.images[0] || "/placeholder.svg"}
+                            alt={item.product.name || "Product image"}
+                            width={80}
+                            height={80}
+                            className="min-h-[40px] min-w-[40px] rounded-lg object-cover"
+                          />
 
-                        <button
-                            className={cn( item.quantity!==1  && "hidden","absolute top-2 left-0 bg-button-2 rounded-full")}
-                            onClick={() => removeFromCartMutation.mutate(item.cart_item_id)}
+                          <button
+                            className={cn(
+                              item.quantity !== 1 && "hidden",
+
+                              "absolute -top-0 left-0 rounded-full bg-button-2"
+                            )}
+                            onClick={() =>
+                              removeFromCartMutation.mutate(item.cart_item_id)
+                            }
                             disabled={removeFromCartMutation.isPending}
                           >
-                            <X className="size-5 text-white" />
+                            <X className="size-4 text-white sm:size-5" />
                           </button>
                         </div>
 
-                       <div className="flex flex-col text-left">
-                          <span className="font-bold pb-2 font-inter">
+                        <div className="flex flex-col text-left">
+                          <span className="pb-2 font-inter font-bold">
                             {item.product.name}
                           </span>
 
                           {Object.entries(item.variant).map(([key, value]) => (
                             <div
                               key={key}
-                              className="text-sm text-muted-foreground flex gap-2"
+                              className="text-muted-foreground flex gap-1 text-sm"
                             >
-                              <span className="capitalize font-medium min-w-[50px] block"> {key}</span> : 
-                              <span className="capitalize pl-1"> { value}</span>
+                              <span className="block font-medium capitalize sm:min-w-[50px]">
+                                {key}
+                              </span>
+
+                              <span>:</span>
+
+                              <span className="pl-1 capitalize"> {value}</span>
                             </div>
                           ))}
                         </div>
@@ -178,11 +199,11 @@ export const Cart = () => {
 
                     <TableCell className="text-center">
                       {item.product.price.toFixed(2)}
-                    </TableCell> 
+                    </TableCell>
 
                     <TableCell className="flex justify-center">
-                      <div className="mt-6 flex  flex-row items-center justify-center gap-2 rounded border px-2">
-                        <div className="flex items-center justify-center min-w-[20px]">
+                      <div className="mt-6 flex flex-row items-center justify-center gap-2 rounded border px-2">
+                        <div className="flex min-w-[20px] items-center justify-center">
                           <span className="text-center">{item.quantity}</span>
                         </div>
 
@@ -230,11 +251,11 @@ export const Cart = () => {
 
           <div className="mt-8 flex flex-col flex-wrap gap-4">
             <MyButton className="max-w-fit border border-black bg-transparent text-black">
-              <Link href="/">Return to Shop</Link>
+              <Link href="/">{t("return_to_shop")}</Link>
             </MyButton>
           </div>
 
-          <div className="flex justify-between gap-[173px] pt-[80px]">
+          <div className="flex flex-col justify-center pt-[80px] lg:justify-between xl:flex-row xl:gap-[173px]">
             <div className="flex gap-4">
               <Input
                 placeholder="Coupon code"
@@ -246,7 +267,7 @@ export const Cart = () => {
               <MyButton onClick={handleApplyCoupon}>Apply Coupon</MyButton>
             </div>
 
-            <div className="min-w-[470px] pb-[140px]">
+            <div className="flex min-w-[470px] flex-col pb-20 pt-20 xl:pb-[140px] xl:pt-0">
               <div className="rounded-lg border p-6">
                 <h2 className="mb-4 text-xl font-semibold">Cart Total</h2>
 
@@ -272,7 +293,6 @@ export const Cart = () => {
                       </span>
 
                       <span>
-                        {" "}
                         -$
                         {appliedCoupon.type === "fixed"
                           ? `${appliedCoupon.value}`

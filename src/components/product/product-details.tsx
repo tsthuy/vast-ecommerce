@@ -22,7 +22,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ product, images }: ProductDetailsProps) => {
-  const { t } = useTranslation(["header", "common"]);
+  const { t } = useTranslation(["header", "common", "details"]);
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -86,18 +86,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
       const variant = product.variants.find((v) => v.id === image.variantId);
       if (variant) setSelectedVariant(variant);
     }
-    const thumbnail = thumbnailRefs.current[index];
-    if (thumbnail && thumbnailsContainerRef.current) {
-      const containerHeight = thumbnailsContainerRef.current.clientHeight;
-      const thumbnailHeight = thumbnail.clientHeight;
-      const thumbnailTop = thumbnail.offsetTop;
-      const scrollPosition =
-        thumbnailTop - containerHeight / 2 + thumbnailHeight / 2;
-      thumbnailsContainerRef.current.scrollTo({
-        top: scrollPosition,
-        behavior: "smooth",
-      });
-    }
+    scrollToThumbnail(index);
   };
 
   const handleVariantChange = (color: string, size: string) => {
@@ -120,23 +109,41 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         const imageIndex = images.findIndex(
           (img) => img.url === variantImage.url
         );
-        const thumbnail = thumbnailRefs.current[imageIndex];
-        if (thumbnail && thumbnailsContainerRef.current) {
-          const containerHeight = thumbnailsContainerRef.current.clientHeight;
-          console.log("containerHeight", containerHeight);
-          const thumbnailHeight = thumbnail.clientHeight;
-          console.log("thumbnailHeight", thumbnailHeight);
-          const thumbnailTop = thumbnail.offsetTop;
-          console.log("thumbnailTop", thumbnailTop);
-          const scrollPosition =
-            thumbnailTop - containerHeight / 2 + thumbnailHeight / 2;
-          console.log("scrollPosition", scrollPosition);
-          thumbnailsContainerRef.current.scrollTo({
-            top: scrollPosition,
-            behavior: "smooth",
-          });
-        }
+        scrollToThumbnail(imageIndex);
       }
+    }
+  };
+
+  const scrollToThumbnail = (index: number) => {
+    const thumbnail = thumbnailRefs.current[index];
+    if (thumbnail && thumbnailsContainerRef.current) {
+      const containerHeight = thumbnailsContainerRef.current.clientHeight;
+      const thumbnailHeight = thumbnail.clientHeight;
+      const thumbnailTop = thumbnail.offsetTop;
+
+      const thumbnailCenter = thumbnailTop + thumbnailHeight / 2;
+      const containerCenter = containerHeight / 2;
+      const scrollPosition = thumbnailCenter - containerCenter;
+
+      const maxScroll =
+        thumbnailsContainerRef.current.scrollHeight - containerHeight;
+      const finalScrollPosition = Math.max(
+        0,
+        Math.min(scrollPosition, maxScroll)
+      );
+
+      console.log("containerHeight", containerHeight);
+      console.log("thumbnailHeight", thumbnailHeight);
+      console.log("thumbnailTop", thumbnailTop);
+      console.log("thumbnailCenter", thumbnailCenter);
+      console.log("containerCenter", containerCenter);
+      console.log("scrollPosition", scrollPosition);
+      console.log("finalScrollPosition", finalScrollPosition);
+
+      thumbnailsContainerRef.current.scrollTo({
+        top: finalScrollPosition,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -326,10 +333,12 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
             </button>
 
             <div className="">
-              <p className="text-16 font-medium">Free Delivery</p>
+              <p className="text-16 font-medium">
+                {t("details:free_delivery")}
+              </p>
 
-              <span className="text-12 font-medium underline">
-                Enter your postal code for Delivery Availability
+              <span className="cursor-pointer text-12 font-medium underline hover:text-button-2">
+                {t("details:enter_postcode")}
               </span>
             </div>
           </div>
@@ -340,10 +349,16 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
             </button>
 
             <div className="">
-              <p className="text-16 font-medium">Free Delivery</p>
+              <p className="text-16 font-medium">
+                {t("details:return_delivery")}
+              </p>
 
-              <span className="text-12 font-medium underline">
-                Enter your postal code for Delivery Availability
+              <span className="text-12 font-medium">
+                {t("details:free_30_days_return")}
+              </span>
+
+              <span className="cursor-pointer text-12 font-medium underline hover:text-button-2">
+                {t("details:details")}
               </span>
             </div>
           </div>

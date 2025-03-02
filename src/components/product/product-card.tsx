@@ -16,8 +16,6 @@ import { useAddWishlist, useRemoveWishlist } from "~/hooks/use-wishlists.hook";
 
 import { cn } from "~/libs/utils";
 
-import type { NewProduct, ProductVariant } from "~/types/product";
-
 import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
@@ -45,8 +43,10 @@ export default function ProductCard({
 
   // Select initial variant
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
-    product.variants.find((variant) => variant.id === variantId) ||
-      product.variants.find((variant) => variant.stock > 0) ||
+    product.variants.find(
+      (variant: ProductVariant) => variant.id === variantId
+    ) ||
+      product.variants.find((variant: ProductVariant) => variant.stock > 0) ||
       product.variants[0]
   );
 
@@ -137,6 +137,8 @@ export default function ProductCard({
           ((product.price - selectedVariant.price) / product.price) * 100
         )
       : 0;
+
+  const productSlug = `${product.name.toLowerCase().replace(/\s+/g, "-")}-${product.id}`;
 
   return (
     <div className="group w-full overflow-hidden rounded-lg bg-white">
@@ -244,7 +246,13 @@ export default function ProductCard({
       {/* Product Info */}
       <div className="space-y-2 pt-4">
         <Link
-          href={`account/gaming/${product.id}`}
+          href={{
+            pathname: "/account/[categoryName]/[productSlug]",
+            query: {
+              categoryName: product.category?.name.toLowerCase(),
+              productSlug,
+            },
+          }}
           className="text-16 font-medium"
         >
           {product.name}

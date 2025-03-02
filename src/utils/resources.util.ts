@@ -6,6 +6,7 @@ import collection from '../../public/locales/en/collection.json';
 import common from '../../public/locales/en/common.json';
 import contact from '../../public/locales/en/contact.json';
 import dashboard from '../../public/locales/en/dashboard.json';
+import details from '../../public/locales/en/details.json';
 import footer from '../../public/locales/en/footer.json';
 import header from '../../public/locales/en/header.json';
 import heading from '../../public/locales/en/heading.json';
@@ -24,6 +25,7 @@ const resources = {
   common,
   contact,
   dashboard,
+  details,
   footer,
   header,
   heading,

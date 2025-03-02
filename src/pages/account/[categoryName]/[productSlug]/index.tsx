@@ -5,6 +5,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Container } from "~/components";
 import Breadcrumbs from "~/components/breadcrumbs";
 import ProductDetails from "~/components/product/product-details";
+import { RelatedProduct } from "~/components/product/related-product";
 
 import { categoryApi, productApi } from "~/services";
 
@@ -40,6 +41,11 @@ export default function ProductDetailsPage({
 
       <Container>
         <ProductDetails product={initialProduct} images={initialImages} />
+
+        <RelatedProduct
+          productId={initialProduct.id}
+          categoryId={initialProduct.category.id}
+        />
       </Container>
 
       <DynamicFooter />
@@ -54,9 +60,19 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     };
   }
 
-  const { productId } = params;
+  const { productSlug } = params;
 
-  const productData = await productApi.getProductById(productId as string);
+  const productSlugString = productSlug as string;
+  const productIdMatch = productSlugString?.match(/-(\d+)$/);
+
+  if (!productIdMatch) {
+    return {
+      notFound: true,
+    };
+  }
+  const productId = productIdMatch[1];
+
+  const productData = await productApi.getProductById(productId);
 
   if (!productData || !productData.product) {
     return {
@@ -75,6 +91,8 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
         "footer",
         "service",
         "common",
+        "details",
+        "section",
       ])),
       initialCategories,
       initialProduct,
@@ -89,10 +107,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const allProducts = await Promise.all(
     categories.map(async (category) => {
       const products = await productApi.getProductsByCategory(category.id);
-      if (category.id === "6") {
-      }
+
       return products.map((product) => ({
-        category: category.name,
+        category: category.name.toLowerCase().replace(/ /g, "-"),
+        productSlug: `${product.name.toLowerCase().trim().replace(/\s+/g, "-")}-${product.id}`,
         productId: product.id.toString(),
       }));
     })
@@ -100,8 +118,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const productPaths = allProducts.flat();
 
-  const paths = productPaths.map(({ category, productId }) => ({
-    params: { category, productId },
+  const paths = productPaths.map(({ category, productSlug }) => ({
+    params: { category, productSlug },
     locale: "en",
   }));
 

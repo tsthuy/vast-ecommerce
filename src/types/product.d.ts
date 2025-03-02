@@ -33,7 +33,7 @@ interface NewProduct {
   id: number;
   name: string;
   description: string;
-  category?: string;
+  category?: CategoryGrid;
   isNew?: boolean;
   price: number;
   ratings: number;

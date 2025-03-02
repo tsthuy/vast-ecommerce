@@ -3,11 +3,11 @@
 export const new_products_schema: NewProduct[] = [
   {
     id: 1,
-    name: "Laptop ",
+    name: "Laptop",
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gaming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -100,7 +100,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -193,7 +193,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -286,7 +286,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -379,7 +379,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -472,7 +472,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -565,7 +565,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -658,7 +658,7 @@ export const new_products_schema: NewProduct[] = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -754,7 +754,7 @@ export const products_jus_for_u = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -847,7 +847,7 @@ export const products_jus_for_u = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -940,7 +940,7 @@ export const products_jus_for_u = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,
@@ -1033,7 +1033,7 @@ export const products_jus_for_u = [
     description:
       "A comfortable and stylish t-shirt made from high-quality cotton.",
     price: 29.99,
-    category: "6",
+    category: { id: "6", name: "Gamming" },
     isNew: true,
     ratings: 4.5,
     reviews: 12,

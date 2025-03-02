@@ -48,4 +48,15 @@ export const productApi = {
     );
     return response.data;
   },
+
+  getRelatedProducts: async (
+    categoryId: string,
+    productId: number
+  ): Promise<NewProduct[]> => {
+    console.log("am here 1234");
+    const response = await axiosInstance.get<NewProduct[]>(
+      `/api/related/${categoryId}/${productId}`
+    );
+    return response.data;
+  },
 };
