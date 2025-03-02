@@ -29,12 +29,14 @@ export default function ContactPage({
       <DynamicTopHeader />
 
       <DynamicHeader categories={initialCategories} />
+
        <Container> 
         
       <Breadcrumbs/>
         
       <Contact />
       </Container>
+
       <DynamicFooter />
     </>
   )

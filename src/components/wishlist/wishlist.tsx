@@ -54,8 +54,8 @@ export const WishList = () => {
     moveWishlistToCartMutation.mutate(itemsToMove);
   };
   return (
-    <Container className="pb-[140px] pt-[80px]">
-      <div className="flex items-center justify-between pb-[60px]">
+    <Container className="pb-20 pt-10 lg:pb-[140px] lg:pt-[80px]">
+      <div className="flex items-center justify-between gap-3 pb-[60px]">
         <h3>
           {t("wishlist")}({wishlist?.wishlist_items.length || 0})
         </h3>
@@ -92,12 +92,13 @@ export const WishList = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between pb-[60px] pt-[80px]">
+      <div className="flex items-center justify-between pb-[40px]">
         <SectionHeading section_key="just_for_you" />
-
-        <MyButton className="bg-transparent text-black">
-          {t("see_all")}
-        </MyButton>
+        <div className="pb-5 pt-20">
+          <MyButton className="bg-transparent text-black">
+            {t("see_all")}
+          </MyButton>
+        </div>
       </div>
 
       <ProductList products={products_for_u || []} limit={4} />

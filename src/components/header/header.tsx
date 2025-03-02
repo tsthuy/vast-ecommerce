@@ -34,6 +34,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
+import { cn } from "~/libs/utils";
 
 interface HeaderProps {
   categories: Category[];
@@ -42,6 +43,8 @@ interface HeaderProps {
 export default function Header({ categories }: HeaderProps) {
   const { user } = useAuthStore();
   const router = useRouter();
+  console.log(router.pathname);
+  const isInAccountPage = router.pathname === "/account";
 
   const { t } = useTranslation(["header", "common"]);
 
@@ -50,26 +53,11 @@ export default function Header({ categories }: HeaderProps) {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // const { cartItems, setCartItems } = useCartStore();
-  // const { wishlistItems, setWishlistItems } = useWishlistStore();
-
   const { data: cartData } = useCarts(user?.uid || "", router.locale || "en");
   const { data: wishlistData } = useWishlists(
     user?.uid || "",
     router.locale || "en"
   );
-
-  // useEffect(() => {
-  //   if (cartData?.cart_items) {
-  //     setCartItems(cartData.cart_items);
-  //   }
-  // }, [cartData, setCartItems]);
-
-  // useEffect(() => {
-  //   if (wishlistData?.wishlist_items) {
-  //     setWishlistItems(wishlistData.wishlist_items);
-  //   }
-  // }, [wishlistData, setWishlistItems]);
 
   const navLinks = [
     { href: "/", label: t("home") },
@@ -151,7 +139,12 @@ export default function Header({ categories }: HeaderProps) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="flex hover:bg-gray-200 [&_svg]:size-6"
+                    className={cn(
+                      isInAccountPage &&
+                        "rounded-full bg-button-2 text-white hover:border-2 hover:border-black hover:bg-button-2",
+                      "flex items-center justify-center [&_svg]:size-6",
+                      !isInAccountPage && "text-black hover:bg-gray-200"
+                    )}
                   >
                     <UserRoundPen className="size-8" />
                   </Button>

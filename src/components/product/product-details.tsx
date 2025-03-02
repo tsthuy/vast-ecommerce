@@ -8,7 +8,11 @@ import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 
 import { useAddToCart } from "~/hooks/use-carts.hook";
-import { useAddWishlist, useWishlists } from "~/hooks/use-wishlists.hook";
+import {
+  useAddWishlist,
+  useRemoveWishlist,
+  useWishlists,
+} from "~/hooks/use-wishlists.hook";
 
 import { renderStars } from "~/utils/render-stars";
 
@@ -22,6 +26,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ product, images }: ProductDetailsProps) => {
+  console.log("images", images);
   const { t } = useTranslation(["header", "common", "details"]);
   const { user } = useAuthStore();
   const router = useRouter();
@@ -47,12 +52,25 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
     router.locale || "en"
   );
 
+  const removeWishlistMutation = useRemoveWishlist(
+    user?.uid || "",
+    router.locale || "en"
+  );
+
   const thumbnailsContainerRef = useRef<HTMLDivElement>(null);
   const thumbnailRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const wishlistItem = wishlist?.wishlist_items.find(
+    (item) =>
+      item.product_id === product.id && item.variant_id === selectedVariant.id
+  );
+
+  const isInWishlist = !!wishlistItem;
 
   const handleAddToCart = () => {
     if (!user?.uid) {
       toast.error(t("common:please_login"));
+      router.push("/login");
       return;
     }
     if (!selectedVariant || selectedVariant.stock <= 0) {
@@ -67,17 +85,24 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
     });
   };
 
-  const handleAddToWishlist = () => {
+  const handleToggleWishlist = () => {
     if (!user?.uid) {
       toast.error(t("common:please_login"));
       return;
     }
     if (!selectedVariant) return;
 
+    if (isInWishlist) {
+      removeWishlistMutation.mutateAsync(wishlistItem.wishlist_item_id);
+      toast.success(t("common:removed_from_wishlist"));
+      return;
+    }
+
     addWishlistMutation.mutate({
       productId: product.id,
       variantId: selectedVariant.id,
     });
+    toast.success(t("common:added_to_wishlist"));
   };
 
   const handleImageSelect = (image: ProductImage, index: number) => {
@@ -139,19 +164,14 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
     }
   };
 
-  const isInWishlist = wishlist?.wishlist_items.some(
-    (item) =>
-      item.product_id === product.id && item.variant_id === selectedVariant.id
-  );
-
   return (
     <div className="flex flex-col gap-[70px] pb-[140px] lg:flex-row">
       <div className="flex w-full flex-col gap-4 lg:w-2/3">
-        <div className="flex flex-col gap-10 sm:flex-row">
+        <div className="flex flex-col gap-10 md:flex-row">
           {/* Thumbnails */}
           <div
             ref={thumbnailsContainerRef}
-            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex h-[600px] min-w-[170px] flex-col gap-[16px] overflow-y-auto"
+            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex min-w-[170px] flex-row gap-[16px] overflow-x-auto overflow-y-auto md:h-[600px] md:flex-col"
           >
             {images.map((image, index) => (
               <div
@@ -159,7 +179,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
                 ref={(el) => {
                   thumbnailRefs.current[index] = el;
                 }}
-                className={`flex cursor-pointer items-center justify-center rounded-lg border bg-secondary-2 p-3 ${
+                className={`flex min-w-[18%] cursor-pointer items-center justify-center rounded-lg border bg-secondary-2 p-3 ${
                   selectedImage.url === image.url
                     ? "border-black"
                     : "border-gray-300"
@@ -178,7 +198,9 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
           </div>
 
           {/* Main Image */}
-          <ZoomAbleImage alt={product.name} src={selectedImage.url} />
+          <div className="mx-auto flex w-[70%] items-center justify-center md:w-full">
+            <ZoomAbleImage alt={product.name} src={selectedImage.url} />
+          </div>
         </div>
       </div>
 
@@ -308,7 +330,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
           <button
             className="rounded-md border hover:bg-button-2 hover:text-white"
-            onClick={handleAddToWishlist}
+            onClick={handleToggleWishlist}
             disabled={addWishlistMutation.isPending}
           >
             <Heart
@@ -318,7 +340,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         </div>
 
         {/* Additional Info */}
-        <div className="mt-8 rounded-md border border-black">
+        <div className="mt-8 max-w-[400px] rounded-md border border-black">
           <div className="flex items-center gap-4 p-3">
             <button>
               <Truck className="size-8" />

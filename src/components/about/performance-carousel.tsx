@@ -49,7 +49,9 @@ function StatCard({ stat }: StatCardProps) {
       className={`rounded flex flex-col items-center justify-center lg:w-[calc((100%-90px)/4)]  w-[80%] sm:w-[calc((100%-30px)/2)] py-[30px] text-black hover:bg-button-2  [&>div]:hover:border-[#e67c7c] hover:text-white [&>div]:hover:bg-white [&>div>svg]:hover:text-black`}
     >
       <div className={`bg-black p-4 border-[12px]  border-gray-300 rounded-full mb-4`}>{stat.icon}</div>
+
       <h2 className={`text-32 font-inter font-bold mb-2`}>{stat.value}</h2>
+
       <p className={`text-center text-16 font-normal`}>{stat.label}</p>
     </Card>
   )

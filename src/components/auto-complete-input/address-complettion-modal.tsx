@@ -45,10 +45,12 @@ export function AddressCompletionModal({
         <DialogHeader>
           <DialogTitle>Complete Address Information</DialogTitle>
         </DialogHeader>
+
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           {missingComponents.includes("city") && (
             <div className="space-y-2">
               <Label htmlFor="city">City</Label>
+
               <Input
                 id="city"
                 value={components.city || ""}
@@ -59,9 +61,11 @@ export function AddressCompletionModal({
               />
             </div>
           )}
+
           {missingComponents.includes("state") && (
             <div className="space-y-2">
               <Label htmlFor="state">State/Province/Region</Label>
+
               <Input
                 id="state"
                 value={components.state || ""}
@@ -72,9 +76,11 @@ export function AddressCompletionModal({
               />
             </div>
           )}
+
           {missingComponents.includes("postalCode") && (
             <div className="space-y-2">
               <Label htmlFor="postalCode">Postal Code</Label>
+
               <Input
                 id="postalCode"
                 value={components.postalCode || ""}
@@ -85,9 +91,11 @@ export function AddressCompletionModal({
               />
             </div>
           )}
+
           {missingComponents.includes("country") && (
             <div className="space-y-2">
               <Label htmlFor="country">Country</Label>
+
               <Input
                 id="country"
                 value={components.country || ""}
@@ -98,6 +106,7 @@ export function AddressCompletionModal({
               />
             </div>
           )}
+
           <Button type="submit" className="w-full">
             Complete Address
           </Button>

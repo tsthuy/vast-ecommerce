@@ -82,14 +82,18 @@ export function PaymentForm({ onPayNow }: PaymentFormProps) {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Complete Payment</CardTitle>
+
         <CardDescription>Choose your preferred payment method</CardDescription>
       </CardHeader>
+
       <CardContent>
         <Tabs defaultValue="standard" className="w-full pb-4">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="standard">Standard Checkout</TabsTrigger>
+
             <TabsTrigger value="express">Express Checkout</TabsTrigger>
           </TabsList>
+
           <TabsContent value="standard">
             
               <PaymentElement
@@ -99,6 +103,7 @@ export function PaymentForm({ onPayNow }: PaymentFormProps) {
                 }}
               />
           </TabsContent>
+
           <TabsContent value="express">
             <div className="space-y-4">
               <ExpressCheckoutElement
@@ -107,6 +112,7 @@ export function PaymentForm({ onPayNow }: PaymentFormProps) {
             </div>
           </TabsContent>
         </Tabs>
+
           <MyButton type="submit" className="w-full" disabled={isLoading || !stripe || !elements}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Pay Now

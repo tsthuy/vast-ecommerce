@@ -117,6 +117,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
         return {
           cart_item_id: item.cart_item_id,
+          user_id: item.user_id,
           product_id: item.product_id,
           variant_id: item.variant_id,
           quantity: item.quantity,

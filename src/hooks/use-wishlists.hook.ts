@@ -14,8 +14,6 @@ export function useWishlists(userId: string, locale: string) {
 }
 
 export function useAddWishlist(userId: string, locale: string) {
-  // const { addWishlistItem } = useWishlistStore();
-
   return useMutation({
     mutationFn: ({
       productId,
@@ -30,7 +28,6 @@ export function useAddWishlist(userId: string, locale: string) {
         variant_id: variantId,
       }),
     onSuccess: (data) => {
-      // addWishlistItem(data);
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {
@@ -40,13 +37,10 @@ export function useAddWishlist(userId: string, locale: string) {
 }
 
 export function useRemoveWishlist(userId: string, locale: string) {
-  // const { removeWishlistItem } = useWishlistStore();
-
   return useMutation({
     mutationFn: (wishlistItemId: string) =>
       wishlistApi.removeFromWishlist(userId, wishlistItemId),
     onSuccess: (data) => {
-      // removeWishlistItem(data.wishlist_item_id);
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {

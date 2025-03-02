@@ -87,13 +87,13 @@ export default function AccountContent() {
   }, [user, form]);
 
   return (
-    <div className="w-3/4 flex-1 px-2 py-10 lg:shadow">
+    <div className="px-2 sm:w-3/4 sm:flex-1 lg:py-10 lg:shadow">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mx-auto max-w-2xl space-y-4"
         >
-          <h2 className="text-20 font-medium text-button-2">
+          <h2 className="text-center text-20 font-medium text-button-2">
             {t("edit_ur_profile")}
           </h2>
 

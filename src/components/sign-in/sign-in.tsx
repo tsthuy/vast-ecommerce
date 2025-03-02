@@ -7,10 +7,11 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import type React from "react";
 
-import { loginWithEmail, loginWithGoogle } from "~/libs/auth.lib";
+import { loginWithEmail } from "~/libs/auth.lib";
 
 import Container from "../container";
 import MyButton from "../custom/button";
+import Spinner from "../ui/spinner";
 
 export const SignIn = () => {
   const { t } = useTranslation("auth");
@@ -18,38 +19,34 @@ export const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       await loginWithEmail(email, password);
+      setLoading(false);
       router.push("/");
     } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await loginWithGoogle();
-      router.push("/");
-    } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
 
   return (
     <>
-      <div className="xl:bg-[url('/images/banner.png')] bg-no-repeat justify-end bg-left mt-[60px] mb-[140px]">
-        <Container className="flex xl:justify-end justify-center">
-          <div className="flex flex-col justify-end  py-[125px] ">
+      {loading && <Spinner />}
+      <div className="mb-[140px] mt-[60px] justify-end bg-left bg-no-repeat xl:bg-[url('/images/banner.png')]">
+        <Container className="flex justify-center xl:justify-end">
+          <div className="flex flex-col justify-end py-[125px]">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <h1 className="text-36 font-medium font-inter tracking-[0.04em]">
+              <h1 className="font-inter text-36 font-medium tracking-[0.04em]">
                 {t("login_in_to_exclusive")}
               </h1>
 
-              <p className="pt-[24px] pb-[48px]">
+              <p className="pb-[48px] pt-[24px]">
                 {t("enter_ur_details_below")}
               </p>
 
@@ -61,7 +58,7 @@ export const SignIn = () => {
                     placeholder={t("email_or_phone_number")}
                     required
                     onChange={(e) => setEmail(e.target.value)}
-                    className="text-16 font-normal block w-full rounded-md border-0 py-2 pl-0 focus:outline-none focus:border-none"
+                    className="block w-full rounded-md border-0 py-2 pl-0 text-16 font-normal focus:border-none focus:outline-none"
                   />
                 </div>
 
@@ -72,11 +69,11 @@ export const SignIn = () => {
                     placeholder={t("password")}
                     required
                     onChange={(e) => setPassword(e.target.value)}
-                    className="text-16 font-normal block w-full rounded-md border-0 py-2 pl-0 focus:outline-none focus:border-none"
+                    className="block w-full rounded-md border-0 py-2 pl-0 text-16 font-normal focus:border-none focus:outline-none"
                   />
                 </div>
 
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div>
                     <MyButton className="">{t("login")}</MyButton>
                   </div>
@@ -89,22 +86,6 @@ export const SignIn = () => {
                       {t("forget_password")}
                     </Link>
                   </div>
-                </div>
-
-                <div>
-                  <MyButton
-                    onClick={handleGoogleSignIn}
-                    className="w-full bg-transparent text-black border border-black hover:bg-button-1"
-                  >
-                    <Image
-                      src={"/images/google.png"}
-                      alt="Google logo"
-                      width={20}
-                      height={20}
-                    />
-
-                    {t("sign_in_with_google")}
-                  </MyButton>
                 </div>
               </form>
             </div>

@@ -13,7 +13,7 @@ export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet("/api/products/best-sales").reply(200, new_products_schema);
   mock.onGet("/api/products/flash-sales").reply(200, new_products_schema);
 
-  mock.onGet(/\/api\/products\/[^/]+/).reply((config) => {
+  mock.onGet(/\/api\/products-details\/[^/]+/).reply((config) => {
     const urlParts = config.url?.split("/");
     const productId = urlParts?.[3];
     const product = new_products_schema.find(
@@ -26,7 +26,7 @@ export const setupProductsMock = (mock: MockAdapter) => {
     const images = [
       ...product.images.map((img) => ({
         url: img.url,
-        isDefault: true,
+        isDefault: img.isDefault,
       })),
 
       ...product.variants.map((variant) => ({
@@ -34,7 +34,7 @@ export const setupProductsMock = (mock: MockAdapter) => {
         variantId: variant.id,
       })),
     ];
-
+    console.log(images);
     return [
       200,
       {

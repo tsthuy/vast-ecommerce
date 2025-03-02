@@ -11,6 +11,7 @@ interface CartProduct {
 
 interface CartItemResponse {
   cart_item_id: string;
+  user_id: string;
   product_id: number;
   variant_id: string;
   quantity: number;
@@ -20,6 +21,7 @@ interface CartItemResponse {
 
 interface CartResponse {
   cart_items: CartItemResponse[];
+  applied_coupon?: Coupon;
   meta: {
     total_items: number;
     total_price: number;

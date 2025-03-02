@@ -44,6 +44,7 @@ export const Cart = () => {
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
 
   const { data: cart } = useCarts(user?.uid || "", router.locale || "");
+  console.log(cart);
   const updateCartMutation = useUpdateCartItemQuantity(
     user?.uid || "",
     router.locale || ""
@@ -254,31 +255,35 @@ export const Cart = () => {
             </MyButton>
           </div>
 
-          <div className="flex flex-col justify-center pt-[80px] lg:justify-between xl:flex-row xl:gap-[173px]">
-            <div className="flex gap-4">
+          <div className="flex flex-col justify-center pt-10 lg:justify-between lg:pt-[80px] xl:flex-row xl:gap-[173px]">
+            <div className="flex flex-col gap-4 xss:flex-row">
               <Input
-                placeholder="Coupon code"
+                placeholder={t("cart:coupon_code")}
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
-                className="max-w-[300px] px-[48px] py-[25px]"
+                className="xss:max-w-[300px] xs:py-6 sm:px-[48px] sm:py-[25px]"
               />
 
-              <MyButton onClick={handleApplyCoupon}>Apply Coupon</MyButton>
+              <MyButton onClick={handleApplyCoupon}>
+                {t("cart:apply_coupon")}
+              </MyButton>
             </div>
 
-            <div className="flex min-w-[470px] flex-col pb-20 pt-20 xl:pb-[140px] xl:pt-0">
+            <div className="flex min-w-[470px] flex-col pb-20 pt-10 lg:pt-20 xl:pb-[140px] xl:pt-0">
               <div className="rounded-lg border p-6">
-                <h2 className="mb-4 text-xl font-semibold">Cart Total</h2>
+                <h2 className="mb-4 text-xl font-semibold">
+                  {t("cart:cart_total")}
+                </h2>
 
                 <div className="space-y-4">
                   <div className="flex justify-between">
-                    <span>Subtotal:</span>
+                    <span>{t("cart:subtotal")}:</span>
 
                     <span>${cart.meta.total_price.toFixed(2)}</span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span>Shipping:</span>
+                    <span>{t("cart:shipping")}:</span>
 
                     <span>$10.00</span>
                   </div>
@@ -303,13 +308,14 @@ export const Cart = () => {
                   <Separator />
 
                   <div className="flex justify-between text-lg font-semibold">
-                    <span>Total:</span>
+                    <span>{t("cart:total")}:</span>
 
                     <span>${calculateTotalPrice()}</span>
                   </div>
-
                   <div className="flex justify-center">
-                    <MyButton>Proceed to Checkout</MyButton>
+                    <Link href={"/checkout"}>
+                      <MyButton>{t("cart:proceed_to_checkout")}</MyButton>
+                    </Link>
                   </div>
                 </div>
               </div>

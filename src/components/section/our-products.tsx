@@ -2,12 +2,13 @@
 import { useState } from "react"
 import { useTranslation } from "next-i18next"
 
+import { NewProduct } from "~/types/product"
+
 import MyButton from "../custom/button"
 import Paginator from "../paginator"
 import ProductList from "../product/product-list"
 import SectionHeading from "../section-heading"
 import TitleHeading from "../title-heading"
-import { NewProduct } from "~/types/product"
 
 interface OurProductsProps {
   initialProductsExplore: NewProduct[]

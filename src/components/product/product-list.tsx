@@ -1,8 +1,6 @@
 // product-list.tsx
 import * as React from "react";
 
-import { NewProduct } from "~/types/product";
-
 import ProductCard from "./product-card";
 
 interface ProductListProps {
@@ -32,7 +30,7 @@ export default function ProductList({
   return (
     <div className="relative">
       <div
-        className={`flex flex-wrap justify-center gap-[30px] pt-[60px] sm:justify-start lg:justify-start ${className}`}
+        className={`flex flex-wrap justify-center gap-[30px] pt-8 sm:justify-start lg:justify-start lg:pt-[60px] ${className}`}
       >
         {getCurrentProducts() &&
           getCurrentProducts().map((product) => (

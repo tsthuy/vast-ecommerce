@@ -43,13 +43,47 @@ export const cartApi = {
 
   removeFromCart: async (userId: string, cartItemId: string) => {
     await axiosInstance.delete(`/api/cart/${userId}/items/${cartItemId}`);
-    return { success: true }; 
+    return { success: true };
   },
 
-  moveWishlistToCart: async (userId: string, wishlistItems: { product_id: number; variant_id: string; quantity: number }[]) => {
-    const response = await axiosInstance.post(`/api/cart/${userId}/move-from-wishlist`, {
-      items: wishlistItems,
+  moveWishlistToCart: async (
+    userId: string,
+    wishlistItems: {
+      product_id: number;
+      variant_id: string;
+      quantity: number;
+    }[]
+  ) => {
+    const response = await axiosInstance.post(
+      `/api/cart/${userId}/move-from-wishlist`,
+      {
+        items: wishlistItems,
+      }
+    );
+    return response.data;
+  },
+
+  // Tạo cart tạm thời cho checkout
+  createCheckoutCart: async (
+    userId: string,
+    cartItems: CartItemResponse[],
+    appliedCoupon?: Coupon
+  ): Promise<{ temp_cart_id: string; user_id: string }> => {
+    const response = await axiosInstance.post("/api/cart/create-checkout", {
+      user_id: userId,
+      cart_items: cartItems.map((item) => ({
+        cart_item_id: item.cart_item_id,
+        product_id: item.product_id,
+        variant_id: item.variant_id,
+        quantity: item.quantity,
+      })),
+      applied_coupon: appliedCoupon,
     });
-    return response.data; 
+    return response.data;
+  },
+
+  getCheckoutCart: async (tempCartId: string): Promise<CartResponse> => {
+    const response = await axiosInstance.get(`/api/cart/temp/${tempCartId}`);
+    return response.data;
   },
 };

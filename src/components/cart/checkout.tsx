@@ -221,6 +221,7 @@ export const CheckOut = () => {
               {/* Coupon Code */}
               <div className="flex flex-col lg:flex-row  pt-4 gap-2">
                 <Input className="py-6" placeholder="Coupon Code " />
+
                 <MyButton className="max-w-fit pt-2">Apply Coupon</MyButton>
               </div>
 

@@ -11,7 +11,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -104,7 +107,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -163,7 +169,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -173,7 +179,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -197,7 +203,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -256,7 +265,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -266,7 +275,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -290,7 +299,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -349,7 +361,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -359,7 +371,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -383,7 +395,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -442,7 +457,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -452,7 +467,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -476,7 +491,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -535,7 +553,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -545,7 +563,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -569,7 +587,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -628,7 +649,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -638,7 +659,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -662,7 +683,10 @@ export const new_products_schema: NewProduct[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -721,7 +745,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -731,7 +755,7 @@ export const new_products_schema: NewProduct[] = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -758,7 +782,10 @@ export const products_jus_for_u = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -817,7 +844,7 @@ export const products_jus_for_u = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -827,7 +854,7 @@ export const products_jus_for_u = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -851,7 +878,10 @@ export const products_jus_for_u = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -910,7 +940,7 @@ export const products_jus_for_u = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -920,7 +950,7 @@ export const products_jus_for_u = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -944,7 +974,10 @@ export const products_jus_for_u = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -1003,7 +1036,7 @@ export const products_jus_for_u = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -1013,7 +1046,7 @@ export const products_jus_for_u = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",
@@ -1037,7 +1070,10 @@ export const products_jus_for_u = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [{ url: "/images/car.png" }, { url: "/images/pad.png" }],
+    images: [
+      { url: "/images/car.png" },
+      { url: "/images/pad.png", isDefault: true },
+    ],
     attributes: [
       {
         id: "attr1",
@@ -1096,7 +1132,7 @@ export const products_jus_for_u = [
         ],
         price: 14.99,
         stock: 2,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/dual.png" },
       },
       {
         id: "v5",
@@ -1106,7 +1142,7 @@ export const products_jus_for_u = [
         ],
         price: 15.99,
         stock: 8,
-        image: { url: "/images/coat.png" },
+        image: { url: "/images/keyb.png" },
       },
       {
         id: "v6",

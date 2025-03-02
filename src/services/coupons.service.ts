@@ -1,5 +1,3 @@
-import { Coupon } from "~/types/coupons";
-
 import axiosInstance from "~/mocks";
 
 export const couponApi = {

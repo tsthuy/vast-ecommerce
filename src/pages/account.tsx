@@ -29,11 +29,13 @@ export default function AccountPage({
       <DynamicTopHeader />
 
       <DynamicHeader categories={initialCategories} />
+
        <Container> 
       <AccountBreadcrumb/>
         
       <Account />
       </Container>
+
       <DynamicFooter />
     </>
   )

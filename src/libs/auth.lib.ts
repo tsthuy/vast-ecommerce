@@ -52,6 +52,8 @@ export const signUpWithEmail = async (
   password: string
 ) => {
   try {
+    console.log("signing up with email", email);
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,

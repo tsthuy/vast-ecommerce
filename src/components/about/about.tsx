@@ -15,9 +15,12 @@ export const About = () => {
         <Container className="flex py-10 xl:py-[136px] xl:justify-normal justify-center gap-10 flex-col lg:flex-row items-center">
             <div className="xl:max-w-[40%] lg:w-[50%] w-[80%]">
             <h1 className="text-54 font-inter pb-8 font-semibold lg:text-left text-center">{t("our_story")}</h1>
+
             <p className="text-16 font-normal">{t("launch_2015")}</p>
+
             <p className="pt-4 text-16 font-normal">{t("1_million_offers")}</p>
             </div>
+
             <div className="relative xl:hidden ">
                 <Image
                 src={"/images/story.png"}
@@ -32,7 +35,9 @@ export const About = () => {
 
         <Container>
             <PerformancesCarousel />
+
             <ManagerCarousel/>
+
             <div className="pb-[140px]">
             <ServiceFeatures/>
             </div>

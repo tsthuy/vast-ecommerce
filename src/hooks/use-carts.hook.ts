@@ -17,8 +17,6 @@ export function useCarts(userId: string, locale: string) {
 }
 
 export function useAddToCart(user_id: string, locale: string) {
-  // const { addCartItem } = useCartStore();
-
   return useMutation({
     mutationFn: ({
       product_id,
@@ -30,7 +28,6 @@ export function useAddToCart(user_id: string, locale: string) {
       quantity: number;
     }) => cartApi.addToCart({ user_id, product_id, variant_id, quantity }),
     onSuccess: (data) => {
-      // addCartItem(data);
       queryClient.invalidateQueries(QUERY_KEYS.carts.all(user_id, locale));
     },
     onError: (error) => {
@@ -40,8 +37,6 @@ export function useAddToCart(user_id: string, locale: string) {
 }
 
 export function useUpdateCartItemQuantity(userId: string, locale: string) {
-  // const { updateCartItemQuantity } = useCartStore();
-
   return useMutation({
     mutationFn: ({
       cartItemId,
@@ -51,7 +46,6 @@ export function useUpdateCartItemQuantity(userId: string, locale: string) {
       quantity: number;
     }) => cartApi.updateCartItemQuantity(cartItemId, quantity),
     onSuccess: (data) => {
-      // updateCartItemQuantity(data.cart_item_id, data.quantity);
       queryClient.invalidateQueries(QUERY_KEYS.carts.all(userId, locale));
     },
     onError: (error) => {
@@ -61,12 +55,10 @@ export function useUpdateCartItemQuantity(userId: string, locale: string) {
 }
 
 export function useRemoveFromCart(userId: string, locale: string) {
-  // const { removeCartItem } = useCartStore();
   return useMutation({
     mutationFn: (cartItemId: string) =>
       cartApi.removeFromCart(userId, cartItemId),
     onSuccess: (_, cartItemId) => {
-      // removeCartItem(cartItemId);
       queryClient.setQueryData(
         QUERY_KEYS.carts.all(userId, locale).queryKey,
         (oldData: CartResponse) => {
@@ -102,7 +94,6 @@ export function useRemoveFromCart(userId: string, locale: string) {
 }
 
 export function useMoveWishlistToCart(userId: string, locale: string) {
-  // const { clearWishlistItems } = useWishlistStore();
   return useMutation({
     mutationFn: (
       wishlistItems: {
@@ -112,8 +103,6 @@ export function useMoveWishlistToCart(userId: string, locale: string) {
       }[]
     ) => cartApi.moveWishlistToCart(userId, wishlistItems),
     onSuccess: () => {
-      // clearWishlistItems();
-
       queryClient.refetchQueries(QUERY_KEYS.carts.all(userId, locale));
       queryClient.refetchQueries(QUERY_KEYS.wishlists.all(userId, locale));
       toast.success("All items moved to cart.");
@@ -121,6 +110,21 @@ export function useMoveWishlistToCart(userId: string, locale: string) {
     onError: (error) => {
       console.error("Error moving wishlist to cart:", error);
       toast.error("Failed to move items to cart.");
+    },
+  });
+}
+
+export function useCreateCheckoutCart(userId: string, locale: string) {
+  return useMutation({
+    mutationFn: (data: {
+      cartItems: CartItemResponse[];
+      appliedCoupon?: Coupon;
+    }) =>
+      cartApi.createCheckoutCart(userId, data.cartItems, data.appliedCoupon),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.carts.all(userId, locale),
+      });
     },
   });
 }

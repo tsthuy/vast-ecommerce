@@ -38,13 +38,11 @@ export default function ProductCard({
   onRemoveFromWishlist,
 }: ProductCardProps) {
   const { user } = useAuthStore();
-  // const { wishlistItems } = useWishlistStore();
   const { t } = useTranslation("common");
   const pathname = usePathname();
   const isInWishListPage = pathname === "/wishlist";
   const router = useRouter();
 
-  // Select initial variant
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     product.variants.find(
       (variant: ProductVariant) => variant.id === variantId
@@ -114,6 +112,7 @@ export default function ProductCard({
   const handleAddToCart = async () => {
     if (!user?.uid) {
       toast.error(t("please_login"));
+      router.push("/login");
       return;
     }
 

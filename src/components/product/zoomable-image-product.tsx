@@ -45,7 +45,7 @@ export default function ZoomAbleImage({
   return (
     <div
       ref={imageRef}
-      className="relative flex h-[600px] w-full cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border bg-secondary-2"
+      className="relative flex h-[300px] w-full cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border bg-secondary-2 md:h-[600px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
@@ -55,7 +55,10 @@ export default function ZoomAbleImage({
         alt={alt}
         width={400}
         height={400}
-        className={cn(isZoomed && "hidden", "h-full w-[80%] object-contain")}
+        className={cn(
+          isZoomed && "hidden",
+          "h-full w-[50%] object-contain md:w-[80%]"
+        )}
       />
 
       {isZoomed && (

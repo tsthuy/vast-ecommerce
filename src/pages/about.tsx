@@ -29,12 +29,14 @@ export default function AboutPage({
       <DynamicTopHeader />
 
       <DynamicHeader categories={initialCategories} />
+
        <Container> 
         
       <Breadcrumbs/>
       </Container>
         
       <About />
+
       <DynamicFooter />
     </>
   )

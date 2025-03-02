@@ -8,7 +8,7 @@ const Breadcrumbs = () => {
   const pathnames = router.asPath.split("/").filter((x) => x);
 
   return (
-    <nav className="flex items-start justify-start pt-[80px]">
+    <nav className="flex items-start justify-start pt-8 lg:pt-[80px]">
       <ol className="text-muted-foreground flex items-center gap-3 text-sm">
         <li>
           <Link
