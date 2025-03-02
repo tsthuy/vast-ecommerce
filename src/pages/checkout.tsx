@@ -21,8 +21,6 @@ export default function CheckOutPage({
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  console.log("locale", locale);
-
   if (!locale) {
     return {
       props: {},

@@ -16,8 +16,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
     const { user_id, product_id, variant_id, quantity } = JSON.parse(
       config.data
     );
-    console.log("user_id", user_id);
-    console.log("product_id", product_id);
 
     const existingCartItem = cartItems.find(
       (item) =>
@@ -79,7 +77,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
         variant_id,
         quantity,
       });
-      console.log("cartItems", cartItems);
+
       return [201, { cart_item_id, user_id, product_id, variant_id, quantity }];
     }
   });
@@ -199,10 +197,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
     const urlParts = config.url?.split("/");
     const user_id = urlParts?.[3];
     const cart_item_id = urlParts?.[5];
-    console.log(urlParts);
-    console.log("user_id", user_id);
-    console.log("cart_item_id", cart_item_id);
-    console.log(cartItems);
+
     const cartItemIndex = cartItems.findIndex(
       (item) => item.user_id === user_id && item.cart_item_id === cart_item_id
     );
@@ -212,11 +207,13 @@ export const setupCartsMock = (mock: MockAdapter) => {
     }
 
     cartItems.splice(cartItemIndex, 1);
-    console.log(cartItems);
+
     return [200, { success: true }];
   });
 
   mock.onPost(/\/api\/cart\/[^/]+\/move-from-wishlist/).reply((config) => {
+    wishlistItems.length = 0;
+
     const urlParts = config.url?.split("/");
     const user_id = urlParts?.[3];
     const { items } = JSON.parse(config.data);
@@ -268,7 +265,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
         }
       }
     );
-    wishlistItems.splice(0, wishlistItems.length);
+
     return [200, { success: true }];
   });
 };

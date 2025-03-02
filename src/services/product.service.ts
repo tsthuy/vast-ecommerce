@@ -53,7 +53,6 @@ export const productApi = {
     categoryId: string,
     productId: number
   ): Promise<NewProduct[]> => {
-    console.log("am here 1234");
     const response = await axiosInstance.get<NewProduct[]>(
       `/api/related/${categoryId}/${productId}`
     );

@@ -4,7 +4,10 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const sig = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -17,9 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let event;
 
   try {
-    console.log("Request body:");
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
-    console.log("Event:", event);
   } catch (error) {
     res.status(400).send(`Webhook Error: ${error}`);
     return;
@@ -29,10 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case "payment_intent.succeeded":
       const paymentIntent = event.data.object;
 
-      const { userId, productId } = paymentIntent.metadata; // crete order here
+      const { userId, productId } = paymentIntent.metadata;
 
-     break;
-     default:
+      break;
+    default:
   }
 
   res.status(200).json({ received: true });

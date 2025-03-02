@@ -1,12 +1,12 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { Footer } from "~/components"
-import { Header, TopHeader } from "~/components/header"
+import { Footer } from "~/components";
+import { Header, TopHeader } from "~/components/header";
 
-import { categoryApi } from "~/services"
+import { categoryApi } from "~/services";
 
-import { Cart } from "./../components/cart/cart"
+import { Cart } from "./../components/cart/cart";
 
 export default function CartPage({
   initialCategories,
@@ -21,19 +21,17 @@ export default function CartPage({
 
       <Footer />
     </>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  console.log("locale", locale)
-
   if (!locale) {
     return {
       props: {},
-    }
+    };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale)
+  const initialCategories = await categoryApi.getCategories(locale);
 
   return {
     props: {
@@ -45,5 +43,5 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
       ])),
       initialCategories,
     },
-  }
-}
+  };
+};

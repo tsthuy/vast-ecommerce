@@ -14,7 +14,6 @@ export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet("/api/products/flash-sales").reply(200, new_products_schema);
 
   mock.onGet(/\/api\/products\/[^/]+/).reply((config) => {
-    console.log("is it map here");
     const urlParts = config.url?.split("/");
     const productId = urlParts?.[3];
     const product = new_products_schema.find(
@@ -48,7 +47,6 @@ export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet(/\/api\/category\/products\/\w+$/).reply((config) => {
     const urlParts = config.url?.split("/");
     const categoryId = urlParts?.[4];
-    console.log("categoryIdhehe", categoryId);
     const products = new_products_schema.filter(
       (product) => product.category === categoryId
     );
@@ -56,16 +54,11 @@ export const setupProductsMock = (mock: MockAdapter) => {
   });
 
   mock.onGet(/\/api\/related\/\w+\/\w+$/).reply((config) => {
-    console.log("am here 134");
     const urlParts = config.url?.split("/");
     const categoryId = urlParts?.[3];
     const productId = urlParts?.[4];
 
     if (!categoryId || !productId) {
-      console.log("Invalid categoryId or productId:", {
-        categoryId,
-        productId,
-      });
       return [400, { error: "Invalid categoryId or productId" }];
     }
 
@@ -74,8 +67,6 @@ export const setupProductsMock = (mock: MockAdapter) => {
         product.category?.id === categoryId &&
         product.id.toString() !== productId
     );
-
-    console.log("Mock returning related products:", relatedProducts);
 
     return [200, relatedProducts];
   });

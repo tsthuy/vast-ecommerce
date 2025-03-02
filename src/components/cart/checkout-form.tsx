@@ -49,7 +49,6 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
@@ -62,7 +61,6 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
   }
 
   return (
-    
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -79,7 +77,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -100,7 +98,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -141,7 +139,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -162,7 +160,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -185,7 +183,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -206,13 +204,12 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
               <FormLabel>
                 Phone Number<span className="text-red-600">*</span>
               </FormLabel>
+
               <FormControl>
                 <PhoneInput
                   value={field.value}
                   onChange={field.onChange}
                   onValidation={(isValid, errorMessage) => {
-                    console.log(isValid, errorMessage);
-
                     if (!isValid) {
                       form.setError("phone_number", {
                         type: "manual",
@@ -224,6 +221,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
                   }}
                 />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -238,7 +236,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <FormControl>
                 <Input
-                  className="py-5 bg-secondary-2"
+                  className="bg-secondary-2 py-5"
                   placeholder=""
                   type=""
                   {...field}
@@ -259,7 +257,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="w-6 h-6 data-[state=checked]:bg-red-500"
+                  className="h-6 w-6 data-[state=checked]:bg-red-500"
                 />
               </FormControl>
 
@@ -274,13 +272,10 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           )}
         />
       </form>
-
     </Form>
   );
+});
 
-}
-);
-
-CheckOutForm.displayName = "CheckOutForm"; 
+CheckOutForm.displayName = "CheckOutForm";
 
 export default CheckOutForm;

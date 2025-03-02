@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -23,7 +23,6 @@ import { useWishlists } from "~/hooks/use-wishlists.hook";
 
 import { logout } from "~/libs/auth.lib";
 
-import { useCartStore, useWishlistStore } from "~/stores";
 import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
@@ -51,8 +50,8 @@ export default function Header({ categories }: HeaderProps) {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const { cartItems, setCartItems } = useCartStore();
-  const { wishlistItems, setWishlistItems } = useWishlistStore();
+  // const { cartItems, setCartItems } = useCartStore();
+  // const { wishlistItems, setWishlistItems } = useWishlistStore();
 
   const { data: cartData } = useCarts(user?.uid || "", router.locale || "en");
   const { data: wishlistData } = useWishlists(
@@ -60,17 +59,17 @@ export default function Header({ categories }: HeaderProps) {
     router.locale || "en"
   );
 
-  useEffect(() => {
-    if (cartData?.cart_items) {
-      setCartItems(cartData.cart_items);
-    }
-  }, [cartData, setCartItems]);
+  // useEffect(() => {
+  //   if (cartData?.cart_items) {
+  //     setCartItems(cartData.cart_items);
+  //   }
+  // }, [cartData, setCartItems]);
 
-  useEffect(() => {
-    if (wishlistData?.wishlist_items) {
-      setWishlistItems(wishlistData.wishlist_items);
-    }
-  }, [wishlistData, setWishlistItems]);
+  // useEffect(() => {
+  //   if (wishlistData?.wishlist_items) {
+  //     setWishlistItems(wishlistData.wishlist_items);
+  //   }
+  // }, [wishlistData, setWishlistItems]);
 
   const navLinks = [
     { href: "/", label: t("home") },
@@ -124,9 +123,9 @@ export default function Header({ categories }: HeaderProps) {
             >
               <Heart className="size-6" />
 
-              {wishlistItems.length > 0 && (
+              {wishlistData && wishlistData.wishlist_items.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {wishlistItems.length}
+                  {wishlistData.wishlist_items.length}
                 </span>
               )}
             </Button>
@@ -139,9 +138,9 @@ export default function Header({ categories }: HeaderProps) {
             >
               <ShoppingCart className="size-6" />
 
-              {cartItems.length > 0 && (
+              {cartData && cartData.cart_items.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {cartItems.length}
+                  {cartData.cart_items.length}
                 </span>
               )}
             </Button>

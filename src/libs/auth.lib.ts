@@ -40,7 +40,6 @@ export const logout = async () => {
   try {
     await signOut(auth);
     useAuthStore.getState().clearUser();
-    console.log("out");
   } catch (error) {
     console.error("Error logging out:", error);
     throw error;
@@ -71,38 +70,30 @@ export const signUpWithEmail = async (
 };
 
 export const signUpWithPhone = async (phoneNumber: string, name: string) => {
-  console.log(phoneNumber);
-
   try {
-    // Initialize RecaptchaVerifier
     const recaptchaVerifier = new RecaptchaVerifier(
       auth,
       "recaptcha-container",
       {
-        size: "invisible", // or "normal" for visible reCAPTCHA
+        size: "invisible",
       }
     );
 
-    // Send OTP to the user's phone
     const confirmationResult = await signInWithPhoneNumber(
       auth,
       phoneNumber,
       recaptchaVerifier
     );
 
-    // Prompt the user to enter the OTP
     const otp = window.prompt("Enter the OTP sent to your phone:");
     if (!otp) throw new Error("OTP is required.");
 
-    // Verify the OTP
     const userCredential = await confirmationResult.confirm(otp);
 
-    // Update the user's profile with the display name
     await updateProfile(userCredential.user, {
       displayName: name,
     });
 
-    // Update the Zustand store with the new user
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
     console.error("Error signing up with phone:", error);

@@ -109,7 +109,6 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
       /\/api\/wishlist\/items\/(\w+)/
     )?.[1];
     const { user_id } = JSON.parse(config.data || "{}");
-    console.log(user_id, wishlistItemId);
 
     if (!wishlistItemId || !user_id) {
       return [400, { error: "User or wishlist Id is missing!" }];

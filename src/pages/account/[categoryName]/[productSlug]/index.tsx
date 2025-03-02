@@ -109,7 +109,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       const products = await productApi.getProductsByCategory(category.id);
 
       return products.map((product) => ({
-        category: category.name.toLowerCase().replace(/ /g, "-"),
+        categoryName: category.name.toLowerCase().replace(/ /g, "-"),
         productSlug: `${product.name.toLowerCase().trim().replace(/\s+/g, "-")}-${product.id}`,
         productId: product.id.toString(),
       }));
@@ -117,11 +117,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
   );
 
   const productPaths = allProducts.flat();
-
-  const paths = productPaths.map(({ category, productSlug }) => ({
-    params: { category, productSlug },
-    locale: "en",
-  }));
+  const locales = ["en", "vi"];
+  const paths = productPaths.flatMap(({ categoryName, productSlug }) =>
+    locales.map((locale) => ({
+      params: { categoryName, productSlug },
+      locale,
+    }))
+  );
 
   return {
     paths,

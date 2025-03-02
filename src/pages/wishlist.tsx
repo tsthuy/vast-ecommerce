@@ -1,11 +1,11 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { Footer } from "~/components"
-import { Header, TopHeader } from "~/components/header"
-import { WishList } from "~/components/wishlist/wishlist"
+import { Footer } from "~/components";
+import { Header, TopHeader } from "~/components/header";
+import { WishList } from "~/components/wishlist/wishlist";
 
-import { categoryApi } from "~/services"
+import { categoryApi } from "~/services";
 
 export default function WishListPage({
   initialCategories,
@@ -20,19 +20,17 @@ export default function WishListPage({
 
       <Footer />
     </>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  console.log("locale", locale)
-
   if (!locale) {
     return {
       props: {},
-    }
+    };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale)
+  const initialCategories = await categoryApi.getCategories(locale);
 
   return {
     props: {
@@ -45,5 +43,5 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
       ])),
       initialCategories,
     },
-  }
-}
+  };
+};

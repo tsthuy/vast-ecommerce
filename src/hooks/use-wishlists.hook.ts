@@ -4,8 +4,6 @@ import { wishlistApi } from "~/services";
 
 import queryClient from "~/utils/query-client.util";
 
-import { useWishlistStore } from "~/stores";
-
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export function useWishlists(userId: string, locale: string) {
@@ -16,17 +14,23 @@ export function useWishlists(userId: string, locale: string) {
 }
 
 export function useAddWishlist(userId: string, locale: string) {
-  const { addWishlistItem } = useWishlistStore();
+  // const { addWishlistItem } = useWishlistStore();
 
   return useMutation({
-    mutationFn: ({ productId, variantId }: { productId: number; variantId: string }) =>
+    mutationFn: ({
+      productId,
+      variantId,
+    }: {
+      productId: number;
+      variantId: string;
+    }) =>
       wishlistApi.addToWishlist({
         user_id: userId,
         product_id: productId,
         variant_id: variantId,
       }),
     onSuccess: (data) => {
-      addWishlistItem(data);
+      // addWishlistItem(data);
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {
@@ -36,12 +40,13 @@ export function useAddWishlist(userId: string, locale: string) {
 }
 
 export function useRemoveWishlist(userId: string, locale: string) {
-  const { removeWishlistItem } = useWishlistStore();
+  // const { removeWishlistItem } = useWishlistStore();
 
   return useMutation({
-    mutationFn: (wishlistItemId: string) => wishlistApi.removeFromWishlist(userId, wishlistItemId),
+    mutationFn: (wishlistItemId: string) =>
+      wishlistApi.removeFromWishlist(userId, wishlistItemId),
     onSuccess: (data) => {
-      removeWishlistItem(data.wishlist_item_id);
+      // removeWishlistItem(data.wishlist_item_id);
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {

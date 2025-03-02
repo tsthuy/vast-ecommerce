@@ -12,14 +12,17 @@ import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 
 import { useAddToCart } from "~/hooks/use-carts.hook";
-import { useAddWishlist, useRemoveWishlist } from "~/hooks/use-wishlists.hook";
+import {
+  useAddWishlist,
+  useRemoveWishlist,
+  useWishlists,
+} from "~/hooks/use-wishlists.hook";
 
 import { cn } from "~/libs/utils";
 
 import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
-import { useWishlistStore } from "~/stores/wishlist.store";
 
 import VariantSelector from "./product-variant-selector";
 
@@ -35,7 +38,7 @@ export default function ProductCard({
   onRemoveFromWishlist,
 }: ProductCardProps) {
   const { user } = useAuthStore();
-  const { wishlistItems } = useWishlistStore();
+  // const { wishlistItems } = useWishlistStore();
   const { t } = useTranslation("common");
   const pathname = usePathname();
   const isInWishListPage = pathname === "/wishlist";
@@ -50,11 +53,17 @@ export default function ProductCard({
       product.variants[0]
   );
 
-  // Check if the current variant is in the wishlist
-  const wishlistItem = wishlistItems.find(
-    (item) =>
-      item.product_id === product.id && item.variant_id === selectedVariant.id
+  const { data: wishlistItems } = useWishlists(
+    user?.uid || "",
+    router.locale || "en"
   );
+
+  const wishlistItem =
+    wishlistItems &&
+    wishlistItems.wishlist_items.find(
+      (item) =>
+        item.product_id === product.id && item.variant_id === selectedVariant.id
+    );
   const isInWishlist = !!wishlistItem;
   const wishlistItemId = wishlistItem?.wishlist_item_id || null;
 

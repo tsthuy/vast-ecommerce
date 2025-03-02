@@ -20,10 +20,19 @@ export const WishList = () => {
   const { t } = useTranslation(["wishlist", "common"]);
   const { user } = useAuthStore();
 
-  const {data: products_for_u} = useProductsJustForU(user?.uid || "", router.locale || "en");
-  const { data: wishlist} = useWishlists(user?.uid || "", router.locale || "en");
-
-  const moveWishlistToCartMutation = useMoveWishlistToCart(user?.uid || "", router.locale || "en");
+  const { data: products_for_u } = useProductsJustForU(
+    user?.uid || "",
+    router.locale || "en"
+  );
+  const { data: wishlist } = useWishlists(
+    user?.uid || "",
+    router.locale || "en"
+  );
+  console.log(wishlist);
+  const moveWishlistToCartMutation = useMoveWishlistToCart(
+    user?.uid || "",
+    router.locale || "en"
+  );
 
   const handleMoveAllToBag = () => {
     if (!user?.uid) {
@@ -39,7 +48,7 @@ export const WishList = () => {
     const itemsToMove = wishlist.wishlist_items.map((item) => ({
       product_id: item.product_id,
       variant_id: item.variant_id,
-      quantity: 1, 
+      quantity: 1,
     }));
 
     moveWishlistToCartMutation.mutate(itemsToMove);
@@ -47,31 +56,37 @@ export const WishList = () => {
   return (
     <Container className="pb-[140px] pt-[80px]">
       <div className="flex items-center justify-between pb-[60px]">
-        <h3>{t("wishlist")} ({wishlist?.wishlist_items.length || 0})</h3>
+        <h3>
+          {t("wishlist")}({wishlist?.wishlist_items.length || 0})
+        </h3>
 
         <MyButton
-        onClick={handleMoveAllToBag}
+          onClick={handleMoveAllToBag}
           disabled={moveWishlistToCartMutation.isPending}
-        className="border bg-transparent text-black">
+          className="border bg-transparent text-black"
+        >
           {t("move_all_to_bag")}
         </MyButton>
       </div>
 
       {wishlist?.wishlist_items.length === 0 ? (
-        <div className="flex flex-col justify-center items-center gap-2">
+        <div className="flex flex-col items-center justify-center gap-2">
           <h3 className="text-2xl font-semibold">{t("wishlist_empty")}</h3>
 
           <Button> {t("common:return_to_shop")}</Button>
         </div>
       ) : (
-        <div className="flex flex-wrap justify-center sm:justify-start gap-[30px] pt-[60px] lg:justify-start">
+        <div className="flex flex-wrap justify-center gap-[30px] pt-[60px] sm:justify-start lg:justify-start">
           {wishlist?.wishlist_items.map((item) => (
-            <div key={item.product_id} className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]">
-            <ProductCard
-              key={item.wishlist_item_id}
-              product={item.product}
-              variantId={item.variant_id}
-            />
+            <div
+              key={item.wishlist_item_id + item.variant_id + item.product_id}
+              className="sm:w-[calc((100%-30px)/2)] md:w-[calc((100%-60px)/3)] lg:w-[calc((100%-90px)/4)]"
+            >
+              <ProductCard
+                key={item.wishlist_item_id + item.variant_id + item.product_id}
+                product={item.product}
+                variantId={item.variant_id}
+              />
             </div>
           ))}
         </div>

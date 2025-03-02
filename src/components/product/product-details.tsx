@@ -132,14 +132,6 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         Math.min(scrollPosition, maxScroll)
       );
 
-      console.log("containerHeight", containerHeight);
-      console.log("thumbnailHeight", thumbnailHeight);
-      console.log("thumbnailTop", thumbnailTop);
-      console.log("thumbnailCenter", thumbnailCenter);
-      console.log("containerCenter", containerCenter);
-      console.log("scrollPosition", scrollPosition);
-      console.log("finalScrollPosition", finalScrollPosition);
-
       thumbnailsContainerRef.current.scrollTo({
         top: finalScrollPosition,
         behavior: "smooth",
