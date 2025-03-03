@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
 
-import { useAddToCart } from "~/hooks/use-carts.hook";
+import { useAddToCart, useCreateCheckoutCart } from "~/hooks/use-carts.hook";
 import {
   useAddWishlist,
   useRemoveWishlist,
@@ -36,6 +36,24 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   const [selectedImage, setSelectedImage] = useState<ProductImage>(
     images.find((img) => img.isDefault) || images[0]
   );
+
+  useEffect(() => {
+    setSelectedVariant(product.variants[0]);
+
+    const defaultImage = images.find((img) => img.isDefault) || images[0];
+    setSelectedImage(defaultImage);
+
+    const imageIndex = images.findIndex((img) => img.url === defaultImage.url);
+
+    if (imageIndex !== -1 && thumbnailRefs.current[imageIndex]) {
+      thumbnailRefs.current[imageIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [product, images]);
+
   const [quantity, setQuantity] = useState<number>(2);
 
   const addToCartMutation = useAddToCart(
@@ -47,6 +65,11 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
     router.locale || "en"
   );
   const { data: wishlist } = useWishlists(
+    user?.uid || "",
+    router.locale || "en"
+  );
+
+  const createCheckoutCartMutation = useCreateCheckoutCart(
     user?.uid || "",
     router.locale || "en"
   );
@@ -66,22 +89,44 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
   const isInWishlist = !!wishlistItem;
 
-  const handleAddToCart = () => {
+  const handleBuyNow = async () => {
     if (!user?.uid) {
       toast.error(t("common:please_login"));
       router.push("/login");
       return;
     }
+
     if (!selectedVariant || selectedVariant.stock <= 0) {
       toast.error(t("common:out_of_stock"));
       return;
     }
 
-    addToCartMutation.mutate({
+    const tempCartItem: CartItemResponse = {
+      cart_item_id: `cart_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`,
       product_id: product.id,
       variant_id: selectedVariant.id,
       quantity,
-    });
+      user_id: user.uid,
+      product: {
+        name: product.name,
+        stock: selectedVariant.stock,
+        price: selectedVariant.price,
+        images: images.map((img) => img.url),
+      },
+      variant: selectedVariant.attributes.reduce((acc, attr) => {
+        acc[attr.attributeId] = attr.valueId;
+        return acc;
+      }, {} as ProductVariantAttributes),
+    };
+
+    try {
+      const { temp_cart_id } = await createCheckoutCartMutation.mutateAsync({
+        cartItems: [tempCartItem],
+      });
+      router.push(`/checkout/${temp_cart_id}`);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+    }
   };
 
   const handleToggleWishlist = () => {
@@ -110,7 +155,12 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
       const variant = product.variants.find((v) => v.id === image.variantId);
       if (variant) setSelectedVariant(variant);
     }
-    scrollToThumbnail(index);
+
+    thumbnailRefs.current[index]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
   };
 
   const handleVariantChange = (color: string, size: string) => {
@@ -133,50 +183,12 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         const imageIndex = images.findIndex(
           (img) => img.url === variantImage.url
         );
-        scrollToThumbnail(imageIndex);
+        thumbnailRefs.current[imageIndex]?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
       }
-    }
-  };
-
-  const scrollToThumbnail = (index: number) => {
-    const thumbnail = thumbnailRefs.current[index];
-    const container = thumbnailsContainerRef.current;
-
-    if (!thumbnail || !container) return;
-
-    const isVertical =
-      window.getComputedStyle(container).flexDirection === "column";
-
-    if (isVertical) {
-      const containerHeight = container.clientHeight;
-      console.log("containerHeight", containerHeight);
-      const thumbnailHeight = thumbnail.offsetHeight;
-      console.log("thumbnailHeight", thumbnailHeight);
-      const thumbnailTop = thumbnail.offsetTop;
-      console.log("thumbnailTop", thumbnailTop);
-
-      const scrollPosition =
-        thumbnailTop - (containerHeight - thumbnailHeight) / 2;
-      const maxScroll = container.scrollHeight - containerHeight;
-
-      container.scrollTo({
-        top: Math.max(0, Math.min(scrollPosition - 100, maxScroll - 100)),
-        behavior: "smooth",
-      });
-    } else {
-      // Horizontal scrolling logic
-      const containerWidth = container.clientWidth;
-      const thumbnailWidth = thumbnail.offsetWidth;
-      const thumbnailLeft = thumbnail.offsetLeft;
-
-      const scrollPosition =
-        thumbnailLeft - (containerWidth - thumbnailWidth) / 2;
-      const maxScroll = container.scrollWidth - containerWidth;
-
-      container.scrollTo({
-        left: Math.max(0, Math.min(scrollPosition, maxScroll)),
-        behavior: "smooth",
-      });
     }
   };
 
@@ -338,10 +350,10 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
           <Button
             className="bg-button-2 px-8 text-white"
-            onClick={handleAddToCart}
+            onClick={handleBuyNow}
             disabled={addToCartMutation.isPending}
           >
-            Buy Now
+            {t("common:buy_now")}
           </Button>
 
           <button

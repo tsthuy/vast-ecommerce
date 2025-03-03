@@ -27,5 +27,11 @@
   "my_order": "My Order",
   "my_cancellation": "My Cancellation",
   "my_reviews": "My Reviews",
-  "logout": "Logout"
+  "logout": "Logout",
+  "click_to_zoom": "Click to zoom",
+  "login": "Login",
+  "login_to_save_wishlist": "Login to save wishlist",
+  "please_login_to_add_to_cart": "Please login to add to cart",
+  "logout_successfully": "Logout successfully",
+  "buy_now": "Buy Now"
 }

@@ -56,7 +56,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -66,7 +66,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -103,8 +103,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 2,
     name: {
-      en: "Gaming Smart Watch 2",
-      vi: "Đồng hồ thông minh Gaming 2",
+      en: "Breed Dry Dog Food",
+      vi: "Thức ăn khô cho chó Breed",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -117,7 +117,7 @@ export const new_products_backend: NewProductBackend[] = [
     reviews: 12,
     images: [
       { url: "/images/car.png" },
-      { url: "/images/pad.png", isDefault: true },
+      { url: "/images/jacket.png", isDefault: true },
     ],
     attributes: [
       {
@@ -147,7 +147,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 11.99,
         stock: 10,
-        image: { url: "/images/cano.png" },
+        image: { url: "/images/jacket.png" },
       },
       {
         id: "v2",
@@ -157,7 +157,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -167,7 +167,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -204,8 +204,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 3,
     name: {
-      en: "Gaming Smart Watch 3",
-      vi: "Đồng hồ thông minh Gaming 3",
+      en: "CANON EOS DSLR Camera",
+      vi: "Máy ảnh DSLR CANON EOS",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -218,7 +218,7 @@ export const new_products_backend: NewProductBackend[] = [
     reviews: 12,
     images: [
       { url: "/images/car.png" },
-      { url: "/images/pad.png", isDefault: true },
+      { url: "/images/cano.png", isDefault: true },
     ],
     attributes: [
       {
@@ -258,7 +258,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -268,7 +268,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -305,8 +305,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 4,
     name: {
-      en: "Gaming Smart Watch 4",
-      vi: "Đồng hồ thông minh Gaming 4",
+      en: "Kids Electric Car",
+      vi: "Xe điện trẻ em",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -349,7 +349,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 11.99,
         stock: 10,
-        image: { url: "/images/cano.png" },
+        image: { url: "/images/car.png" },
       },
       {
         id: "v2",
@@ -359,7 +359,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -369,7 +369,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -406,8 +406,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 5,
     name: {
-      en: "Gaming Smart Watch 5",
-      vi: "Đồng hồ thông minh Gaming 55",
+      en: "GP11 Shooter USB Gamepad",
+      vi: "Tai nghe không dây GP11 Shooter USB",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -450,7 +450,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 11.99,
         stock: 10,
-        image: { url: "/images/cano.png" },
+        image: { url: "/images/pad.png" },
       },
       {
         id: "v2",
@@ -460,7 +460,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -470,7 +470,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -507,8 +507,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 6,
     name: {
-      en: "Gaming Smart Watch 6",
-      vi: "Đồng hồ thông minh Gaming 6",
+      en: "Quilted Satin Jacket",
+      vi: "Áo khoác lót satin",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -551,7 +551,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 11.99,
         stock: 10,
-        image: { url: "/images/cano.png" },
+        image: { url: "/images/jacket.png" },
       },
       {
         id: "v2",
@@ -561,7 +561,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -571,7 +571,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -608,8 +608,8 @@ export const new_products_backend: NewProductBackend[] = [
   {
     id: 7,
     name: {
-      en: "Gaming Smart Watch 7",
-      vi: "Đồng hồ thông minh Gaming 7",
+      en: "ASUS FHD Gaming Laptop",
+      vi: "Laptop Gaming ASUS FHD",
     },
     description: {
       en: "A comfortable and stylish t-shirt made from high-quality cotton.",
@@ -652,7 +652,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 11.99,
         stock: 10,
-        image: { url: "/images/cano.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v2",
@@ -662,7 +662,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -672,7 +672,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",
@@ -763,7 +763,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 12.99,
         stock: 15,
-        image: { url: "/images/laptop.png" },
+        image: { url: "/images/book.png" },
       },
       {
         id: "v3",
@@ -773,7 +773,7 @@ export const new_products_backend: NewProductBackend[] = [
         ],
         price: 13.99,
         stock: 8,
-        image: { url: "/images/trainer.png" },
+        image: { url: "/images/laptop.png" },
       },
       {
         id: "v4",

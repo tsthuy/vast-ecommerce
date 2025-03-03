@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -21,28 +21,53 @@ import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "next-i18next";
 
-const formSchema = z.object({
-  first_name: z.string().min(1),
-  company: z.string().min(1).optional(),
-  street_address: z.string().min(1),
-  apartment: z.string().min(1).optional(),
-  town_city: z.string().min(1),
-  phone_number: z.string().min(1),
-  email: z.string().email(),
-  save_term: z.boolean().default(true).optional(),
-});
+const formSchema = (phoneValidation: {
+  isValid: boolean;
+  errorMessage: string;
+  errorCode: number;
+}) =>
+  z.object({
+    first_name: z.string().min(1, { message: "First name is required!" }),
+    company: z.string().optional(),
+    street_address: z
+      .string()
+      .min(1, { message: "Street address is required!" }),
+    apartment: z.string().optional(),
+    town_city: z.string().min(1, { message: "Town/City is required!" }),
+    phone_number: z
+      .string()
+      .min(1, { message: "Phone number is required!" })
+      .refine(
+        () => phoneValidation.errorCode === 0 || phoneValidation.isValid,
+        {
+          message: phoneValidation.errorMessage || "Invalid phone number",
+          path: ["phone_number"],
+        }
+      ),
+    email: z.string().email({ message: "Invalid email!" }),
+    save_term: z.boolean().default(true).optional(),
+  });
 
 export type CheckOutFormHandle = {
   triggerFormValidation: () => Promise<boolean>;
-  getFormValues: () => z.infer<typeof formSchema>;
+  getFormValues: () => z.infer<ReturnType<typeof formSchema>>;
 };
 
 const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
   const { t } = useTranslation("form");
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [phoneValidation, setPhoneValidation] = useState<{
+    isValid: boolean;
+    errorMessage: string;
+    errorCode: number;
+  }>({ isValid: true, errorMessage: "", errorCode: 0 });
+
+  const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
+    resolver: zodResolver(formSchema(phoneValidation)),
     mode: "onBlur",
+    defaultValues: {
+      phone_number: "",
+    },
   });
 
   useImperativeHandle(ref, () => ({
@@ -50,7 +75,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
     getFormValues: () => form.getValues(),
   }));
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
     try {
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
@@ -216,8 +241,9 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
                 <PhoneInput
                   value={field.value}
                   onChange={field.onChange}
-                  onValidation={(isValid, errorMessage) => {
-                    if (!isValid) {
+                  onValidation={(isValid, errorMessage, errorCode) => {
+                    setPhoneValidation({ isValid, errorMessage, errorCode });
+                    if (!isValid && errorCode !== 0) {
                       form.setError("phone_number", {
                         type: "manual",
                         message: errorMessage,

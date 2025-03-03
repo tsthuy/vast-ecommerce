@@ -6,20 +6,20 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import type React from "react";
+import { toast } from "sonner";
 
-import {
-  loginWithGoogle,
-  signUpWithEmail,
-  signUpWithPhone,
-} from "~/libs/auth.lib";
+import { loginWithGoogle, signUpWithEmail } from "~/libs/auth.lib";
+
+import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
 import MyButton from "../custom/button";
-import { set } from "zod";
 import Spinner from "../ui/spinner";
 
 export const SignUp = () => {
   const { t } = useTranslation("auth");
+
+  const { callbackUrl } = useAuthStore();
 
   const [name, setName] = useState("");
   const [emailOrPhone, setEmailOrPhone] = useState("");
@@ -31,28 +31,37 @@ export const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    console.log("submitting form", emailOrPhone);
     try {
       await signUpWithEmail(name, emailOrPhone, password);
       setLoading(false);
-      router.push("/");
-    } catch (error) {
+
+      if (!callbackUrl) {
+        router.push("/");
+        toast.success(t("account_created_successfully"));
+      }
+    } catch (error: any) {
       setLoading(false);
-      console.log("Error creating user", error);
+      toast.error(error.message);
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
       await loginWithGoogle();
-      router.push("/");
+
+      if (!callbackUrl) {
+        router.push("/");
+        toast.success(t("login_successfully"));
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <>
       {loading && <Spinner />}
+
       <div className="justify-left mb-[140px] mt-[60px] bg-left bg-no-repeat xl:bg-[url('/images/banner.png')]">
         <Container className="flex justify-center xl:justify-end">
           <div className="flex flex-col justify-end py-[125px]">
@@ -61,7 +70,9 @@ export const SignUp = () => {
                 {t("create_an_account")}
               </h1>
 
-              <p className="pb-[48px] pt-[24px]">Enter your details below</p>
+              <p className="pb-[48px] pt-[24px]">
+                {t("enter_ur_details_below")}
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="border-b">

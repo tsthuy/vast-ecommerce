@@ -20,6 +20,7 @@ import {
 
 import { cn } from "~/libs/utils";
 
+import { getGuestUserId } from "~/utils/get-user.util";
 import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
@@ -38,10 +39,14 @@ export default function ProductCard({
   onRemoveFromWishlist,
 }: ProductCardProps) {
   const { user } = useAuthStore();
+  const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
+
   const { t } = useTranslation("common");
   const pathname = usePathname();
   const isInWishListPage = pathname === "/wishlist";
   const router = useRouter();
+
+  const userId = user?.uid || getGuestUserId();
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     product.variants.find(
@@ -51,10 +56,7 @@ export default function ProductCard({
       product.variants[0]
   );
 
-  const { data: wishlistItems } = useWishlists(
-    user?.uid || "",
-    router.locale || "en"
-  );
+  const { data: wishlistItems } = useWishlists(userId, router.locale || "en");
 
   const wishlistItem =
     wishlistItems &&
@@ -65,25 +67,14 @@ export default function ProductCard({
   const isInWishlist = !!wishlistItem;
   const wishlistItemId = wishlistItem?.wishlist_item_id || null;
 
-  const addWishlistMutation = useAddWishlist(
-    user?.uid || "",
-    router.locale || "en"
-  );
+  const addWishlistMutation = useAddWishlist(userId, router.locale || "en");
   const removeWishlistMutation = useRemoveWishlist(
-    user?.uid || "",
+    userId,
     router.locale || "en"
   );
-  const addToCartMutation = useAddToCart(
-    user?.uid || "",
-    router.locale || "en"
-  );
+  const addToCartMutation = useAddToCart(userId, router.locale || "en");
 
   const handleToggleWishlist = async () => {
-    if (!user?.uid) {
-      toast.error(t("please_login"));
-      return;
-    }
-
     try {
       if (isInWishlist && wishlistItemId) {
         await removeWishlistMutation.mutateAsync(wishlistItemId);
@@ -97,7 +88,17 @@ export default function ProductCard({
           productId: product.id,
           variantId: selectedVariant.id,
         });
+
         toast.success(t("added_to_wishlist"));
+
+        if (!user?.uid) {
+          toast.info(t("login_to_save_wishlist"), {
+            action: {
+              label: t("login"),
+              onClick: () => router.push("/login"),
+            },
+          });
+        }
       }
     } catch (error: any) {
       console.error("Failed to toggle wishlist:", error);
@@ -111,7 +112,12 @@ export default function ProductCard({
 
   const handleAddToCart = async () => {
     if (!user?.uid) {
-      toast.error(t("please_login"));
+      setPendingCartItem({
+        product_id: product.id,
+        variant_id: selectedVariant.id,
+        quantity: 1,
+      });
+      toast.info(t("please_login_to_add_to_cart"));
       router.push("/login");
       return;
     }
@@ -149,22 +155,48 @@ export default function ProductCard({
   const productSlug = `${product.name.toLowerCase().replace(/\s+/g, "-")}-${product.id}`;
 
   return (
-    <div className="group w-full overflow-hidden rounded-lg bg-white">
+    <div className="w-full overflow-hidden rounded-lg bg-white">
       <div className="relative overflow-hidden">
         {/* Product Image */}
-        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+        <div className="group relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-gray-100">
           <div className="relative size-[65%]">
             <Image
               src={selectedVariant.image.url || "/placeholder.svg"}
               alt={product.name}
-              layout="fill"
+              fill
               className={`-translate-y-[10px] transition-transform duration-200 hover:drop-shadow-[0_0_20px_var(--color-button-1)]`}
             />
           </div>
+
+          {!isInWishListPage ? (
+            <div className="absolute inset-x-0 bottom-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+              <Button
+                disabled={
+                  selectedVariant.stock === 0 || addToCartMutation.isPending
+                }
+                onClick={handleAddToCart}
+                className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
+              >
+                {selectedVariant.stock === 0
+                  ? t("out_of_stock")
+                  : t("add-to-cart")}
+              </Button>
+            </div>
+          ) : (
+            <div className="absolute inset-x-0 bottom-0 opacity-100">
+              <Button
+                onClick={handleAddToCart}
+                className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
+                disabled={addToCartMutation.isPending}
+              >
+                {t("add-to-cart")}
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* NEW and Discount tags */}
-        <div className="absolute left-4 top-4 z-10 flex flex-col gap-2">
+        <div className="absolute left-2 top-2 z-10 flex flex-col gap-2">
           {product.isNew && (
             <div className="rounded bg-button-1 px-3 py-1 text-12 font-normal text-white">
               NEW
@@ -222,33 +254,6 @@ export default function ProductCard({
             </>
           )}
         </div>
-
-        {/* Add to Cart Button */}
-        {!isInWishListPage ? (
-          <div className="absolute inset-x-0 bottom-0 translate-y-full opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            <Button
-              disabled={
-                selectedVariant.stock === 0 || addToCartMutation.isPending
-              }
-              onClick={handleAddToCart}
-              className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
-            >
-              {selectedVariant.stock === 0
-                ? t("out_of_stock")
-                : t("add-to-cart")}
-            </Button>
-          </div>
-        ) : (
-          <div className="absolute inset-x-0 bottom-0 opacity-100">
-            <Button
-              onClick={handleAddToCart}
-              className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
-              disabled={addToCartMutation.isPending}
-            >
-              {t("add-to-cart")}
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Product Info */}

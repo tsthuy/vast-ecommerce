@@ -39,10 +39,25 @@ export const wishlistApi = {
     return response.data;
   },
 
-  removeFromWishlist: async (user_id: string ,wishlist_item_id: string): Promise<{wishlist_item_id: string }> => {
-   const response = await axiosInstance.delete(`/api/wishlist/items/${wishlist_item_id}`, {
-     data: { user_id },
-   });
-    return response.data; 
+  removeFromWishlist: async (
+    user_id: string,
+    wishlist_item_id: string
+  ): Promise<{ wishlist_item_id: string }> => {
+    const response = await axiosInstance.delete(
+      `/api/wishlist/items/${wishlist_item_id}`,
+      {
+        data: { user_id },
+      }
+    );
+    return response.data;
+  },
+  transferWishlistItems: async ({
+    fromUserId,
+    toUserId,
+  }: TransferWishlistItemsParams): Promise<void> => {
+    await axiosInstance.post(`/api/wishlist/transfer`, {
+      fromUserId,
+      toUserId,
+    });
   },
 };

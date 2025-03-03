@@ -1,17 +1,14 @@
-// utils/productUtils.ts
-
 export const filterProductByLocale = (
   product: NewProductBackend,
   locale: string
 ): NewProduct => {
   return {
     ...product,
-    name: product.name[locale] || product.name.en, // Fallback to English
-    description: product.description[locale] || product.description.en, // Fallback to English
+    name: product.name[locale] || product.name.en,
+    description: product.description[locale] || product.description.en,
   };
 };
 
-// Overloaded version for arrays
 export const filterProductsByLocale = (
   products: NewProductBackend[],
   locale: string

@@ -40,10 +40,6 @@
       {
         "**/*.{ts,tsx}": "KEBAB_CASE"
       }
-    ],
-    "react/jsx-newline": [
-      "error",
-      { "prevent": false, "allowMultilines": false }
     ]
   },
   "overrides": [

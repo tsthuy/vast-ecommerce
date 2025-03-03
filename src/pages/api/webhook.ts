@@ -8,6 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log("webhook");
   const sig = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -21,6 +22,7 @@ export default async function handler(
 
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    console.log("event", event);
   } catch (error) {
     res.status(400).send(`Webhook Error: ${error}`);
     return;
@@ -29,8 +31,7 @@ export default async function handler(
   switch (event.type) {
     case "payment_intent.succeeded":
       const paymentIntent = event.data.object;
-
-      const { userId, productId } = paymentIntent.metadata;
+      console.log("PaymentIntent was successful", paymentIntent.metadata);
 
       break;
     default:

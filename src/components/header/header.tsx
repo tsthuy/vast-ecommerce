@@ -17,11 +17,15 @@ import {
   X,
   XCircle,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import { useCarts } from "~/hooks/use-carts.hook";
 import { useWishlists } from "~/hooks/use-wishlists.hook";
 
 import { logout } from "~/libs/auth.lib";
+import { cn } from "~/libs/utils";
+
+import { getGuestUserId } from "~/utils/get-user.util";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -34,7 +38,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { cn } from "~/libs/utils";
 
 interface HeaderProps {
   categories: Category[];
@@ -43,7 +46,6 @@ interface HeaderProps {
 export default function Header({ categories }: HeaderProps) {
   const { user } = useAuthStore();
   const router = useRouter();
-  console.log(router.pathname);
   const isInAccountPage = router.pathname === "/account";
 
   const { t } = useTranslation(["header", "common"]);
@@ -53,11 +55,24 @@ export default function Header({ categories }: HeaderProps) {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const { data: cartData } = useCarts(user?.uid || "", router.locale || "en");
-  const { data: wishlistData } = useWishlists(
-    user?.uid || "",
+  const { data: cartData } = useCarts(
+    user?.uid || getGuestUserId(),
     router.locale || "en"
   );
+  const { data: wishlistData } = useWishlists(
+    user?.uid || getGuestUserId(),
+    router.locale || "en"
+  );
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success(t("common:logout_successfully"));
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
+  };
 
   const navLinks = [
     { href: "/", label: t("home") },
@@ -113,7 +128,9 @@ export default function Header({ categories }: HeaderProps) {
 
               {wishlistData && wishlistData.wishlist_items.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {wishlistData.wishlist_items.length}
+                  {wishlistData.wishlist_items.length > 9
+                    ? "9⁺"
+                    : wishlistData.wishlist_items.length}
                 </span>
               )}
             </Button>
@@ -128,7 +145,9 @@ export default function Header({ categories }: HeaderProps) {
 
               {cartData && cartData.cart_items.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                  {cartData.cart_items.length}
+                  {cartData.cart_items.length > 9
+                    ? "9⁺"
+                    : cartData.cart_items.length}
                 </span>
               )}
             </Button>
@@ -202,7 +221,7 @@ export default function Header({ categories }: HeaderProps) {
                     <Link
                       href={""}
                       className="text-14 font-normal"
-                      onClick={logout}
+                      onClick={handleLogout}
                     >
                       {t("common:logout")}
                     </Link>

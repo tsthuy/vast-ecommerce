@@ -9,3 +9,8 @@ interface WishlistItem {
 interface WishlistResponse {
   wishlist_items: WishlistItem[];
 }
+
+interface TransferWishlistItemsParams {
+  fromUserId: string;
+  toUserId: string;
+}

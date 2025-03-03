@@ -338,6 +338,7 @@ export const Cart = () => {
 
                     <span>${calculateTotalPrice()}</span>
                   </div>
+
                   <div className="flex justify-center">
                     <MyButton onClick={handleProceedToCheckout}>
                       {t("cart:proceed_to_checkout")}

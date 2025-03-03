@@ -1,9 +1,6 @@
-// pages/404.tsx
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import dynamic from "next/dynamic";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-
-import { NotFound } from "~/components/not-found";
 
 import { categoryApi } from "~/services";
 import Success from "~/components/payment/success";

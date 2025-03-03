@@ -88,15 +88,15 @@ export default function VariantSelector({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Color Selection */}
       {colors.length > 0 && (
-        <div className="space-y-2">
-          <span className="text-12 font-medium">
+        <div className="flex items-center gap-4 space-y-2">
+          <div className="mt-2 text-12 font-medium">
             Color: {selectedColor.label}
-          </span>
+          </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             {colors.map((color) => {
               const stock = getStockForVariant(color, selectedSize);
               return (
@@ -156,7 +156,7 @@ export default function VariantSelector({
                   key={size.id}
                   onClick={() => handleSizeChange(size)}
                   className={cn(
-                    "flex h-10 min-w-[2rem] items-center justify-center rounded-md border-2 px-2 text-xs transition-all",
+                    "flex h-10 w-[calc(100%-15px)/3] items-center justify-center rounded-md border-2 px-2 text-xs transition-all",
                     selectedSize.id === size.id
                       ? "group border-black bg-black text-white"
                       : "border-gray-200 text-12 hover:border-gray-300",

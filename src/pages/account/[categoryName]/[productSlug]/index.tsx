@@ -73,7 +73,6 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const productId = productIdMatch[1];
 
   const productData = await productApi.getProductById(locale, productId);
-  console.log("productData", productData);
 
   if (!productData || !productData.localizedProduct) {
     return {

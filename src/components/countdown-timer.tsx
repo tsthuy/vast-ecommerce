@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react"
-import { useTranslation } from "next-i18next"
+import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 
-import { cn } from "~/libs/utils"
+import { cn } from "~/libs/utils";
 
 interface CountTimerProps {
-  variant?: "default" | "circular"
-  targetDate: Date
-  className?: string
+  variant?: "default" | "circular";
+  targetDate: Date;
+  className?: string;
 }
 
 interface TimeLeft {
-  days: number
-  hours: number
-  minutes: number
-  seconds: number
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 export default function CountTimer({
@@ -26,13 +26,13 @@ export default function CountTimer({
     hours: 0,
     minutes: 0,
     seconds: 0,
-  })
+  });
 
-  const { t } = useTranslation("common")
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = +targetDate - +new Date()
+      const difference = +targetDate - +new Date();
 
       if (difference > 0) {
         setTimeLeft({
@@ -40,15 +40,15 @@ export default function CountTimer({
           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
-        })
+        });
       }
-    }
+    };
 
-    calculateTimeLeft()
-    const timer = setInterval(calculateTimeLeft, 1000)
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
-    return () => clearInterval(timer)
-  }, [targetDate])
+    return () => clearInterval(timer);
+  }, [targetDate]);
 
   if (variant === "circular") {
     return (
@@ -71,12 +71,12 @@ export default function CountTimer({
           </div>
         ))}
       </div>
-    )
+    );
   }
 
   return (
-    <div className={cn("flex items-center xs:p-0 pb-[60px]", className)}>
-      <div className="relative flex flex-col items-center ">
+    <div className={cn("flex items-center pb-[60px] xs:p-0", className)}>
+      <div className="relative flex flex-col items-center">
         <span className="absolute top-[-15px] text-sm font-medium">
           {t("days")}
         </span>
@@ -86,7 +86,7 @@ export default function CountTimer({
         </span>
       </div>
 
-      <span className="self-end px-5 font-inter text-16 font-bold text-button-2 md:text-32">
+      <span className="self-end px-3 font-inter text-16 font-bold text-button-2 sm:px-5 md:text-32">
         :
       </span>
 
@@ -100,11 +100,11 @@ export default function CountTimer({
         </span>
       </div>
 
-      <span className="self-end px-5 font-inter text-16 font-bold text-button-2 md:text-32">
+      <span className="self-end pl-3 font-inter text-16 font-bold text-button-2 sm:px-5 md:text-32">
         :
       </span>
 
-      <div className="relative flex flex-col items-center text-left min-w-[44px]">
+      <div className="relative flex min-w-[44px] flex-col items-center text-left">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
           {t("minutes")}
         </span>
@@ -114,11 +114,11 @@ export default function CountTimer({
         </span>
       </div>
 
-      <span className="self-end px-5 font-inter text-16 font-bold text-button-2 md:text-32">
+      <span className="self-end font-inter text-16 font-bold text-button-2 sm:px-5 md:text-32">
         :
       </span>
 
-      <div className="relative flex flex-col items-center text-left min-w-[44px]">
+      <div className="relative flex min-w-[44px] flex-col items-center text-left">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
           {t("seconds")}
         </span>
@@ -128,5 +128,5 @@ export default function CountTimer({
         </span>
       </div>
     </div>
-  )
+  );
 }

@@ -1,20 +1,26 @@
-"use client";
-
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import type React from "react";
-
 import { useAuthStore } from "~/stores/auth.store";
 
-export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user } = useAuthStore();
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
+  console.log(router.pathname);
+  const { user, setCallbackUrl } = useAuthStore();
 
   useEffect(() => {
-    if (!user) {
-      router.push("/signin");
+    if (!user?.uid) {
+      setCallbackUrl(router.asPath);
+      router.push("/login");
     }
-  }, [user, router]);
+  }, [user?.uid, setCallbackUrl]);
 
-  return user ? <>{children}</> : null;
+  if (!user?.uid) {
+    return null;
+  }
+
+  return <>{children}</>;
 }

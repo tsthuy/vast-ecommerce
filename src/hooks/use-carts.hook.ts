@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
 
 import { QUERY_KEYS } from "~/constants";
@@ -5,6 +8,8 @@ import { QUERY_KEYS } from "~/constants";
 import { cartApi } from "~/services";
 
 import queryClient from "~/utils/query-client.util";
+
+import { useAuthStore } from "~/stores/auth.store";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -27,7 +32,7 @@ export function useAddToCart(user_id: string, locale: string) {
       variant_id: string;
       quantity: number;
     }) => cartApi.addToCart({ user_id, product_id, variant_id, quantity }),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.carts.all(user_id, locale));
     },
     onError: (error) => {
@@ -45,7 +50,7 @@ export function useUpdateCartItemQuantity(userId: string, locale: string) {
       cartItemId: string;
       quantity: number;
     }) => cartApi.updateCartItemQuantity(cartItemId, quantity),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.carts.all(userId, locale));
     },
     onError: (error) => {
@@ -162,15 +167,57 @@ export function useCompleteCheckout(userId: string, tempCartId: string) {
   return useMutation({
     mutationFn: (success: boolean) =>
       cartApi.completeCheckout(tempCartId, success),
-    onSuccess: (data, success) => {
+    onSuccess: (success) => {
       if (success) {
-        queryClient.invalidateQueries({
-          queryKey: QUERY_KEYS.carts.all(userId, "en"),
-        });
+        queryClient.invalidateQueries(QUERY_KEYS.carts.all(userId, "en"));
         toast.success("Checkout completed successfully!");
       } else {
         toast.error("Checkout failed or canceled.");
       }
     },
   });
+}
+
+export function usePostLoginActions(locale: string) {
+  const { t } = useTranslation("common");
+  const router = useRouter();
+
+  const { user } = useAuthStore();
+
+  const callbackUrl = useAuthStore((state) => state.callbackUrl);
+  const setCallbackUrl = useAuthStore((state) => state.setCallbackUrl);
+  const pendingCartItem = useAuthStore((state) => state.pendingCartItem);
+  const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
+
+  const addToCartMutation = useAddToCart(user?.uid || "", locale);
+
+  useEffect(() => {
+    const handlePostLogin = async () => {
+      if (user?.uid) {
+        if (pendingCartItem) {
+          try {
+            await addToCartMutation.mutateAsync({
+              product_id: pendingCartItem.product_id,
+              variant_id: pendingCartItem.variant_id,
+              quantity: pendingCartItem.quantity,
+            });
+
+            toast.success(t("added_to_cart"));
+          } catch (error) {
+            console.error("Failed to add pending cart item: 123", error);
+            toast.error(t("failed_to_add_to_cart"));
+          } finally {
+            setPendingCartItem(null);
+          }
+        }
+
+        if (callbackUrl) {
+          router.push(callbackUrl);
+          setCallbackUrl(null);
+        }
+      }
+    };
+
+    handlePostLogin();
+  }, [user?.uid]);
 }

@@ -1,18 +1,18 @@
 import MockAdapter from "axios-mock-adapter";
-
 import { new_products_schema } from "./data/new_product_schema";
 import { new_products_backend } from "./data/new_product_backend";
+import { filterProductByLocale } from "~/utils/product.util";
 import {
-  filterProductByLocale,
-  filterProductsByLocale,
-} from "~/utils/product.util";
+  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "~/utils/localstorage.util";
 
-export const wishlistItems: Array<{
+export let wishlistItems: Array<{
   wishlist_item_id: string;
   user_id: string;
   product_id: number;
   variant_id: string;
-}> = [];
+}> = loadFromLocalStorage<typeof wishlistItems>("wishlistItems", []);
 
 export const setupWishlistsMock = (mock: MockAdapter) => {
   mock.onPost("/api/wishlist/items").reply((config) => {
@@ -44,6 +44,9 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
         product_id,
         variant_id,
       });
+
+      // Save the updated wishlistItems to localStorage
+      saveToLocalStorage("wishlistItems", wishlistItems);
 
       return [
         200,
@@ -111,6 +114,9 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
 
     wishlistItem.variant_id = variant_id;
 
+    // Save the updated wishlistItems to localStorage
+    saveToLocalStorage("wishlistItems", wishlistItems);
+
     return [200, { wishlist_item_id: wishlistItemId, variant_id }];
   });
 
@@ -135,6 +141,41 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
 
     wishlistItems.splice(index, 1);
 
+    // Save the updated wishlistItems to localStorage
+    saveToLocalStorage("wishlistItems", wishlistItems);
+
     return [200, { wishlist_item_id: wishlistItemId }];
+  });
+
+  mock.onPost("/api/wishlist/transfer").reply((config) => {
+    const { fromUserId, toUserId } = JSON.parse(config.data);
+
+    if (!fromUserId || !toUserId) {
+      return [400, { error: "Missing fromUserId or toUserId" }];
+    }
+
+    const guestWishlistItems = wishlistItems.filter(
+      (item) => item.user_id === fromUserId
+    );
+
+    guestWishlistItems.forEach((item) => {
+      const existingItem = wishlistItems.find(
+        (existing) =>
+          existing.user_id === toUserId &&
+          existing.product_id === item.product_id &&
+          existing.variant_id === item.variant_id
+      );
+
+      if (!existingItem) {
+        item.user_id = toUserId;
+      } else {
+        const index = wishlistItems.indexOf(item);
+        wishlistItems.splice(index, 1);
+      }
+    });
+
+    saveToLocalStorage("wishlistItems", wishlistItems);
+
+    return [200, { success: true }];
   });
 };

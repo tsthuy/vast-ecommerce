@@ -26,6 +26,8 @@ import {
 } from "~/hooks/use-carts.hook";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import Spinner from "../ui/spinner";
+import { NotFound } from "../not-found";
 
 export const CheckOut = () => {
   const { t } = useTranslation("cart");
@@ -41,10 +43,12 @@ export const CheckOut = () => {
     error: cartError,
     isLoading: cartLoading,
   } = useCheckoutCart(router.locale || "en", tempCartId);
+
   const applyCouponMutation = useApplyCouponInCheckout(
     router.locale || "en",
     tempCartId
   );
+
   const completeCheckoutMutation = useCompleteCheckout(
     user?.uid || "",
     tempCartId
@@ -68,7 +72,6 @@ export const CheckOut = () => {
       try {
         const response = await axios.post("/api/create-payment-intent", {
           amount: totalAmount,
-          productId: "1234",
           userId: user?.uid,
         });
 
@@ -134,6 +137,14 @@ export const CheckOut = () => {
       toast.error("Failed to cancel checkout.");
     }
   };
+
+  if (cartLoading) {
+    return <Spinner />;
+  }
+
+  if (!cartLoading && !cart) {
+    return <NotFound />;
+  }
 
   return (
     <Container>

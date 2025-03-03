@@ -1,45 +1,42 @@
-// our-products.tsx
-import { useState } from "react"
-import { useTranslation } from "next-i18next"
+import { useState } from "react";
+import { useTranslation } from "next-i18next";
 
-import { NewProduct } from "~/types/product"
-
-import MyButton from "../custom/button"
-import Paginator from "../paginator"
-import ProductList from "../product/product-list"
-import SectionHeading from "../section-heading"
-import TitleHeading from "../title-heading"
+import MyButton from "../custom/button";
+import Paginator from "../paginator";
+import ProductList from "../product/product-list";
+import SectionHeading from "../section-heading";
+import TitleHeading from "../title-heading";
 
 interface OurProductsProps {
-  initialProductsExplore: NewProduct[]
+  initialProductsExplore: NewProduct[];
 }
 
 export default function OurProducts({
   initialProductsExplore,
 }: OurProductsProps) {
-  const { t } = useTranslation("common")
+  const { t } = useTranslation("common");
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isLoading, setIsLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const limit = 8
-  const totalProducts = initialProductsExplore && initialProductsExplore.length
-  const totalPages = Math.ceil(totalProducts / limit)
+  const limit = 8;
+  const totalProducts = initialProductsExplore && initialProductsExplore.length;
+  const totalPages = Math.ceil(totalProducts / limit);
 
   const handlePageChange = async (direction: "prev" | "next") => {
-    if (isLoading) return
+    if (isLoading) return;
 
     const newPage =
       direction === "next"
         ? Math.min(currentPage + 1, totalPages)
-        : Math.max(currentPage - 1, 1)
+        : Math.max(currentPage - 1, 1);
 
-    if (newPage === currentPage) return
+    if (newPage === currentPage) return;
 
-    setIsLoading(true)
-    setCurrentPage(newPage)
-    setIsLoading(false)
-  }
+    setIsLoading(true);
+    setCurrentPage(newPage);
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -65,5 +62,5 @@ export default function OurProducts({
         <MyButton>{t("view_all_products")}</MyButton>
       </div>
     </>
-  )
+  );
 }

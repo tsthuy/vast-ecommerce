@@ -10,7 +10,11 @@ import "intl-tel-input/build/css/intlTelInput.css";
 interface PhoneInputProps {
   value: string;
   onChange: (value: string) => void;
-  onValidation: (isValid: boolean, errorMessage: string) => void;
+  onValidation: (
+    isValid: boolean,
+    errorMessage: string,
+    errorCode: number
+  ) => void;
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({
@@ -22,6 +26,28 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
   const itiInstance = useRef<intlTelInput.Plugin | null>(null);
   const [isValid, setIsValid] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const validatePhoneNumber = () => {
+    if (itiInstance.current) {
+      if (itiInstance.current.isValidNumber()) {
+        setIsValid(true);
+        setErrorMessage("");
+        const phoneNumber = itiInstance.current.getNumber();
+        onChange(phoneNumber);
+        onValidation(true, "", 0);
+      } else {
+        setIsValid(false);
+        const errorCode = itiInstance.current.getValidationError();
+        const errorMessage = getErrorMessage(errorCode);
+        setErrorMessage(errorMessage);
+        onValidation(false, errorMessage, errorCode);
+      }
+    } else {
+      setIsValid(false);
+      setErrorMessage("Invalid phone number.");
+      onValidation(false, "Invalid phone number.", -1);
+    }
+  };
 
   useEffect(() => {
     if (phoneInputRef.current) {
@@ -41,19 +67,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
       itiInstance.current = iti;
 
       const handleBlur = () => {
-        if (iti.isValidNumber()) {
-          setIsValid(true);
-          setErrorMessage("");
-          const phoneNumber = iti.getNumber();
-          onChange(phoneNumber);
-          onValidation(true, "");
-        } else {
-          setIsValid(false);
-          const errorCode = iti.getValidationError();
-          const errorMessage = getErrorMessage(errorCode);
-          setErrorMessage(errorMessage);
-          onValidation(false, errorMessage);
-        }
+        validatePhoneNumber();
       };
 
       phoneInputRef.current.addEventListener("blur", handleBlur);
@@ -76,6 +90,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         phoneInputRef.current.value = sanitizedValue;
         itiInstance.current.setNumber(sanitizedValue);
       }
+      validatePhoneNumber();
     }
   }, [value]);
 
@@ -104,7 +119,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         id="phone"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={cn(!isValid ? "error" : "", "bg-secondary-2 py-5 w-full")}
+        className={cn(!isValid ? "error" : "", "w-full bg-secondary-2 py-5")}
       />
     </div>
   );

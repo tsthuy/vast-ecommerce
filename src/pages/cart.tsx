@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Footer } from "~/components";
@@ -7,12 +7,13 @@ import { Header, TopHeader } from "~/components/header";
 import { categoryApi } from "~/services";
 
 import { Cart } from "./../components/cart/cart";
+import { ProtectedRoute } from "~/components/auth/protected-route";
 
 export default function CartPage({
   initialCategories,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
-    <>
+    <ProtectedRoute>
       <TopHeader />
 
       <Header categories={initialCategories} />
@@ -20,11 +21,11 @@ export default function CartPage({
       <Cart />
 
       <Footer />
-    </>
+    </ProtectedRoute>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   if (!locale) {
     return {
       props: {},

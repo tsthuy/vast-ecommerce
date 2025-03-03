@@ -1,24 +1,23 @@
-// pages/404.tsx
-import { GetStaticProps, InferGetStaticPropsType } from "next"
-import dynamic from "next/dynamic"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { GetStaticProps, InferGetStaticPropsType } from "next";
+import dynamic from "next/dynamic";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { NotFound } from "~/components/not-found"
+import { NotFound } from "~/components/not-found";
 
-import { categoryApi } from "~/services"
+import { categoryApi } from "~/services";
 
 const DynamicTopHeader = dynamic(
   () => import("~/components/header/top-header"),
   { ssr: false }
-)
+);
 
 const DynamicHeader = dynamic(() => import("~/components/header/header"), {
   ssr: false,
-})
+});
 
 const DynamicFooter = dynamic(() => import("~/components/footer"), {
   ssr: false,
-})
+});
 
 export default function NotFoundPage({
   initialCategories,
@@ -33,17 +32,17 @@ export default function NotFoundPage({
 
       <DynamicFooter />
     </>
-  )
+  );
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   if (!locale) {
     return {
       props: {},
-    }
+    };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale)
+  const initialCategories = await categoryApi.getCategories(locale);
 
   return {
     props: {
@@ -51,5 +50,5 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
       initialCategories,
     },
     revalidate: 60,
-  }
-}
+  };
+};

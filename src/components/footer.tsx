@@ -163,7 +163,7 @@ export default function Footer() {
                   src="https://s3-alpha-sig.figma.com/img/9913/87c0/5dd6d44594e01b675513068803e2426d?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Q-AxG7fZIPedIW-f27rRHgN8t80OrCtJWyq9PoMIlZN0X4VfA5LDBYorCqyPzc-mTntSOhZseSO525jGIs4URt3Oo-NU393dOgd1jCBeSrv06~B4bxJxWDdMpKnfsiFAXJWtw04RMNqnltrAwf1BVyUsHk8LE7EK8rDheCSfsYufxfIiqSn4gMTOb3KmoB~oC7yKMqTzpPfr7QwjG-1-a2UZx6DvEC2CpOLl4pcl0QdjJVFEnwueQej0Mtddk-g3walGnJ0fhm7MX~Ft6CkHSkfO3aSmm4h5LPt-0w6cvgj4blbf1WwE-0frlwW1VGzLpPDqQO1TgiwL9xVWWUSHHA__"
                   alt="QR Code"
                   className="rounded-lg object-contain"
-                  layout="fill"
+                  fill
                 />
               </div>
 
@@ -172,7 +172,7 @@ export default function Footer() {
                   <Image
                     src="https://s3-alpha-sig.figma.com/img/a61d/4c71/10b18ab55a1e1a07ebf54a46ebb07284?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=QHAv6Wn48rmbL7CHEPmrk3ceiuAY-tVeZvNOD4uEdcWth6hP97AnLkNoZtgtu3lpQqJZwkdprWUiQcX9mKrqHRt7worZyWbiJdPBIqY7fIdVOIlkAJ8wZfer0WRAhPaw75f~q5ib-G4Jg8KuMmW8n53cEZSpcraOH6U-9Cu3XDMXyodlJzjmcUlXlhsn0cWvX31MfHkgIyf5Xk7puedwqhcNiZO1lCXbOZKYxmgKkJbv5n37LF4Ps9B9Ivfj8OxHe18oeiAASh3jhCD~r2x9OG2CiHjZbaEaD2VJmHhK5dOh7OJhEEewytrKHFLaq2xfOC53W0CzAVpOtBOl8bZ5lw__"
                     alt="Google Play"
-                    layout="fill"
+                    fill
                     className="rounded-lg object-cover"
                   />
                 </button>
@@ -181,7 +181,7 @@ export default function Footer() {
                   <Image
                     src="https://s3-alpha-sig.figma.com/img/3893/2d5a/ccb54c528f9bcf326ca48ea29bd6d890?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cnsza2m6ZxdoMDmOicWvFZY4XDMmPASb0dO1wRDsxWV0krBE8OrjZFasAd4WFeamnurqeJ~0uuM1-siJEAMmxGqaBoIVwMxOYql-3fW-uPlYShFkpYv3qDOX9iJaTY~qzWe9mrqvCA95qxpvJdiq3qMnZpOFnwX19IKaqXlPUI8fjl6FhpsjTk1icIHBDFhHg4EisjsXPG1oz5~-~nQglhappaNjhVaSB3gENNGJ8f0Ye9cnFdoL1nuESvLTXetggyD-yFgIuS67g2tiWwbLx3naKVnnavSpbgndu2o5LaqgVIZIRAzC1o~zfDFc6g8xai2sFX6zk~rLzTiYR5abug__"
                     alt="App Store"
-                    layout="fill"
+                    fill
                     className="rounded-lg object-cover"
                   />
                 </button>

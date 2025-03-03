@@ -37,7 +37,6 @@ export const setupProductsMock = (mock: MockAdapter) => {
 
   mock.onGet(/\/api\/products-details\/[^/]+/).reply((config) => {
     const locale = config.headers?.["Accept-Language"] || "en";
-    console.log("config", config);
     const urlParts = config.url?.split("/");
     const productId = urlParts?.[3];
     const product = new_products_backend.find(

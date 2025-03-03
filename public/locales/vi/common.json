@@ -27,5 +27,11 @@
   "my_order": "Đơn Hàng Của Tôi",
   "my_cancellation": "Đơn Hủy",
   "my_reviews": "Đánh Giá Của Tôi",
-  "logout": "Đăng Xuất"
+  "logout": "Đăng Xuất",
+  "click_to_zoom": "Nhấn để phóng to",
+  "login": "Đăng Nhập",
+  "login_to_save_wishlist": "Đăng nhập để lưu danh sách yêu thích",
+  "please_login_to_add_to_cart": "Vui lòng đăng nhập để thêm vào giỏ hàng",
+  "logout_successfully": "Đăng xuất thành công",
+  "buy_now": "Mua Ngay"
 }

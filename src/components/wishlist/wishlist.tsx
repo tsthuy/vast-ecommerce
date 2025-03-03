@@ -13,6 +13,7 @@ import MyButton from "../custom/button";
 import { ProductCard, ProductList } from "../product";
 import SectionHeading from "../section-heading";
 import { Button } from "../ui/button";
+import { getGuestUserId } from "~/utils/get-user.util";
 
 export const WishList = () => {
   const router = useRouter();
@@ -24,11 +25,12 @@ export const WishList = () => {
     user?.uid || "",
     router.locale || "en"
   );
+
   const { data: wishlist } = useWishlists(
-    user?.uid || "",
+    user?.uid || getGuestUserId(),
     router.locale || "en"
   );
-  console.log(wishlist);
+
   const moveWishlistToCartMutation = useMoveWishlistToCart(
     user?.uid || "",
     router.locale || "en"
@@ -53,6 +55,7 @@ export const WishList = () => {
 
     moveWishlistToCartMutation.mutate(itemsToMove);
   };
+
   return (
     <Container className="pb-20 pt-10 lg:pb-[140px] lg:pt-[80px]">
       <div className="flex items-center justify-between gap-3 pb-[60px]">

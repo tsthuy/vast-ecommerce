@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
+import { usePostLoginActions } from "~/hooks/use-carts.hook";
+import { useTransferWishlist } from "~/hooks/use-wishlists.hook";
 
 interface EmptyLayoutProps {
   children: ReactNode;
@@ -6,6 +9,11 @@ interface EmptyLayoutProps {
 }
 
 const EmptyLayout = ({ children }: EmptyLayoutProps) => {
+  const router = useRouter();
+
+  useTransferWishlist(router.locale || "en");
+  usePostLoginActions(router.locale || "en");
+
   return <>{children}</>;
 };
 

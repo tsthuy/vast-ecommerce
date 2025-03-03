@@ -1,11 +1,16 @@
 import MockAdapter from "axios-mock-adapter";
 
-import { new_products_schema } from "./data/new_product_schema";
-import { wishlistItems } from "./wishlists.mock";
+import {
+  loadFromLocalStorage,
+  loadFromLocalStorageWithExpiration,
+  saveToLocalStorage,
+} from "~/utils/localstorage.util";
+
 import { coupons } from "./data/coupons";
 import { new_products_backend } from "./data/new_product_backend";
+import { new_products_schema } from "./data/new_product_schema";
+import { wishlistItems } from "./wishlists.mock";
 
-// Mảng toàn cục cho cart tạm thời (dành cho checkout)
 const tempCarts: Array<{
   temp_cart_id: string;
   user_id: string;
@@ -17,9 +22,8 @@ const tempCarts: Array<{
   }>;
   applied_coupon?: { code: string; type: string; value: number };
   created_at: number;
-}> = [];
+}> = loadFromLocalStorageWithExpiration<typeof tempCarts>("tempCarts", []);
 
-// Mảng toàn cục cho đơn hàng (orders)
 const orders: Array<{
   order_id: string;
   user_id: string;
@@ -32,7 +36,7 @@ const orders: Array<{
   applied_coupon?: { code: string; type: string; value: number };
   total_price: number;
   created_at: number;
-}> = [];
+}> = loadFromLocalStorage("orders", []);
 
 const cartItems: Array<{
   cart_item_id: string;
@@ -40,7 +44,7 @@ const cartItems: Array<{
   product_id: number;
   variant_id: string;
   quantity: number;
-}> = [];
+}> = loadFromLocalStorage("cartItems", []);
 
 export const setupCartsMock = (mock: MockAdapter) => {
   mock.onPost("/api/cart/items").reply((config) => {
@@ -79,6 +83,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
       existingCartItem.quantity = newQuantity;
 
+      // Save the updated cartItems to localStorage
+      saveToLocalStorage("cartItems", cartItems);
+
       return [
         200,
         {
@@ -108,6 +115,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
         variant_id,
         quantity,
       });
+
+      // Save the updated cartItems to localStorage
+      saveToLocalStorage("cartItems", cartItems);
 
       return [201, { cart_item_id, user_id, product_id, variant_id, quantity }];
     }
@@ -223,6 +233,10 @@ export const setupCartsMock = (mock: MockAdapter) => {
     }
 
     cartItem.quantity = quantity;
+
+    // Save the updated cartItems to localStorage
+    saveToLocalStorage("cartItems", cartItems);
+
     return [200, { cart_item_id, quantity }];
   });
 
@@ -241,11 +255,15 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     cartItems.splice(cartItemIndex, 1);
 
+    // Save the updated cartItems to localStorage
+    saveToLocalStorage("cartItems", cartItems);
+
     return [200, { success: true }];
   });
 
   mock.onPost(/\/api\/cart\/[^/]+\/move-from-wishlist/).reply((config) => {
     wishlistItems.length = 0;
+    saveToLocalStorage("wishlistItems", wishlistItems); // Update wishlistItems in localStorage
 
     const urlParts = config.url?.split("/");
     const user_id = urlParts?.[3];
@@ -299,6 +317,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
       }
     );
 
+    // Save the updated cartItems to localStorage
+    saveToLocalStorage("cartItems", cartItems);
+
     return [200, { success: true }];
   });
 
@@ -318,10 +339,10 @@ export const setupCartsMock = (mock: MockAdapter) => {
       created_at: Date.now(),
     };
 
-    // Xóa temp cart cũ nếu đã tồn tại
     const existingTempCartIndex = tempCarts.findIndex(
       (c) => c.user_id === user_id
     );
+
     if (existingTempCartIndex !== -1) {
       tempCarts.splice(existingTempCartIndex, 1);
     }
@@ -450,7 +471,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
     if (!tempCart) {
       return [404, { error: "Temporary cart not found" }];
     }
-    console.log("tempCart", tempCart);
 
     const coupon = coupons.find((c) => c.code === coupon_code);
 
@@ -485,6 +505,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
       value: coupon.value,
     };
 
+    // Save the updated tempCarts to localStorage
+    saveToLocalStorage("tempCarts", tempCarts);
+
     return [
       200,
       {
@@ -516,7 +539,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
     const userId = tempCart.user_id;
 
     if (success) {
-      // Thanh toán thành công: Xóa cart chính và lưu vào orders
       const order = {
         order_id: `order_${Date.now()}`,
         user_id: userId,
@@ -551,10 +573,15 @@ export const setupCartsMock = (mock: MockAdapter) => {
           cartItems.splice(i, 1);
         }
       }
+
+      // Save the updated cartItems to localStorage
+      saveToLocalStorage("cartItems", cartItems);
     }
 
-    // Xóa temp cart (dù thành công hay thất bại)
     tempCarts.splice(tempCartIndex, 1);
+
+    // Save the updated tempCarts to localStorage
+    saveToLocalStorage("tempCarts", tempCarts);
 
     return [
       success ? 200 : 400,

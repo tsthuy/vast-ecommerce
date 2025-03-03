@@ -2,6 +2,7 @@
 
 import { type MouseEvent, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
 import { cn } from "~/libs/utils";
 
@@ -16,20 +17,23 @@ export default function ZoomAbleImage({
   alt,
   zoomScale = 2,
 }: ZoomAbleImageProps) {
+  const { t } = useTranslation("common");
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
-    setIsZoomed(true);
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
+    setIsHovered(false);
     setIsZoomed(false);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!imageRef.current) return;
+    if (!imageRef.current || !isZoomed) return;
 
     const { left, top, width, height } =
       imageRef.current.getBoundingClientRect();
@@ -40,15 +44,23 @@ export default function ZoomAbleImage({
     setPosition({ x, y });
   };
 
+  const handleClick = () => {
+    setIsZoomed((prev) => !prev);
+  };
+
   const backgroundPosition = `${position.x * 100}% ${position.y * 100}%`;
 
   return (
     <div
       ref={imageRef}
-      className="relative flex h-[300px] w-full cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border bg-secondary-2 md:h-[600px]"
+      className={cn(
+        "relative flex h-[300px] w-full items-center justify-center overflow-hidden rounded-lg border bg-secondary-2 md:h-[600px]",
+        isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"
+      )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
+      onClick={handleClick}
     >
       <Image
         src={src}
@@ -71,6 +83,12 @@ export default function ZoomAbleImage({
             backgroundRepeat: "no-repeat",
           }}
         />
+      )}
+
+      {!isZoomed && isHovered && (
+        <div className="absolute bottom-2 z-10 rounded px-3 py-1 text-sm text-black">
+          {t("click_to_zoom")}
+        </div>
       )}
     </div>
   );

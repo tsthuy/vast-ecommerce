@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import type React from "react";
+import { toast } from "sonner";
 
 import { loginWithEmail } from "~/libs/auth.lib";
+
+import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
 import MyButton from "../custom/button";
@@ -16,6 +18,8 @@ import Spinner from "../ui/spinner";
 export const SignIn = () => {
   const { t } = useTranslation("auth");
   const router = useRouter();
+
+  const { callbackUrl } = useAuthStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,16 +32,21 @@ export const SignIn = () => {
     try {
       await loginWithEmail(email, password);
       setLoading(false);
-      router.push("/");
-    } catch (error) {
+
+      if (!callbackUrl) {
+        router.push("/");
+        toast.success(t("login_successfully"));
+      }
+    } catch (error: any) {
       setLoading(false);
-      console.log(error);
+      toast.error(error.message);
     }
   };
 
   return (
     <>
       {loading && <Spinner />}
+
       <div className="mb-[140px] mt-[60px] justify-end bg-left bg-no-repeat xl:bg-[url('/images/banner.png')]">
         <Container className="flex justify-center xl:justify-end">
           <div className="flex flex-col justify-end py-[125px]">

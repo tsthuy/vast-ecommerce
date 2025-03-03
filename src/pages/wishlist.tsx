@@ -1,4 +1,4 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Footer } from "~/components";
@@ -9,7 +9,7 @@ import { categoryApi } from "~/services";
 
 export default function WishListPage({
   initialCategories,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <TopHeader />
@@ -23,7 +23,7 @@ export default function WishListPage({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   if (!locale) {
     return {
       props: {},
