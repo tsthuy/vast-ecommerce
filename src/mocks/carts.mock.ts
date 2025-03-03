@@ -3,6 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import { new_products_schema } from "./data/new_product_schema";
 import { wishlistItems } from "./wishlists.mock";
 import { coupons } from "./data/coupons";
+import { new_products_backend } from "./data/new_product_backend";
 
 // Mảng toàn cục cho cart tạm thời (dành cho checkout)
 const tempCarts: Array<{
@@ -113,11 +114,12 @@ export const setupCartsMock = (mock: MockAdapter) => {
   });
 
   mock.onGet("/api/cart/items").reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
     const user_id = config.params?.user_id;
     const userCartItems = cartItems.filter((item) => item.user_id === user_id);
     const cartItemsWithDetails = userCartItems
       .map((item) => {
-        const product = new_products_schema.find(
+        const product = new_products_backend.find(
           (p) => p.id === item.product_id
         );
         const variant = product?.variants.find(
@@ -152,8 +154,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
           variant_id: item.variant_id,
           quantity: item.quantity,
           product: {
-            name: product.name,
-            description: product.description,
+            name: product.name[locale] || product.name.en,
+            description: product.description[locale] || product.description.en,
             price: variant.price,
             images: [variant.image.url],
             stock: variant.stock,
@@ -336,8 +338,9 @@ export const setupCartsMock = (mock: MockAdapter) => {
     ];
   });
 
-  // Mock cho GET /api/cart/temp/[tempCartId] (lấy cart tạm thời cho checkout)
   mock.onGet(/\/api\/cart\/temp\/\w+/).reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+
     const tempCartId = config.url?.match(/\/api\/cart\/temp\/(\w+)/)?.[1];
     if (!tempCartId) {
       return [400, { error: "Temp cart ID is missing" }];
@@ -350,7 +353,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     const cartItemsWithDetails = tempCart.cart_items
       .map((item) => {
-        const product = new_products_schema.find(
+        const product = new_products_backend.find(
           (p) => p.id === item.product_id
         );
         const variant = product?.variants.find(
@@ -384,8 +387,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
           variant_id: item.variant_id,
           quantity: item.quantity,
           product: {
-            name: product.name,
-            description: product.description,
+            name: product.name[locale] || product.name.en,
+            description: product.description[locale] || product.description.en,
             price: variant.price,
             images: [variant.image.url],
             stock: variant.stock,
@@ -428,11 +431,11 @@ export const setupCartsMock = (mock: MockAdapter) => {
     ];
   });
 
-  // Mock cho POST /api/cart/apply-coupon/temp/[tempCartId] (áp dụng coupon trong checkout)
   mock.onPost(/\/api\/cart\/apply-coupon\/temp\/\w+/).reply((config) => {
     const tempCartId = config.url?.match(
       /\/api\/cart\/apply-coupon\/temp\/(\w+)/
     )?.[1];
+
     const { coupon_code, total_price } = JSON.parse(config.data);
 
     if (!tempCartId || !coupon_code || total_price === undefined) {
@@ -443,25 +446,40 @@ export const setupCartsMock = (mock: MockAdapter) => {
     }
 
     const tempCart = tempCarts.find((c) => c.temp_cart_id === tempCartId);
+
     if (!tempCart) {
       return [404, { error: "Temporary cart not found" }];
     }
+    console.log("tempCart", tempCart);
 
     const coupon = coupons.find((c) => c.code === coupon_code);
+
     if (!coupon) {
-      return [400, { error: "Invalid coupon code" }];
+      return [404, { error: "Coupon not found" }];
+    }
+
+    if (coupon.expiresAt < new Date()) {
+      return [400, { error: "Coupon has expired" }];
+    }
+
+    if (!coupon.isActive) {
+      return [400, { error: "Coupon is not active" }];
     }
 
     if (total_price < coupon.minPurchaseAmount) {
       return [
         400,
         {
-          error: `Minimum order value for this coupon is $${coupon.minPurchaseAmount}`,
+          error: `Minimum purchase amount of ${coupon.minPurchaseAmount} is required`,
         },
       ];
     }
 
-    tempCart.applied_coupon = {
+    if (coupon.currentUses >= (coupon.maxUses ?? Infinity)) {
+      return [400, { error: "Coupon has reached its maximum usage limit" }];
+    }
+
+    tempCart!.applied_coupon = {
       code: coupon.code,
       type: coupon.type,
       value: coupon.value,
@@ -477,7 +495,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
     ];
   });
 
-  // Mock cho POST /api/cart/complete-checkout/[tempCartId] (hoàn tất checkout)
   mock.onPost(/\/api\/cart\/complete-checkout\/\w+/).reply((config) => {
     const tempCartId = config.url?.match(
       /\/api\/cart\/complete-checkout\/(\w+)/

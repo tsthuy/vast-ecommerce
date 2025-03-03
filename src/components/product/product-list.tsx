@@ -1,4 +1,3 @@
-// product-list.tsx
 import * as React from "react";
 
 import ProductCard from "./product-card";

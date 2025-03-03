@@ -261,7 +261,7 @@ export default function ProductCard({
               productSlug,
             },
           }}
-          className="text-16 font-medium"
+          className="text-16 font-medium hover:text-button-1"
         >
           {product.name}
         </Link>

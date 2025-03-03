@@ -63,7 +63,6 @@ export const cartApi = {
     return response.data;
   },
 
-  // Tạo cart tạm thời cho checkout
   createCheckoutCart: async (
     userId: string,
     cartItems: CartItemResponse[],
@@ -87,12 +86,11 @@ export const cartApi = {
     return response.data;
   },
 
-  // Áp dụng coupon trong checkout
   applyCouponInCheckout: async (
     tempCartId: string,
     couponCode: string,
     totalPrice: number
-  ): Promise<Coupon> => {
+  ): Promise<CouponResponse> => {
     const response = await axiosInstance.post(
       `/api/cart/apply-coupon/temp/${tempCartId}`,
       {

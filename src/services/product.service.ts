@@ -36,10 +36,14 @@ export const productApi = {
   },
 
   getProductById: async (
+    locale: string,
     productId: string
   ): Promise<ProductDetailsResponse> => {
     const response = await axiosInstance.get(
-      `/api/products-details/${productId}`
+      `/api/products-details/${productId}`,
+      {
+        locale,
+      }
     );
     return response.data;
   },

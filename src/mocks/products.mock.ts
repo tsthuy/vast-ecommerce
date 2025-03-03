@@ -1,22 +1,46 @@
+import {
+  filterProductByLocale,
+  filterProductsByLocale,
+} from "./../utils/product.util";
 import MockAdapter from "axios-mock-adapter";
 
 import {
   new_products_schema,
   products_jus_for_u,
 } from "./data/new_product_schema";
+import { new_products_backend } from "./data/new_product_backend";
 
 export const setupProductsMock = (mock: MockAdapter) => {
-  mock.onGet("/api/products-explore").reply(200, new_products_schema);
+  mock.onGet("/api/products-explore").reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+    const products = filterProductsByLocale(new_products_backend, locale);
+    return [200, products];
+  });
 
-  mock.onGet(/\/api\/products\/just-for-u\/.+$/).reply(200, products_jus_for_u);
+  mock.onGet(/\/api\/products\/just-for-u\/.+$/).reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+    const products = filterProductsByLocale(new_products_backend, locale);
+    return [200, products];
+  });
 
-  mock.onGet("/api/products/best-sales").reply(200, new_products_schema);
-  mock.onGet("/api/products/flash-sales").reply(200, new_products_schema);
+  mock.onGet("/api/products/best-sales").reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+    const products = filterProductsByLocale(new_products_backend, locale);
+    return [200, products];
+  });
+
+  mock.onGet("/api/products/flash-sales").reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+    const products = filterProductsByLocale(new_products_backend, locale);
+    return [200, products];
+  });
 
   mock.onGet(/\/api\/products-details\/[^/]+/).reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
+    console.log("config", config);
     const urlParts = config.url?.split("/");
     const productId = urlParts?.[3];
-    const product = new_products_schema.find(
+    const product = new_products_backend.find(
       (p) => p.id.toString() === productId
     );
     if (!product) {
@@ -34,11 +58,12 @@ export const setupProductsMock = (mock: MockAdapter) => {
         variantId: variant.id,
       })),
     ];
-    console.log(images);
+
+    const localizedProduct = filterProductByLocale(product, locale || "en");
     return [
       200,
       {
-        product,
+        localizedProduct,
         images,
       },
     ];
@@ -54,6 +79,7 @@ export const setupProductsMock = (mock: MockAdapter) => {
   });
 
   mock.onGet(/\/api\/related\/\w+\/\w+$/).reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
     const urlParts = config.url?.split("/");
     const categoryId = urlParts?.[3];
     const productId = urlParts?.[4];
@@ -62,12 +88,17 @@ export const setupProductsMock = (mock: MockAdapter) => {
       return [400, { error: "Invalid categoryId or productId" }];
     }
 
-    const relatedProducts = new_products_schema.filter(
+    const relatedProducts = new_products_backend.filter(
       (product) =>
         product.category?.id === categoryId &&
         product.id.toString() !== productId
     );
 
-    return [200, relatedProducts];
+    const localizedProduct = filterProductsByLocale(
+      relatedProducts,
+      locale || "vi"
+    );
+
+    return [200, localizedProduct];
   });
 };

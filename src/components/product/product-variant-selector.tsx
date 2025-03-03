@@ -4,12 +4,6 @@ import { useMemo, useState } from "react";
 
 import { cn } from "~/libs/utils";
 
-import type {
-  AttributeValue,
-  NewProduct,
-  ProductVariant,
-} from "~/types/product";
-
 interface VariantSelectorProps {
   product: NewProduct;
   onVariantChange: (variant: ProductVariant) => void;
@@ -23,16 +17,14 @@ export default function VariantSelector({
   selectedVariant,
   disabled = false,
 }: VariantSelectorProps) {
-  // Find color and size attributes
   const colorAttribute = product.attributes.find(
     (attr) => attr.name === "Color"
   );
   const sizeAttribute = product.attributes.find((attr) => attr.name === "Size");
 
-  // Get unique color and size values
   const colors = useMemo(() => colorAttribute?.values || [], [colorAttribute]);
   const sizes = useMemo(() => sizeAttribute?.values || [], [sizeAttribute]);
-  // Track selected attributes
+
   const [selectedColor, setSelectedColor] = useState<AttributeValue>(
     colors.find((color) =>
       selectedVariant.attributes.some(
@@ -50,7 +42,6 @@ export default function VariantSelector({
     ) || sizes[0]
   );
 
-  // Find variant based on selected attributes
   const findVariant = (
     colorValue: AttributeValue,
     sizeValue: AttributeValue
@@ -70,7 +61,6 @@ export default function VariantSelector({
     );
   };
 
-  // Get stock for a specific combination
   const getStockForVariant = (
     colorValue: AttributeValue,
     sizeValue: AttributeValue
@@ -79,7 +69,6 @@ export default function VariantSelector({
     return variant?.stock || 0;
   };
 
-  // Handle selection changes
   const handleColorChange = (color: AttributeValue) => {
     setSelectedColor(color);
     const newVariant = findVariant(color, selectedSize);

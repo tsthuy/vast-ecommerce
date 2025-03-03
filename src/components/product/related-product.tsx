@@ -25,7 +25,14 @@ export const RelatedProduct = ({
   return (
     <>
       <SectionHeading section_key="related_products" />
-
+      <h1
+        onClick={() => {
+          console.log(document.getElementById("related_products")?.offsetTop);
+        }}
+        id="related_products"
+      >
+        current offsetHeight
+      </h1>
       <div className="pb-[140px]">
         <ProductList products={relatedProducts || []} />
       </div>

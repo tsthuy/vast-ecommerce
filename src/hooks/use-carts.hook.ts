@@ -129,16 +129,15 @@ export function useCreateCheckoutCart(userId: string, locale: string) {
   });
 }
 
-// Hook để lấy dữ liệu giỏ hàng tạm thời (dành cho checkout)
-export function useCheckoutCart(tempCartId: string) {
+export function useCheckoutCart(locale: string, tempCartId: string) {
   return useQuery({
-    ...QUERY_KEYS.carts.checkout(tempCartId),
+    ...QUERY_KEYS.carts.checkout(locale, tempCartId),
     queryFn: () => cartApi.getCheckoutCart(tempCartId),
     enabled: !!tempCartId,
   });
 }
 
-export function useApplyCouponInCheckout(tempCartId: string) {
+export function useApplyCouponInCheckout(locale: string, tempCartId: string) {
   return useMutation({
     mutationFn: (data: { couponCode: string; totalPrice: number }) =>
       cartApi.applyCouponInCheckout(
@@ -146,21 +145,19 @@ export function useApplyCouponInCheckout(tempCartId: string) {
         data.couponCode,
         data.totalPrice
       ),
-    onSuccess: () => {
-      console.log("Coupon applied successfully!123");
-      console.log("queryClient", queryClient);
-      console.log("QUERY_KEYS", tempCartId);
-      console.log("QUERY_KEYS", QUERY_KEYS.carts.checkout(tempCartId));
-      queryClient.invalidateQueries(QUERY_KEYS.carts.checkout(tempCartId));
+    onSuccess: (data) => {
+      console.log("Coupon applied successfully:", data);
+      toast.success("Coupon applied successfully.");
+      queryClient.invalidateQueries(
+        QUERY_KEYS.carts.checkout(locale, tempCartId)
+      );
     },
     onError: (error) => {
-      console.error("Error applying coupon in checkout:", error);
-      toast.error("Failed to apply coupon.");
+      toast.error(`Failed to apply coupon:  ${error.response.data.error}`);
     },
   });
 }
 
-// Hook để hoàn tất checkout
 export function useCompleteCheckout(userId: string, tempCartId: string) {
   return useMutation({
     mutationFn: (success: boolean) =>

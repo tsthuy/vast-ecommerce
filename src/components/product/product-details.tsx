@@ -26,7 +26,6 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ product, images }: ProductDetailsProps) => {
-  console.log("images", images);
   const { t } = useTranslation(["header", "common", "details"]);
   const { user } = useAuthStore();
   const router = useRouter();
@@ -141,24 +140,41 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
   const scrollToThumbnail = (index: number) => {
     const thumbnail = thumbnailRefs.current[index];
-    if (thumbnail && thumbnailsContainerRef.current) {
-      const containerHeight = thumbnailsContainerRef.current.clientHeight;
-      const thumbnailHeight = thumbnail.clientHeight;
+    const container = thumbnailsContainerRef.current;
+
+    if (!thumbnail || !container) return;
+
+    const isVertical =
+      window.getComputedStyle(container).flexDirection === "column";
+
+    if (isVertical) {
+      const containerHeight = container.clientHeight;
+      console.log("containerHeight", containerHeight);
+      const thumbnailHeight = thumbnail.offsetHeight;
+      console.log("thumbnailHeight", thumbnailHeight);
       const thumbnailTop = thumbnail.offsetTop;
+      console.log("thumbnailTop", thumbnailTop);
 
-      const thumbnailCenter = thumbnailTop + thumbnailHeight / 2;
-      const containerCenter = containerHeight / 2;
-      const scrollPosition = thumbnailCenter - containerCenter;
+      const scrollPosition =
+        thumbnailTop - (containerHeight - thumbnailHeight) / 2;
+      const maxScroll = container.scrollHeight - containerHeight;
 
-      const maxScroll =
-        thumbnailsContainerRef.current.scrollHeight - containerHeight;
-      const finalScrollPosition = Math.max(
-        0,
-        Math.min(scrollPosition, maxScroll)
-      );
+      container.scrollTo({
+        top: Math.max(0, Math.min(scrollPosition - 100, maxScroll - 100)),
+        behavior: "smooth",
+      });
+    } else {
+      // Horizontal scrolling logic
+      const containerWidth = container.clientWidth;
+      const thumbnailWidth = thumbnail.offsetWidth;
+      const thumbnailLeft = thumbnail.offsetLeft;
 
-      thumbnailsContainerRef.current.scrollTo({
-        top: finalScrollPosition,
+      const scrollPosition =
+        thumbnailLeft - (containerWidth - thumbnailWidth) / 2;
+      const maxScroll = container.scrollWidth - containerWidth;
+
+      container.scrollTo({
+        left: Math.max(0, Math.min(scrollPosition, maxScroll)),
         behavior: "smooth",
       });
     }
@@ -171,7 +187,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
           {/* Thumbnails */}
           <div
             ref={thumbnailsContainerRef}
-            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex min-w-[170px] flex-row gap-[16px] overflow-x-auto overflow-y-auto md:h-[600px] md:flex-col"
+            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex min-w-[170px] flex-row gap-[16px] overflow-auto md:h-[600px] md:flex-col"
           >
             {images.map((image, index) => (
               <div

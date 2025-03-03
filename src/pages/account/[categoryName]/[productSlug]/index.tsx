@@ -72,15 +72,17 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   }
   const productId = productIdMatch[1];
 
-  const productData = await productApi.getProductById(productId);
+  const productData = await productApi.getProductById(locale, productId);
+  console.log("productData", productData);
 
-  if (!productData || !productData.product) {
+  if (!productData || !productData.localizedProduct) {
     return {
       notFound: true,
     };
   }
 
-  const { product: initialProduct, images: initialImages } = productData;
+  const { localizedProduct: initialProduct, images: initialImages } =
+    productData;
 
   const initialCategories = await categoryApi.getCategories(locale);
 

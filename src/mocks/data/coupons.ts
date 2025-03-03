@@ -14,7 +14,7 @@ export const coupons = [
     value: 10.0,
     expiresAt: futureDate,
     isActive: true,
-    minPurchaseAmount: 20.0,
+    minPurchaseAmount: 0,
     maxUses: 100,
     currentUses: 0,
   },

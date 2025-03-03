@@ -9,3 +9,9 @@ interface Coupon {
   maxUses?: number;
   currentUses: number;
 }
+
+interface CouponResponse {
+  code: string;
+  type: string;
+  value: number;
+}

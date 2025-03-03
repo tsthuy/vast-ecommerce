@@ -40,9 +40,11 @@ export const CheckOut = () => {
     data: cart,
     error: cartError,
     isLoading: cartLoading,
-  } = useCheckoutCart(tempCartId);
-  console.log(cart);
-  const applyCouponMutation = useApplyCouponInCheckout(tempCartId);
+  } = useCheckoutCart(router.locale || "en", tempCartId);
+  const applyCouponMutation = useApplyCouponInCheckout(
+    router.locale || "en",
+    tempCartId
+  );
   const completeCheckoutMutation = useCompleteCheckout(
     user?.uid || "",
     tempCartId
@@ -87,7 +89,7 @@ export const CheckOut = () => {
         totalPrice -= (totalPrice * cart.applied_coupon.value) / 100;
       }
     }
-    totalPrice += 10; // Shipping fee
+    totalPrice += 10;
     return totalPrice.toFixed(2);
   };
 
@@ -97,19 +99,12 @@ export const CheckOut = () => {
       return;
     }
 
-    try {
-      applyCouponMutation.mutate({
-        couponCode,
-        totalPrice: cart?.meta?.total_price || 0,
-      });
-      toast.success("Coupon applied successfully.");
-      setCouponCode("");
-      console.log("Coupon applied successfully.", cart);
-    } catch (error: any) {
-      toast(
-        `Failed to apply coupon: ${error.response?.data?.error || "Unknown error"}`
-      );
-    }
+    applyCouponMutation.mutate({
+      couponCode,
+      totalPrice: cart?.meta?.total_price || 0,
+    });
+
+    setCouponCode("");
   };
 
   const handlePayNow = async () => {

@@ -91,7 +91,7 @@ export const Cart = () => {
         setCouponCode("");
       }
     } catch (error: any) {
-      toast(`Failed to apply coupon:  ${error.response.data.error}`);
+      toast.error(`Failed to apply coupon:  ${error.response.data.error}`);
     }
   };
 

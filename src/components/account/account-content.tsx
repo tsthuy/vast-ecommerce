@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useTranslation } from "next-i18next";
-// Firebase imports
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";

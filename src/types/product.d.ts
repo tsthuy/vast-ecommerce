@@ -43,7 +43,17 @@ interface NewProduct {
   variants: ProductVariant[];
 }
 
+interface LocalizedText {
+  en: string;
+  vi: string;
+  [key: string]: string;
+}
+interface NewProductBackend extends NewProduct {
+  name: LocalizedText;
+  description: LocalizedText;
+}
+
 interface ProductDetailsResponse {
-  product: NewProduct;
+  localizedProduct: NewProduct;
   images: ProductImage[];
 }

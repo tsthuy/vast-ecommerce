@@ -1,6 +1,11 @@
 import MockAdapter from "axios-mock-adapter";
 
 import { new_products_schema } from "./data/new_product_schema";
+import { new_products_backend } from "./data/new_product_backend";
+import {
+  filterProductByLocale,
+  filterProductsByLocale,
+} from "~/utils/product.util";
 
 export const wishlistItems: Array<{
   wishlist_item_id: string;
@@ -53,13 +58,18 @@ export const setupWishlistsMock = (mock: MockAdapter) => {
   });
 
   mock.onGet("/api/wishlist/items").reply((config) => {
+    const locale = config.headers?.["Accept-Language"] || "en";
     const { user_id } = config.params;
     const userWishlistItems = wishlistItems.filter(
       (item) => item.user_id === user_id
     );
 
     const wishlistItemsDetails = userWishlistItems.map((item) => {
-      const product = new_products_schema.find((p) => p.id === item.product_id);
+      const rawProduct = new_products_backend.find(
+        (p) => p.id === item.product_id
+      );
+
+      const product = filterProductByLocale(rawProduct!, locale);
       return {
         wishlist_item_id: item.wishlist_item_id,
         user_id: item.user_id,

@@ -57,7 +57,6 @@ export function EnhancedGooglePlacesInput({
         const components: AddressComponent = {};
         const missing: string[] = [];
 
-        // Extract address components
         place.address_components.forEach((component) => {
           const types = component.types;
 
@@ -78,7 +77,6 @@ export function EnhancedGooglePlacesInput({
           }
         });
 
-        // Check for missing components
         if (!components.city) missing.push("city");
         if (!components.state) missing.push("state");
         if (!components.postalCode) missing.push("postalCode");
@@ -91,7 +89,6 @@ export function EnhancedGooglePlacesInput({
           setMissingComponents(missing);
           setIsModalOpen(true);
         } else {
-          // If all components are present, update the form
           const fullAddress = formatAddress(
             components,
             place.formatted_address || ""
@@ -111,7 +108,6 @@ export function EnhancedGooglePlacesInput({
     components: AddressComponent,
     baseAddress: string
   ): string => {
-    // Format the complete address with all components
     const parts = [
       baseAddress,
       components.city,

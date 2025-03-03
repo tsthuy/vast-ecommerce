@@ -5,7 +5,17 @@ import { Slash } from "lucide-react";
 
 const Breadcrumbs = () => {
   const router = useRouter();
-  const pathnames = router.asPath.split("/").filter((x) => x);
+  const pathnames = router.asPath
+    .split("/")
+    .filter((x) => x)
+    .map((segment) => {
+      try {
+        return decodeURIComponent(segment);
+      } catch (error) {
+        console.error("Error decoding URI segment:", segment, error);
+        return segment;
+      }
+    });
 
   return (
     <nav className="flex items-start justify-start pt-8 lg:pt-[80px]">
