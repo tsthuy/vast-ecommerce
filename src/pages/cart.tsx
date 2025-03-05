@@ -2,12 +2,12 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Footer } from "~/components";
+import { ProtectedRoute } from "~/components/auth/protected-route";
 import { Header, TopHeader } from "~/components/header";
 
 import { categoryApi } from "~/services";
 
 import { Cart } from "./../components/cart/cart";
-import { ProtectedRoute } from "~/components/auth/protected-route";
 
 export default function CartPage({
   initialCategories,

@@ -25,6 +25,7 @@ import { useWishlists } from "~/hooks/use-wishlists.hook";
 import { logout } from "~/libs/auth.lib";
 import { cn } from "~/libs/utils";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
 import { getGuestUserId } from "~/utils/get-user.util";
 
 import { useAuthStore } from "~/stores/auth.store";
@@ -68,9 +69,8 @@ export default function Header({ categories }: HeaderProps) {
     try {
       await logout();
       toast.success(t("common:logout_successfully"));
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -96,9 +96,11 @@ export default function Header({ categories }: HeaderProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-normal underline-offset-4 hover:underline ${
-                  pathname === link.href && "underline underline-offset-4"
-                }`}
+                className={cn(
+                  "text-sm font-normal underline-offset-4 hover:underline",
+                  pathname === link.href && "underline underline-offset-4",
+                  user?.uid && link.href === "/signup" && "hidden"
+                )}
               >
                 {link.label}
               </Link>

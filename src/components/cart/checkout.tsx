@@ -1,33 +1,37 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import axios from "axios";
 import { Slash } from "lucide-react";
 import { toast } from "sonner";
 
-import { cn } from "~/libs/utils";
-
-import { useAuthStore } from "~/stores/auth.store";
-
-import Container from "../container";
-import MyButton from "../custom/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-
-import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
-import { PaymentForm } from "./payment-form";
-import { StripeProvider } from "./stripe-provider";
-import { useParams } from "next/navigation";
 import {
   useApplyCouponInCheckout,
   useCheckoutCart,
   useCompleteCheckout,
 } from "~/hooks/use-carts.hook";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import Spinner from "../ui/spinner";
+
+import { cn } from "~/libs/utils";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
+import { getProductSlug } from "~/utils/get-product-slug.util";
+
+import { useAuthStore } from "~/stores/auth.store";
+
+import Container from "../container";
+import MyButton from "../custom/button";
 import { NotFound } from "../not-found";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import Spinner from "../ui/spinner";
+
+import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
+import { PaymentForm } from "./payment-form";
+import { StripeProvider } from "./stripe-provider";
 
 export const CheckOut = () => {
   const { t } = useTranslation("cart");
@@ -77,7 +81,7 @@ export const CheckOut = () => {
 
         setClientSecret(response.data.clientSecret);
       } catch (error) {
-        toast.error("Failed to initialize payment");
+        toast.error(customErrorMessage(error));
       }
     }
     setPaymentMethod(value as "bank" | "cash");
@@ -134,7 +138,7 @@ export const CheckOut = () => {
       await completeCheckoutMutation.mutateAsync(false);
       router.push("/cart");
     } catch (error) {
-      toast.error("Failed to cancel checkout.");
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -233,9 +237,24 @@ export const CheckOut = () => {
                           className="rounded-md"
                         />
                         <div className="flex flex-col">
-                          <span>
-                            {item.product.name} (x{item.quantity})
-                          </span>
+                          <Link
+                            href={{
+                              pathname: "/account/[categoryName]/[productSlug]",
+                              query: {
+                                categoryName:
+                                  item.product.category?.name.toLowerCase(),
+                                productSlug: getProductSlug(
+                                  item.product_id,
+                                  item.product.name
+                                ),
+                              },
+                            }}
+                          >
+                            <span className="hover:text-button-1">
+                              {item.product.name} (x{item.quantity})
+                            </span>
+                          </Link>
+
                           {Object.entries(item.variant).map(([key, value]) => (
                             <span
                               key={key}
@@ -264,7 +283,7 @@ export const CheckOut = () => {
                 <div className="flex justify-between border-b border-black py-[16px]">
                   <span>{t("shipping")}:</span>
 
-                  <span className="">$10</span>
+                  <span className="">$10.00</span>
                 </div>
                 {cart && cart.applied_coupon && (
                   <div className="flex justify-between">

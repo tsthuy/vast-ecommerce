@@ -16,5 +16,7 @@
   "confirm_new_password": "Confirm New Password",
   "current_password": "Current Password",
   "save_changes": "Save Changes",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "email_not_verified": "Email Not Verified",
+  "send_verification_email": "Send Verification Email"
 }

@@ -21,7 +21,7 @@ export function useProductsJustForU(userId: string, locale: string) {
 export function useProductById(locale: string, productId: string) {
   return useSuspenseQuery({
     ...QUERY_KEYS.products.details(locale, productId),
-    queryFn: () => productApi.getProductById(productId),
+    queryFn: () => productApi.getProductById(locale, productId),
   });
 }
 

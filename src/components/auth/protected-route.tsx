@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+
 import { useAuthStore } from "~/stores/auth.store";
 
 interface ProtectedRouteProps {
@@ -8,15 +9,20 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  console.log(router.pathname);
-  const { user, setCallbackUrl } = useAuthStore();
+  const { user, isLoading, setCallbackUrl } = useAuthStore();
+
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
   useEffect(() => {
-    if (!user?.uid) {
+    initializeAuth();
+  }, [initializeAuth]);
+
+  useEffect(() => {
+    if (!isLoading && !user?.uid) {
       setCallbackUrl(router.asPath);
       router.push("/login");
     }
-  }, [user?.uid, setCallbackUrl]);
+  }, [user?.uid, isLoading]);
 
   if (!user?.uid) {
     return null;

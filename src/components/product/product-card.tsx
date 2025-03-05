@@ -20,6 +20,8 @@ import {
 
 import { cn } from "~/libs/utils";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+import { getProductSlug } from "~/utils/get-product-slug.util";
 import { getGuestUserId } from "~/utils/get-user.util";
 import { renderStars } from "~/utils/render-stars";
 
@@ -40,6 +42,7 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { user } = useAuthStore();
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   const { t } = useTranslation("common");
   const pathname = usePathname();
@@ -90,28 +93,14 @@ export default function ProductCard({
         });
 
         toast.success(t("added_to_wishlist"));
-
-        if (!user?.uid) {
-          toast.info(t("login_to_save_wishlist"), {
-            action: {
-              label: t("login"),
-              onClick: () => router.push("/login"),
-            },
-          });
-        }
       }
-    } catch (error: any) {
-      console.error("Failed to toggle wishlist:", error);
-      toast.error(
-        error.response?.status === 400
-          ? t("already_in_wishlist")
-          : t("failed_to_toggle_wishlist")
-      );
+    } catch (error) {
+      toast.error(customErrorMessage(error));
     }
   };
 
   const handleAddToCart = async () => {
-    if (!user?.uid) {
+    if (!user?.uid && !isLoading) {
       setPendingCartItem({
         product_id: product.id,
         variant_id: selectedVariant.id,
@@ -135,8 +124,7 @@ export default function ProductCard({
       });
       toast.success(t("added_to_cart"));
     } catch (error) {
-      console.error("Failed to add to cart:", error);
-      toast.error(t("failed_to_add_to_cart"));
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -151,8 +139,6 @@ export default function ProductCard({
           ((product.price - selectedVariant.price) / product.price) * 100
         )
       : 0;
-
-  const productSlug = `${product.name.toLowerCase().replace(/\s+/g, "-")}-${product.id}`;
 
   return (
     <div className="w-full overflow-hidden rounded-lg bg-white">
@@ -263,7 +249,7 @@ export default function ProductCard({
             pathname: "/account/[categoryName]/[productSlug]",
             query: {
               categoryName: product.category?.name.toLowerCase(),
-              productSlug,
+              productSlug: getProductSlug(product.id, product.name),
             },
           }}
           className="text-16 font-medium hover:text-button-1"

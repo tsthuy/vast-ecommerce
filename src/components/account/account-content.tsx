@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 
+import { auth } from "~/libs/firebase.lib";
 import { splitComplexName } from "~/libs/name.lib";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -31,7 +42,10 @@ const formSchema = z
     email: z.string().email("Invalid email").min(1, "Email is required"),
     address: z.string().optional(),
     current_password: z.string().optional(),
-    new_password: z.string().optional(),
+    new_password: z
+      .string()
+      .min(8, "New password must be at least 8 characters")
+      .optional(),
     confirm_new_password: z.string().optional(),
   })
   .refine(
@@ -45,7 +59,9 @@ const formSchema = z
 
 export default function AccountContent() {
   const { t } = useTranslation(["account", "common"]);
-  const { user } = useAuthStore();
+  const { user, setUser, isLoading: isLoadingAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,19 +76,6 @@ export default function AccountContent() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
-  }
-
   useEffect(() => {
     if (user) {
       const { firstName, lastName } = splitComplexName(user.displayName || "");
@@ -81,9 +84,104 @@ export default function AccountContent() {
         last_name: lastName || "",
         email: user.email || "",
         address: "",
+        current_password: "",
+        new_password: "",
+        confirm_new_password: "",
       });
+      setIsEmailVerified(user.emailVerified);
     }
   }, [user, form]);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        setIsEmailVerified(firebaseUser.emailVerified);
+        setUser(firebaseUser);
+      }
+    });
+    return () => unsubscribe();
+  }, [setUser]);
+
+  const handleSendEmailVerification = async () => {
+    if (!user) return;
+    try {
+      await sendEmailVerification(user);
+      toast.success("Verification email sent! Please check your inbox.");
+    } catch (error) {
+      toast.error("Failed to send verification email.");
+    }
+  };
+
+  const reauthenticateUser = async (currentPassword: string) => {
+    if (!user || !user.email) {
+      throw new Error("User not found or email not available.");
+    }
+
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    try {
+      await reauthenticateWithCredential(user, credential);
+    } catch (error) {
+      throw new Error("Current password is incorrect. Please try again.");
+    }
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!user) {
+      toast.error("User not logged in.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      if (values.email !== user.email || values.new_password) {
+        if (!values.current_password) {
+          throw new Error(
+            "Current password is required to update email or password."
+          );
+        }
+        await reauthenticateUser(values.current_password);
+      }
+
+      const fullName = `${values.first_name} ${values.last_name}`;
+      if (fullName !== user.displayName) {
+        await updateProfile(user, { displayName: fullName });
+      }
+
+      if (values.email !== user.email) {
+        await updateEmail(user, values.email);
+        await sendEmailVerification(user);
+        toast.success("Email updated! Please verify your new email.");
+      }
+
+      if (values.new_password) {
+        await updatePassword(user, values.new_password);
+        toast.success("Password updated successfully!");
+      }
+
+      const updatedUser = auth.currentUser;
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
+
+      toast.success("Profile updated successfully!");
+      form.reset({
+        ...values,
+        current_password: "",
+        new_password: "",
+        confirm_new_password: "",
+      });
+    } catch (erro) {
+      toast.error(
+        customErrorMessage(erro, "Failed to update profile. Please try again.")
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="px-2 sm:w-3/4 sm:flex-1 lg:py-10 lg:shadow">
@@ -106,7 +204,6 @@ export default function AccountContent() {
                     <FormLabel className="text-16 font-normal">
                       {t("first_name")}
                     </FormLabel>
-
                     <FormControl>
                       <Input
                         className="bg-secondary-2 py-5"
@@ -115,7 +212,6 @@ export default function AccountContent() {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -131,7 +227,6 @@ export default function AccountContent() {
                     <FormLabel className="text-16 font-normal">
                       {t("last_name")}
                     </FormLabel>
-
                     <FormControl>
                       <Input
                         className="bg-secondary-2 py-5"
@@ -140,7 +235,6 @@ export default function AccountContent() {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -156,7 +250,6 @@ export default function AccountContent() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-16 font-normal">Email</FormLabel>
-
                     <FormControl>
                       <Input
                         className="bg-secondary-2 py-5"
@@ -165,7 +258,6 @@ export default function AccountContent() {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -181,16 +273,14 @@ export default function AccountContent() {
                     <FormLabel className="text-16 font-normal">
                       {t("address")}
                     </FormLabel>
-
                     <FormControl>
                       <Input
                         className="bg-secondary-2 py-5"
-                        placeholder="Kingston, 5236, United State"
+                        placeholder="Kingston, 5236, United States"
                         type="text"
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -204,9 +294,8 @@ export default function AccountContent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-16 font-normal">
-                  {t("password_changes")}
+                  {t("current_password")}
                 </FormLabel>
-
                 <FormControl>
                   <Input
                     className="bg-secondary-2 py-5"
@@ -215,7 +304,6 @@ export default function AccountContent() {
                     {...field}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -229,7 +317,6 @@ export default function AccountContent() {
                 <FormLabel className="text-16 font-normal">
                   {t("new_password")}
                 </FormLabel>
-
                 <FormControl>
                   <Input
                     className="bg-secondary-2 py-5"
@@ -238,7 +325,6 @@ export default function AccountContent() {
                     {...field}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -252,7 +338,6 @@ export default function AccountContent() {
                 <FormLabel className="text-16 font-normal">
                   {t("account:confirm_new_password")}
                 </FormLabel>
-
                 <FormControl>
                   <Input
                     className="bg-secondary-2 py-5"
@@ -261,7 +346,6 @@ export default function AccountContent() {
                     {...field}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -269,8 +353,9 @@ export default function AccountContent() {
 
           <div className="flex items-center justify-end gap-8">
             <Button variant={"ghost"}>{t("cancel")}</Button>
-
-            <MyButton type="submit">{t("save_changes")}</MyButton>
+            <MyButton type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : t("save_changes")}
+            </MyButton>
           </div>
         </form>
       </Form>

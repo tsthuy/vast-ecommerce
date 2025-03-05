@@ -33,6 +33,7 @@ export default function VariantSelector({
       )
     ) || colors[0]
   );
+
   const [selectedSize, setSelectedSize] = useState<AttributeValue>(
     sizes.find((size) =>
       selectedVariant.attributes.some(
@@ -173,8 +174,6 @@ export default function VariantSelector({
           </div>
         </div>
       )}
-
-      {/* Stock Information */}
     </div>
   );
 }

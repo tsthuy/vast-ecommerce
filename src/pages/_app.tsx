@@ -13,7 +13,6 @@ import "../styles/globals.css";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ProtectedRoute } from "~/components/auth/protected-route";
 
 export type PageWithLayout = AppProps["Component"] & {
   Layout?: ComponentType<{ children: ReactNode }>;

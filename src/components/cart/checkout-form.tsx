@@ -1,9 +1,12 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
 
 import PhoneInput from "../auto-complete-input/phone-input";
 import { Checkbox } from "../ui/checkbox";
@@ -19,7 +22,6 @@ import {
 import { Input } from "../ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslation } from "next-i18next";
 
 const formSchema = (phoneValidation: {
   isValid: boolean;
@@ -83,8 +85,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
         </pre>
       );
     } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.error(customErrorMessage(error));
     }
   }
 

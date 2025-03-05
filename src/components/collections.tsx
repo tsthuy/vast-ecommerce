@@ -1,11 +1,11 @@
-import Image from "next/image"
-import { useTranslation } from "next-i18next"
+import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
-import { Button } from "./ui/button"
-import { Card, CardContent } from "./ui/card"
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 
 export default function Collections() {
-  const { t } = useTranslation(["common", "collection"])
+  const { t } = useTranslation(["common", "collection"]);
 
   return (
     <div className="">
@@ -48,10 +48,10 @@ export default function Collections() {
           <Card className="overflow-hidden bg-black pb-0 text-white">
             <CardContent className="relative flex min-h-[280px] items-center justify-center p-0">
               <Image
-                src="https://s3-alpha-sig.figma.com/img/455c/8d64/08463f7e8f57dd3048a2444dbfa0cb90?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=NZeG9w~BSAqwhka1912j2JqnSSl1VRTLq4GHwlmf-03ZcvQFVgbMce3uvaAKiP~PtLBAtwS0Zxi5ZjM85j8FHG5NLzRqhUpKM7Q00q~Lz~LaxVQ35DWCRLqwmxoMbjhHkxzW2LAgnDZchRz97z9eU-bxMKP01UjOqqmFyDs28X3-gFJXNa1sMNknYWC1bY5B7SFjUHss16NnYp0Ji-q08wS8JzBVSG7dfA5nfaQxAHpt9LoPwlDH6jJRAVBuO9HOSoPzInzLOrbHYZPz-z-L7I2NttCBp5rbp~iE4RYEjlA0Eo9CNT7fnTG7yX7xTwhOmGKokFMEihpGsYq-EM2xXw__"
+                src="/images/women.png"
                 alt="Women's Collections"
                 fill
-                className="-scale-x-100 object-cover transition-transform duration-300 ease-in-out hover:drop-shadow-2xl"
+                className="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
               />
 
               <div className="absolute bottom-6 left-0 w-full px-8">
@@ -78,7 +78,7 @@ export default function Collections() {
             {/* Bottom Left - Speakers */}
             <Card className="overflow-hidden bg-black text-white">
               <CardContent className="relative flex aspect-square min-h-[220px] items-center justify-center p-0">
-                <div className="h-[65%] relative w-[65%]">
+                <div className="relative h-[65%] w-[65%]">
                   <Image
                     src="/images/speaker.png"
                     alt="Speakers"
@@ -140,5 +140,5 @@ export default function Collections() {
         </div>
       </div>
     </div>
-  )
+  );
 }

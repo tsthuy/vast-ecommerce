@@ -10,6 +10,8 @@ import { toast } from "sonner";
 
 import { loginWithGoogle, signUpWithEmail } from "~/libs/auth.lib";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+
 import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
@@ -33,15 +35,15 @@ export const SignUp = () => {
     setLoading(true);
     try {
       await signUpWithEmail(name, emailOrPhone, password);
-      setLoading(false);
 
       if (!callbackUrl) {
         router.push("/");
         toast.success(t("account_created_successfully"));
       }
-    } catch (error: any) {
+    } catch (error) {
+      toast.error(customErrorMessage(error));
+    } finally {
       setLoading(false);
-      toast.error(error.message);
     }
   };
 
@@ -54,7 +56,7 @@ export const SignUp = () => {
         toast.success(t("login_successfully"));
       }
     } catch (error) {
-      console.log(error);
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -62,9 +64,9 @@ export const SignUp = () => {
     <>
       {loading && <Spinner />}
 
-      <div className="justify-left mb-[140px] mt-[60px] bg-left bg-no-repeat xl:bg-[url('/images/banner.png')]">
-        <Container className="flex justify-center xl:justify-end">
-          <div className="flex flex-col justify-end py-[125px]">
+      <div className="mb-[140px] mt-[60px] justify-end bg-contain bg-left bg-no-repeat lg:bg-[url('/images/banner.png')]">
+        <Container className="flex justify-center lg:justify-end">
+          <div className="flex flex-col justify-end py-10 xl:py-[100px]">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
               <h1 className="font-inter text-36 font-medium tracking-[0.04em]">
                 {t("create_an_account")}
@@ -125,7 +127,7 @@ export const SignUp = () => {
                     height={20}
                   />
 
-                  {t("sign_in_with_google")}
+                  {t("sign_up_with_google")}
                 </MyButton>
               </div>
 

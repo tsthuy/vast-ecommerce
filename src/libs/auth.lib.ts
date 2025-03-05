@@ -28,6 +28,10 @@ export const loginWithEmail = async (email: string, password: string) => {
 
 export const loginWithGoogle = async () => {
   try {
+    googleProvider.setCustomParameters({
+      prompt: "select_account",
+    });
+
     const userCredential = await signInWithPopup(auth, googleProvider);
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {

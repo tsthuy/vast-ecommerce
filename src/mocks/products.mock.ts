@@ -1,14 +1,11 @@
+import MockAdapter from "axios-mock-adapter";
+
 import {
   filterProductByLocale,
   filterProductsByLocale,
 } from "./../utils/product.util";
-import MockAdapter from "axios-mock-adapter";
-
-import {
-  new_products_schema,
-  products_jus_for_u,
-} from "./data/new_product_schema";
 import { new_products_backend } from "./data/new_product_backend";
+import { new_products_schema } from "./data/new_product_schema";
 
 export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet("/api/products-explore").reply((config) => {

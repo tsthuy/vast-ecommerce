@@ -6,6 +6,8 @@ import { useProductsJustForU } from "~/hooks";
 import { useMoveWishlistToCart } from "~/hooks/use-carts.hook";
 import { useWishlists } from "~/hooks/use-wishlists.hook";
 
+import { getGuestUserId } from "~/utils/get-user.util";
+
 import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
@@ -13,7 +15,6 @@ import MyButton from "../custom/button";
 import { ProductCard, ProductList } from "../product";
 import SectionHeading from "../section-heading";
 import { Button } from "../ui/button";
-import { getGuestUserId } from "~/utils/get-user.util";
 
 export const WishList = () => {
   const router = useRouter();

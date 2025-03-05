@@ -16,5 +16,7 @@
   "current_password": "Mật khẩu hiện tại",
   "confirm_new_password": "Xác nhận mật khẩu mới",
   "save_changes": "Lưu thay đổi",
-  "cancel": "Hủy"
+  "cancel": "Hủy",
+  "email_not_verified": "Email chưa được xác minh",
+  "send_verification_email": "Gửi mã xác minh email"
 }

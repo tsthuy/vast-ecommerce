@@ -17,6 +17,8 @@ import { cn } from "~/libs/utils";
 
 import { couponApi } from "~/services/coupons.service";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+
 import { useAuthStore } from "~/stores/auth.store";
 
 import Breadcrumbs from "../breadcrumbs";
@@ -25,6 +27,7 @@ import MyButton from "../custom/button";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import Spinner from "../ui/spinner";
 import {
   Table,
   TableBody,
@@ -38,6 +41,8 @@ export const Cart = () => {
   const router = useRouter();
   const { t } = useTranslation(["common", "cart"]);
   const { user } = useAuthStore();
+
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon>();
@@ -90,8 +95,8 @@ export const Cart = () => {
         toast("Coupon applied successfully.");
         setCouponCode("");
       }
-    } catch (error: any) {
-      toast.error(`Failed to apply coupon:  ${error.response.data.error}`);
+    } catch (error) {
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -113,7 +118,7 @@ export const Cart = () => {
       });
       router.push(`/checkout/${temp_cart_id}`);
     } catch (error) {
-      toast.error("Failed to proceed to checkout.");
+      toast.error(customErrorMessage(error));
     }
   };
 
@@ -132,14 +137,13 @@ export const Cart = () => {
     totalPrice += 10;
     return totalPrice.toFixed(2);
   };
-
   return (
     <Container>
       <div className="pb-[40px]">
         <Breadcrumbs />
       </div>
 
-      {!cart || cart.cart_items.length === 0 ? (
+      {cart?.cart_items.length === 0 && !isLoading ? (
         <div className="py-12 text-center">
           <h2 className="mb-4 text-2xl font-semibold"> {t("cart:no_item")}</h2>
 
@@ -172,109 +176,114 @@ export const Cart = () => {
               </TableHeader>
 
               <TableBody>
-                {cart.cart_items.map((item) => (
-                  <TableRow key={item.cart_item_id}>
-                    <TableCell className="text-center">
-                      <div className="relative flex items-center gap-4">
-                        <div className="relative">
-                          <Image
-                            src={item.product.images[0] || "/placeholder.svg"}
-                            alt={item.product.name || "Product image"}
-                            width={80}
-                            height={80}
-                            className="min-h-[40px] min-w-[40px] rounded-lg object-cover"
-                          />
+                {cart &&
+                  cart.cart_items.map((item) => (
+                    <TableRow key={item.cart_item_id}>
+                      <TableCell className="text-center">
+                        <div className="relative flex items-center gap-4">
+                          <div className="relative">
+                            <Image
+                              src={item.product.images[0] || "/placeholder.svg"}
+                              alt={item.product.name || "Product image"}
+                              width={80}
+                              height={80}
+                              className="min-h-[40px] min-w-[40px] rounded-lg object-cover"
+                            />
 
-                          <button
-                            className={cn(
-                              item.quantity !== 1 && "hidden",
+                            <button
+                              className={cn(
+                                item.quantity !== 1 && "hidden",
 
-                              "absolute -top-0 left-0 rounded-full bg-button-2"
-                            )}
-                            onClick={() =>
-                              removeFromCartMutation.mutate(item.cart_item_id)
-                            }
-                            disabled={removeFromCartMutation.isPending}
-                          >
-                            <X className="size-4 text-white sm:size-5" />
-                          </button>
-                        </div>
-
-                        <div className="flex flex-col text-left">
-                          <span className="pb-2 font-inter font-bold">
-                            {item.product.name}
-                          </span>
-
-                          {Object.entries(item.variant).map(([key, value]) => (
-                            <div
-                              key={key}
-                              className="text-muted-foreground flex gap-1 text-sm"
+                                "absolute -top-0 left-0 rounded-full bg-button-2"
+                              )}
+                              onClick={() =>
+                                removeFromCartMutation.mutate(item.cart_item_id)
+                              }
+                              disabled={removeFromCartMutation.isPending}
                             >
-                              <span className="block font-medium capitalize sm:min-w-[50px]">
-                                {key}
-                              </span>
+                              <X className="size-4 text-white sm:size-5" />
+                            </button>
+                          </div>
 
-                              <span>:</span>
+                          <div className="flex flex-col text-left">
+                            <span className="pb-2 font-inter font-bold">
+                              {item.product.name}
+                            </span>
 
-                              <span className="pl-1 capitalize"> {value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </TableCell>
+                            {Object.entries(item.variant).map(
+                              ([key, value]) => (
+                                <div
+                                  key={key}
+                                  className="text-muted-foreground flex gap-1 text-sm"
+                                >
+                                  <span className="block font-medium capitalize sm:min-w-[50px]">
+                                    {key}
+                                  </span>
 
-                    <TableCell className="text-center">
-                      {item.product.price.toFixed(2)}
-                    </TableCell>
+                                  <span>:</span>
 
-                    <TableCell className="flex justify-center">
-                      <div className="mt-6 flex flex-row items-center justify-center gap-2 rounded border px-2">
-                        <div className="flex min-w-[20px] items-center justify-center">
-                          <span className="text-center">{item.quantity}</span>
-                        </div>
-
-                        <div className="flex flex-col">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-4"
-                            disabled={item.product.stock <= item.quantity}
-                            onClick={() =>
-                              handleQuantityChange(
-                                item.cart_item_id,
-                                item.quantity + 1
+                                  <span className="pl-1 capitalize">
+                                    {" "}
+                                    {value}
+                                  </span>
+                                </div>
                               )
-                            }
-                          >
-                            <ChevronUp className="size-4" />
-                          </Button>
-
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="size-4"
-                            onClick={() =>
-                              handleQuantityChange(
-                                item.cart_item_id,
-                                item.quantity - 1
-                              )
-                            }
-                          >
-                            <ChevronDown className="size-4" />
-                          </Button>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
+                      </TableCell>
 
-                    <TableCell className="text-center">
-                      ${(item.product.price * item.quantity).toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell className="text-center">
+                        {item.product.price.toFixed(2)}
+                      </TableCell>
+
+                      <TableCell className="flex justify-center">
+                        <div className="mt-6 flex flex-row items-center justify-center gap-2 rounded border px-2">
+                          <div className="flex min-w-[20px] items-center justify-center">
+                            <span className="text-center">{item.quantity}</span>
+                          </div>
+
+                          <div className="flex flex-col">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="size-4"
+                              disabled={item.product.stock <= item.quantity}
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.cart_item_id,
+                                  item.quantity + 1
+                                )
+                              }
+                            >
+                              <ChevronUp className="size-4" />
+                            </Button>
+
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="size-4"
+                              onClick={() =>
+                                handleQuantityChange(
+                                  item.cart_item_id,
+                                  item.quantity - 1
+                                )
+                              }
+                            >
+                              <ChevronDown className="size-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        ${(item.product.price * item.quantity).toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>
-
           <div className="mt-8 flex flex-col flex-wrap gap-4">
             <MyButton className="max-w-fit border border-black bg-transparent text-black">
               <Link href="/">{t("return_to_shop")}</Link>
@@ -305,7 +314,7 @@ export const Cart = () => {
                   <div className="flex justify-between">
                     <span>{t("cart:subtotal")}:</span>
 
-                    <span>${cart.meta.total_price.toFixed(2)}</span>
+                    <span>${cart && cart.meta.total_price.toFixed(2)}</span>
                   </div>
 
                   <div className="flex justify-between">
@@ -325,8 +334,11 @@ export const Cart = () => {
                       <span>
                         -$
                         {appliedCoupon.type === "fixed"
-                          ? `${appliedCoupon.value}`
-                          : `${(cart.meta.total_price * appliedCoupon.value) / 100}`}
+                          ? `${appliedCoupon.value.toFixed(2)}`
+                          : `${(
+                              (cart!.meta.total_price * appliedCoupon.value) /
+                              100
+                            ).toFixed(2)}`}
                       </span>
                     </div>
                   )}
@@ -341,6 +353,7 @@ export const Cart = () => {
 
                   <div className="flex justify-center">
                     <MyButton onClick={handleProceedToCheckout}>
+                      {createCheckoutCartMutation.isPending && <Spinner />}{" "}
                       {t("cart:proceed_to_checkout")}
                     </MyButton>
                   </div>

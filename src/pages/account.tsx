@@ -5,9 +5,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Container } from "~/components";
 import { Account } from "~/components/account/account";
 import { AccountBreadcrumb } from "~/components/account/account-breadcrum";
+import { ProtectedRoute } from "~/components/auth/protected-route";
 
 import { categoryApi } from "~/services";
-import { ProtectedRoute } from "~/components/auth/protected-route";
 
 const DynamicTopHeader = dynamic(
   () => import("~/components/header/top-header"),

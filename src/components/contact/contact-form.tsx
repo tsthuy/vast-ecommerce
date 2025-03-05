@@ -7,6 +7,8 @@ import * as z from "zod";
 
 import { cn } from "~/libs/utils";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+
 import MyButton from "../custom/button";
 import {
   Form,
@@ -43,8 +45,7 @@ export default function ContactForm() {
         </pre>
       );
     } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.error(customErrorMessage(error));
     }
   }
 

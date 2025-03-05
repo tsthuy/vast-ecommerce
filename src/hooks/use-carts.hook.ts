@@ -7,6 +7,7 @@ import { QUERY_KEYS } from "~/constants";
 
 import { cartApi } from "~/services";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
 import queryClient from "~/utils/query-client.util";
 
 import { useAuthStore } from "~/stores/auth.store";
@@ -92,8 +93,7 @@ export function useRemoveFromCart(userId: string, locale: string) {
       toast.success("Item removed from cart.");
     },
     onError: (error) => {
-      console.error("Error removing from cart:", error);
-      toast.error("Failed to remove item from cart.");
+      toast.error(customErrorMessage(error));
     },
   });
 }
@@ -113,8 +113,7 @@ export function useMoveWishlistToCart(userId: string, locale: string) {
       toast.success("All items moved to cart.");
     },
     onError: (error) => {
-      console.error("Error moving wishlist to cart:", error);
-      toast.error("Failed to move items to cart.");
+      toast.error(customErrorMessage(error));
     },
   });
 }
@@ -158,7 +157,8 @@ export function useApplyCouponInCheckout(locale: string, tempCartId: string) {
       );
     },
     onError: (error) => {
-      toast.error(`Failed to apply coupon:  ${error.response.data.error}`);
+      console.error("Error applying coupon:", error);
+      toast.error(customErrorMessage(error));
     },
   });
 }
@@ -179,7 +179,7 @@ export function useCompleteCheckout(userId: string, tempCartId: string) {
 }
 
 export function usePostLoginActions(locale: string) {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common", "auth"]);
   const router = useRouter();
 
   const { user } = useAuthStore();
@@ -188,12 +188,13 @@ export function usePostLoginActions(locale: string) {
   const setCallbackUrl = useAuthStore((state) => state.setCallbackUrl);
   const pendingCartItem = useAuthStore((state) => state.pendingCartItem);
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   const addToCartMutation = useAddToCart(user?.uid || "", locale);
 
   useEffect(() => {
     const handlePostLogin = async () => {
-      if (user?.uid) {
+      if (user?.uid && !isLoading) {
         if (pendingCartItem) {
           try {
             await addToCartMutation.mutateAsync({
@@ -204,8 +205,7 @@ export function usePostLoginActions(locale: string) {
 
             toast.success(t("added_to_cart"));
           } catch (error) {
-            console.error("Failed to add pending cart item: 123", error);
-            toast.error(t("failed_to_add_to_cart"));
+            toast.error(customErrorMessage(error));
           } finally {
             setPendingCartItem(null);
           }
@@ -213,6 +213,7 @@ export function usePostLoginActions(locale: string) {
 
         if (callbackUrl) {
           router.push(callbackUrl);
+          toast.success(t("auth:login_successfully"));
           setCallbackUrl(null);
         }
       }

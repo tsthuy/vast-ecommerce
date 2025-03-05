@@ -413,6 +413,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
             price: variant.price,
             images: [variant.image.url],
             stock: variant.stock,
+            category: product.category,
           },
           variant: variantAttributes,
         };
@@ -423,21 +424,14 @@ export const setupCartsMock = (mock: MockAdapter) => {
       (sum, item) => sum + item.quantity,
       0
     );
-    let total_price = tempCart.cart_items.reduce((sum, item) => {
+
+    const total_price = tempCart.cart_items.reduce((sum, item) => {
       const product = new_products_schema.find((p) => p.id === item.product_id);
       const variant = product?.variants.find(
         (v: ProductVariant) => v.id === item.variant_id
       );
       return sum + (variant?.price || 0) * item.quantity;
     }, 0);
-
-    if (tempCart.applied_coupon) {
-      if (tempCart.applied_coupon.type === "fixed") {
-        total_price -= tempCart.applied_coupon.value;
-      } else if (tempCart.applied_coupon.type === "percentage") {
-        total_price -= (total_price * tempCart.applied_coupon.value) / 100;
-      }
-    }
 
     return [
       200,

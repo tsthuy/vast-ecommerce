@@ -7,16 +7,20 @@ import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
 
-import { useAddToCart, useCreateCheckoutCart } from "~/hooks/use-carts.hook";
+import { useCreateCheckoutCart } from "~/hooks/use-carts.hook";
 import {
   useAddWishlist,
   useRemoveWishlist,
   useWishlists,
 } from "~/hooks/use-wishlists.hook";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+import { getGuestUserId } from "~/utils/get-user.util";
 import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
+
+import Spinner from "../ui/spinner";
 
 import ZoomAbleImage from "./zoomable-image-product";
 
@@ -27,8 +31,13 @@ interface ProductDetailsProps {
 
 const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   const { t } = useTranslation(["header", "common", "details"]);
-  const { user } = useAuthStore();
   const router = useRouter();
+
+  const { user } = useAuthStore();
+  const userId = user?.uid || getGuestUserId();
+
+  const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(
     product.variants[0]
@@ -56,18 +65,9 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
   const [quantity, setQuantity] = useState<number>(2);
 
-  const addToCartMutation = useAddToCart(
-    user?.uid || "",
-    router.locale || "en"
-  );
-  const addWishlistMutation = useAddWishlist(
-    user?.uid || "",
-    router.locale || "en"
-  );
-  const { data: wishlist } = useWishlists(
-    user?.uid || "",
-    router.locale || "en"
-  );
+  const addWishlistMutation = useAddWishlist(userId, router.locale || "en");
+
+  const { data: wishlist } = useWishlists(userId, router.locale || "en");
 
   const createCheckoutCartMutation = useCreateCheckoutCart(
     user?.uid || "",
@@ -75,7 +75,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   );
 
   const removeWishlistMutation = useRemoveWishlist(
-    user?.uid || "",
+    userId,
     router.locale || "en"
   );
 
@@ -90,8 +90,13 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   const isInWishlist = !!wishlistItem;
 
   const handleBuyNow = async () => {
-    if (!user?.uid) {
-      toast.error(t("common:please_login"));
+    if (!user?.uid && !isLoading) {
+      setPendingCartItem({
+        product_id: product.id,
+        variant_id: selectedVariant.id,
+        quantity,
+      });
+      toast.info(t("common:please_login"));
       router.push("/login");
       return;
     }
@@ -106,7 +111,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
       product_id: product.id,
       variant_id: selectedVariant.id,
       quantity,
-      user_id: user.uid,
+      user_id: user!.uid,
       product: {
         name: product.name,
         stock: selectedVariant.stock,
@@ -124,16 +129,12 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         cartItems: [tempCartItem],
       });
       router.push(`/checkout/${temp_cart_id}`);
-    } catch (error: any) {
-      toast.error(error.response.data.error);
+    } catch (error) {
+      toast.error(customErrorMessage(error));
     }
   };
 
   const handleToggleWishlist = () => {
-    if (!user?.uid) {
-      toast.error(t("common:please_login"));
-      return;
-    }
     if (!selectedVariant) return;
 
     if (isInWishlist) {
@@ -351,8 +352,9 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
           <Button
             className="bg-button-2 px-8 text-white"
             onClick={handleBuyNow}
-            disabled={addToCartMutation.isPending}
+            disabled={createCheckoutCartMutation.isPending}
           >
+            {createCheckoutCartMutation.isPending && <Spinner />}{" "}
             {t("common:buy_now")}
           </Button>
 

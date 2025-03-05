@@ -9,6 +9,8 @@ import { toast } from "sonner";
 
 import { loginWithEmail } from "~/libs/auth.lib";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+
 import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
@@ -26,20 +28,22 @@ export const SignIn = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    if (loading) return;
+
     e.preventDefault();
     setLoading(true);
 
     try {
       await loginWithEmail(email, password);
-      setLoading(false);
 
       if (!callbackUrl) {
         router.push("/");
         toast.success(t("login_successfully"));
       }
-    } catch (error: any) {
+    } catch (error) {
+      toast.error(customErrorMessage(error));
+    } finally {
       setLoading(false);
-      toast.error(error.message);
     }
   };
 
@@ -47,9 +51,9 @@ export const SignIn = () => {
     <>
       {loading && <Spinner />}
 
-      <div className="mb-[140px] mt-[60px] justify-end bg-left bg-no-repeat xl:bg-[url('/images/banner.png')]">
-        <Container className="flex justify-center xl:justify-end">
-          <div className="flex flex-col justify-end py-[125px]">
+      <div className="mb-[140px] mt-[60px] justify-end bg-contain bg-left bg-no-repeat lg:bg-[url('/images/banner.png')]">
+        <Container className="flex justify-center lg:justify-end">
+          <div className="flex flex-col justify-end py-10 xl:py-[125px]">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
               <h1 className="font-inter text-36 font-medium tracking-[0.04em]">
                 {t("login_in_to_exclusive")}

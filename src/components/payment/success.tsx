@@ -1,12 +1,17 @@
 import { useEffect } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
+
 import { useCompleteCheckout } from "~/hooks/use-carts.hook";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
+
+import { useAuthStore } from "~/stores/auth.store";
+
 import Container from "../../components/container";
 import { Button } from "../../components/ui/button";
-import { useAuthStore } from "~/stores/auth.store";
-import Link from "next/link";
-import { useTranslation } from "next-i18next";
 
 export default function Success() {
   const { t } = useTranslation("payment");
@@ -27,7 +32,7 @@ export default function Success() {
           toast.success("Order created successfully!");
         },
         onError: (error) => {
-          toast.error("Failed to create order: " + error.message);
+          toast.error("Failed to create order: " + customErrorMessage(error));
           router.push("/cart");
         },
       });
