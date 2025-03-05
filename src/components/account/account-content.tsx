@@ -108,7 +108,9 @@ export default function AccountContent() {
       await sendEmailVerification(user);
       toast.success("Verification email sent! Please check your inbox.");
     } catch (error) {
-      toast.error("Failed to send verification email.");
+      toast.error(
+        customErrorMessage(error, "Failed to send verification email")
+      );
     }
   };
 
@@ -124,7 +126,7 @@ export default function AccountContent() {
     try {
       await reauthenticateWithCredential(user, credential);
     } catch (error) {
-      throw new Error("Current password is incorrect. Please try again.");
+      toast.error(customErrorMessage(error, "Failed to reauthenticate user."));
     }
   };
 

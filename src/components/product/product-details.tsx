@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -22,7 +24,7 @@ import { useAuthStore } from "~/stores/auth.store";
 
 import Spinner from "../ui/spinner";
 
-import ZoomAbleImage from "./zoomable-image-product";
+import LightBoxImage from "./light-box";
 
 interface ProductDetailsProps {
   product: NewProduct;
@@ -66,14 +68,11 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   const [quantity, setQuantity] = useState<number>(2);
 
   const addWishlistMutation = useAddWishlist(userId, router.locale || "en");
-
   const { data: wishlist } = useWishlists(userId, router.locale || "en");
-
   const createCheckoutCartMutation = useCreateCheckoutCart(
     user?.uid || "",
     router.locale || "en"
   );
-
   const removeWishlistMutation = useRemoveWishlist(
     userId,
     router.locale || "en"
@@ -196,8 +195,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
   return (
     <div className="flex flex-col gap-[70px] pb-[140px] lg:flex-row">
       <div className="flex w-full flex-col gap-4 lg:w-2/3">
-        <div className="flex flex-col gap-10 md:flex-row">
-          {/* Thumbnails */}
+        <div className="flex flex-col-reverse gap-10 md:flex-row">
           <div
             ref={thumbnailsContainerRef}
             className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex min-w-[170px] flex-row gap-[16px] overflow-auto md:h-[600px] md:flex-col"
@@ -226,10 +224,12 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
             ))}
           </div>
 
-          {/* Main Image */}
-          <div className="mx-auto flex w-[70%] items-center justify-center md:w-full">
-            <ZoomAbleImage alt={product.name} src={selectedImage.url} />
-          </div>
+          <LightBoxImage
+            images={images}
+            alt={product.name}
+            selectedImage={selectedImage}
+            onImageSelect={handleImageSelect}
+          />
         </div>
       </div>
 

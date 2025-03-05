@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
@@ -26,7 +26,7 @@ export default function ProductDetailsPage({
   initialCategories,
   initialProduct,
   initialImages,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <DynamicTopHeader />
@@ -53,7 +53,10 @@ export default function ProductDetailsPage({
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  locale,
+  params,
+}) => {
   if (!locale || !params) {
     return {
       notFound: true,
@@ -99,35 +102,34 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
       initialProduct,
       initialImages,
     },
-    revalidate: 60,
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const categories = await categoryApi.getCategoriesGrid("en");
-  const allProducts = await Promise.all(
-    categories.map(async (category) => {
-      const products = await productApi.getProductsByCategory(category.id);
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const categories = await categoryApi.getCategoriesGrid("en");
+//   const allProducts = await Promise.all(
+//     categories.map(async (category) => {
+//       const products = await productApi.getProductsByCategory(category.id);
 
-      return products.map((product) => ({
-        categoryName: category.name.toLowerCase().replace(/ /g, "-"),
-        productSlug: `${product.name.toLowerCase().trim().replace(/\s+/g, "-")}-${product.id}`,
-        productId: product.id.toString(),
-      }));
-    })
-  );
+//       return products.map((product) => ({
+//         categoryName: category.name.toLowerCase().replace(/ /g, "-"),
+//         productSlug: `${product.name.toLowerCase().trim().replace(/\s+/g, "-")}-${product.id}`,
+//         productId: product.id.toString(),
+//       }));
+//     })
+//   );
 
-  const productPaths = allProducts.flat();
-  const locales = ["en", "vi"];
-  const paths = productPaths.flatMap(({ categoryName, productSlug }) =>
-    locales.map((locale) => ({
-      params: { categoryName, productSlug },
-      locale,
-    }))
-  );
+//   const productPaths = allProducts.flat();
+//   const locales = ["en", "vi"];
+//   const paths = productPaths.flatMap(({ categoryName, productSlug }) =>
+//     locales.map((locale) => ({
+//       params: { categoryName, productSlug },
+//       locale,
+//     }))
+//   );
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
+//   return {
+//     paths,
+//     fallback: "blocking",
+//   };
+// };

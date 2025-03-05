@@ -7,7 +7,7 @@ interface CartProduct {
   stock: number;
   price: number;
   images: string[];
-  category: CategoryGrid;
+  category?: CategoryGrid;
 }
 
 interface CartItemResponse {

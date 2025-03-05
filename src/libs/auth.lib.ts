@@ -7,6 +7,9 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import { toast } from "sonner";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -21,8 +24,7 @@ export const loginWithEmail = async (email: string, password: string) => {
     );
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    console.error("Error logging in:", error);
-    throw error;
+    toast.error(customErrorMessage(error));
   }
 };
 
@@ -35,8 +37,7 @@ export const loginWithGoogle = async () => {
     const userCredential = await signInWithPopup(auth, googleProvider);
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    console.error("Error logging in with Google:", error);
-    throw error;
+    toast.error(customErrorMessage(error));
   }
 };
 
@@ -45,8 +46,7 @@ export const logout = async () => {
     await signOut(auth);
     useAuthStore.getState().clearUser();
   } catch (error) {
-    console.error("Error logging out:", error);
-    throw error;
+    toast.error(customErrorMessage(error));
   }
 };
 
@@ -70,8 +70,7 @@ export const signUpWithEmail = async (
 
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    console.error("Error signing up:", error);
-    throw error;
+    toast.error(customErrorMessage(error));
   }
 };
 
@@ -102,7 +101,6 @@ export const signUpWithPhone = async (phoneNumber: string, name: string) => {
 
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    console.error("Error signing up with phone:", error);
-    throw error;
+    toast.error(customErrorMessage(error));
   }
 };

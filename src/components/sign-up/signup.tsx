@@ -16,7 +16,6 @@ import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
 import MyButton from "../custom/button";
-import Spinner from "../ui/spinner";
 
 export const SignUp = () => {
   const { t } = useTranslation("auth");
@@ -26,13 +25,15 @@ export const SignUp = () => {
   const [name, setName] = useState("");
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    if (isLoading) return;
+
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
     try {
       await signUpWithEmail(name, emailOrPhone, password);
 
@@ -43,11 +44,13 @@ export const SignUp = () => {
     } catch (error) {
       toast.error(customErrorMessage(error));
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    if (isLoading) return;
+
     try {
       await loginWithGoogle();
 
@@ -62,8 +65,6 @@ export const SignUp = () => {
 
   return (
     <>
-      {loading && <Spinner />}
-
       <div className="mb-[140px] mt-[60px] justify-end bg-contain bg-left bg-no-repeat lg:bg-[url('/images/banner.png')]">
         <Container className="flex justify-center lg:justify-end">
           <div className="flex flex-col justify-end py-10 xl:py-[100px]">
@@ -79,6 +80,7 @@ export const SignUp = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="border-b">
                   <input
+                    disabled={isLoading}
                     type="text"
                     name="name"
                     placeholder={t("name")}
@@ -90,6 +92,7 @@ export const SignUp = () => {
 
                 <div className="border-b">
                   <input
+                    disabled={isLoading}
                     type="text"
                     name="emailOrPhone"
                     placeholder={t("email_or_phone_number")}
@@ -101,6 +104,7 @@ export const SignUp = () => {
 
                 <div className="border-b">
                   <input
+                    disabled={isLoading}
                     type="password"
                     name="password"
                     placeholder={t("password")}
@@ -111,7 +115,10 @@ export const SignUp = () => {
                 </div>
 
                 <div>
-                  <MyButton className="w-full"> {t("create_account")}</MyButton>
+                  <MyButton disabled={isLoading} className="w-full">
+                    {" "}
+                    {t("create_account")}
+                  </MyButton>
                 </div>
               </form>
 

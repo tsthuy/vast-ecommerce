@@ -15,7 +15,6 @@ import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
 import MyButton from "../custom/button";
-import Spinner from "../ui/spinner";
 
 export const SignIn = () => {
   const { t } = useTranslation("auth");
@@ -25,13 +24,13 @@ export const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    if (loading) return;
+    if (isLoading) return;
 
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       await loginWithEmail(email, password);
@@ -43,14 +42,12 @@ export const SignIn = () => {
     } catch (error) {
       toast.error(customErrorMessage(error));
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      {loading && <Spinner />}
-
       <div className="mb-[140px] mt-[60px] justify-end bg-contain bg-left bg-no-repeat lg:bg-[url('/images/banner.png')]">
         <Container className="flex justify-center lg:justify-end">
           <div className="flex flex-col justify-end py-10 xl:py-[125px]">
@@ -69,6 +66,7 @@ export const SignIn = () => {
                     type="text"
                     name="emailOrPhone"
                     placeholder={t("email_or_phone_number")}
+                    disabled={isLoading}
                     required
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full rounded-md border-0 py-2 pl-0 text-16 font-normal focus:border-none focus:outline-none"
@@ -80,6 +78,7 @@ export const SignIn = () => {
                     type="password"
                     name="password"
                     placeholder={t("password")}
+                    disabled={isLoading}
                     required
                     onChange={(e) => setPassword(e.target.value)}
                     className="block w-full rounded-md border-0 py-2 pl-0 text-16 font-normal focus:border-none focus:outline-none"
@@ -88,7 +87,9 @@ export const SignIn = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <MyButton className="">{t("login")}</MyButton>
+                    <MyButton disabled={isLoading} className="">
+                      {t("login")}
+                    </MyButton>
                   </div>
 
                   <div>

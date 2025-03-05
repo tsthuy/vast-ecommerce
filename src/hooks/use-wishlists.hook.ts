@@ -1,13 +1,17 @@
+import { useEffect } from "react";
+import { toast } from "sonner";
+
 import { QUERY_KEYS } from "~/constants";
 
 import { wishlistApi } from "~/services";
 
+import { customErrorMessage } from "~/utils/custom-error.util";
+import { clearGuestUserId, getGuestUserId } from "~/utils/get-user.util";
 import queryClient from "~/utils/query-client.util";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "~/stores/auth.store";
-import { useEffect } from "react";
-import { clearGuestUserId, getGuestUserId } from "~/utils/get-user.util";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export function useWishlists(userId: string, locale: string) {
   return useQuery({
@@ -79,11 +83,11 @@ export function useTransferWishlist(locale: string) {
             QUERY_KEYS.wishlists.all(user.uid, locale)
           );
         } catch (error) {
-          console.error("Failed to transfer wishlist items:", error);
+          toast.error(customErrorMessage(error));
         }
       }
     };
 
     transferWishlist();
-  }, [user?.uid, locale, queryClient]);
+  }, [user?.uid]);
 }

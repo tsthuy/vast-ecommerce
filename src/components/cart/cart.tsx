@@ -74,7 +74,7 @@ export const Cart = () => {
       try {
         handleCartUpdate(cart_item_id, newQuantity);
       } catch (error) {
-        console.error("Failed to update quantity:", error);
+        toast.error(customErrorMessage(error));
       }
     }
   };

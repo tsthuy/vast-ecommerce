@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Slash } from "lucide-react";
+import { toast } from "sonner";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
 
 const Breadcrumbs = () => {
   const router = useRouter();
@@ -12,7 +15,7 @@ const Breadcrumbs = () => {
       try {
         return decodeURIComponent(segment);
       } catch (error) {
-        console.error("Error decoding URI segment:", segment, error);
+        toast.error(customErrorMessage(error));
         return segment;
       }
     });
