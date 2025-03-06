@@ -1,5 +1,4 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import dynamic from "next/dynamic";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Container } from "~/components";
@@ -9,31 +8,13 @@ import { RelatedProduct } from "~/components/product/related-product";
 
 import { categoryApi, productApi } from "~/services";
 
-const DynamicTopHeader = dynamic(
-  () => import("~/components/header/top-header"),
-  { ssr: false }
-);
-
-const DynamicHeader = dynamic(() => import("~/components/header/header"), {
-  ssr: false,
-});
-
-const DynamicFooter = dynamic(() => import("~/components/footer"), {
-  ssr: false,
-});
-
 export default function ProductDetailsPage({
-  initialCategories,
   initialProduct,
   initialImages,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
-      <DynamicTopHeader />
-
-      <DynamicHeader categories={initialCategories} />
-
-      <Container>
+      <Container className="pt-[150px]">
         <div className="pb-[80px]">
           <Breadcrumbs />
         </div>
@@ -47,8 +28,6 @@ export default function ProductDetailsPage({
           categoryId={initialProduct.category.id}
         />
       </Container>
-
-      <DynamicFooter />
     </>
   );
 }

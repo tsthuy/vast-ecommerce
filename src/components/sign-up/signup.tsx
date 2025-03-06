@@ -12,15 +12,11 @@ import { loginWithGoogle, signUpWithEmail } from "~/libs/auth.lib";
 
 import { customErrorMessage } from "~/utils/custom-error.util";
 
-import { useAuthStore } from "~/stores/auth.store";
-
 import Container from "../container";
 import MyButton from "../custom/button";
 
 export const SignUp = () => {
   const { t } = useTranslation("auth");
-
-  const { callbackUrl } = useAuthStore();
 
   const [name, setName] = useState("");
   const [emailOrPhone, setEmailOrPhone] = useState("");
@@ -37,10 +33,8 @@ export const SignUp = () => {
     try {
       await signUpWithEmail(name, emailOrPhone, password);
 
-      if (!callbackUrl) {
-        router.push("/");
-        toast.success(t("account_created_successfully"));
-      }
+      router.push("/");
+      toast.success(t("account_created_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     } finally {
@@ -54,10 +48,8 @@ export const SignUp = () => {
     try {
       await loginWithGoogle();
 
-      if (!callbackUrl) {
-        router.push("/");
-        toast.success(t("login_successfully"));
-      }
+      router.push("/");
+      toast.success(t("login_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     }

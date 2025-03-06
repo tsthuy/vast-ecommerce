@@ -13,11 +13,9 @@ interface CartItem {
 
 interface AuthState {
   user: User | null;
-  callbackUrl: string | null;
   pendingCartItem: CartItem | null;
   isLoading: boolean;
   setUser: (user: User | null) => void;
-  setCallbackUrl: (url: string | null) => void;
   setPendingCartItem: (item: CartItem | null) => void;
   clearUser: () => void;
   initializeAuth: () => void;
@@ -31,10 +29,8 @@ export const useAuthStore = create<AuthState>()(
       pendingCartItem: null,
       isLoading: true,
       setUser: (user) => set({ user }),
-      setCallbackUrl: (url) => set({ callbackUrl: url }),
       setPendingCartItem: (item) => set({ pendingCartItem: item }),
-      clearUser: () =>
-        set({ user: null, callbackUrl: null, pendingCartItem: null }),
+      clearUser: () => set({ user: null, pendingCartItem: null }),
       initializeAuth: () => {
         set({ isLoading: true });
         onAuthStateChanged(auth, (firebaseUser) => {

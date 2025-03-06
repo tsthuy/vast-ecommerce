@@ -184,8 +184,6 @@ export function usePostLoginActions(locale: string) {
 
   const { user } = useAuthStore();
 
-  const callbackUrl = useAuthStore((state) => state.callbackUrl);
-  const setCallbackUrl = useAuthStore((state) => state.setCallbackUrl);
   const pendingCartItem = useAuthStore((state) => state.pendingCartItem);
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
   const isLoading = useAuthStore((state) => state.isLoading);
@@ -209,12 +207,6 @@ export function usePostLoginActions(locale: string) {
           } finally {
             setPendingCartItem(null);
           }
-        }
-
-        if (callbackUrl) {
-          router.push(callbackUrl);
-          toast.success(t("auth:login_successfully"));
-          setCallbackUrl(null);
         }
       }
     };

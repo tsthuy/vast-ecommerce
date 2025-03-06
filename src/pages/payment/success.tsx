@@ -1,35 +1,12 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import dynamic from "next/dynamic";
+import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { categoryApi } from "~/services";
 import Success from "~/components/payment/success";
 
-const DynamicTopHeader = dynamic(
-  () => import("~/components/header/top-header"),
-  { ssr: false }
-);
-
-const DynamicHeader = dynamic(() => import("~/components/header/header"), {
-  ssr: false,
-});
-
-const DynamicFooter = dynamic(() => import("~/components/footer"), {
-  ssr: false,
-});
-
-export default function SuccessPage({
-  initialCategories,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function SuccessPage() {
   return (
     <>
-      <DynamicTopHeader />
-
-      <DynamicHeader categories={initialCategories} />
-
       <Success />
-
-      <DynamicFooter />
     </>
   );
 }
@@ -41,8 +18,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale);
-
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -50,7 +25,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         "footer",
         "payment",
       ])),
-      initialCategories,
     },
     revalidate: 60,
   };

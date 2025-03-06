@@ -11,8 +11,6 @@ import { loginWithEmail } from "~/libs/auth.lib";
 
 import { customErrorMessage } from "~/utils/custom-error.util";
 
-import { useAuthStore } from "~/stores/auth.store";
-
 import Container from "../container";
 import MyButton from "../custom/button";
 
@@ -20,25 +18,24 @@ export const SignIn = () => {
   const { t } = useTranslation("auth");
   const router = useRouter();
 
-  const { callbackUrl } = useAuthStore();
+  const { callbackUrl } = router.query;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    if (isLoading) return;
-
     e.preventDefault();
     setIsLoading(true);
 
     try {
       await loginWithEmail(email, password);
 
-      if (!callbackUrl) {
-        router.push("/");
+      if (callbackUrl) {
+        router.push(callbackUrl as string);
         toast.success(t("login_successfully"));
-      }
+      } else router.push("/");
+      toast.success(t("login_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     } finally {

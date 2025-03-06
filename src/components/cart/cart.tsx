@@ -144,7 +144,7 @@ export const Cart = () => {
       </div>
 
       {cart?.cart_items.length === 0 && !isLoading ? (
-        <div className="py-12 text-center">
+        <div className="py-[92px] text-center">
           <h2 className="mb-4 text-2xl font-semibold"> {t("cart:no_item")}</h2>
 
           <Button asChild>

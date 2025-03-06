@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const { user, isLoading, setCallbackUrl } = useAuthStore();
+  const { user, isLoading } = useAuthStore();
 
   const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
@@ -19,10 +19,9 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!isLoading && !user?.uid) {
-      setCallbackUrl(router.asPath);
-      router.push("/login");
+      router.push(`/login?callbackUrl=${encodeURIComponent(router.asPath)}`);
     }
-  }, [user?.uid, isLoading]);
+  }, [user?.uid]);
 
   if (!user?.uid) {
     return null;

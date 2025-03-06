@@ -24,7 +24,7 @@ export const loginWithEmail = async (email: string, password: string) => {
     );
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    toast.error(customErrorMessage(error));
+    throw error;
   }
 };
 
@@ -37,7 +37,7 @@ export const loginWithGoogle = async () => {
     const userCredential = await signInWithPopup(auth, googleProvider);
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    toast.error(customErrorMessage(error));
+    throw error;
   }
 };
 

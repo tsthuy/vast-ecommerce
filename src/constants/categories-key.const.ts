@@ -1,5 +1,5 @@
-import { createQueryKeys } from "@lukemorales/query-key-factory"
+import { createQueryKeys } from "@lukemorales/query-key-factory";
 
 export const CATEGORIES_KEY = createQueryKeys("categories", {
-  all: null,
-})
+  all: (locale: string) => [locale],
+});

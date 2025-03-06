@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -44,10 +44,14 @@ interface HeaderProps {
   categories: Category[];
 }
 
-export default function Header({ categories }: HeaderProps) {
+const Header = ({ categories }: HeaderProps) => {
+  console.log("Header");
   const { user } = useAuthStore();
   const router = useRouter();
-  const isInAccountPage = router.pathname === "/account";
+  const isInAccountPage = useMemo(
+    () => router.pathname === "/account",
+    [router.pathname]
+  );
 
   const { t } = useTranslation(["header", "common"]);
 
@@ -320,4 +324,5 @@ export default function Header({ categories }: HeaderProps) {
       )}
     </Container>
   );
-}
+};
+export default React.memo(Header);

@@ -1,5 +1,4 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
-import dynamic from "next/dynamic";
+import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Container } from "~/components";
@@ -7,38 +6,14 @@ import { Account } from "~/components/account/account";
 import { AccountBreadcrumb } from "~/components/account/account-breadcrum";
 import { ProtectedRoute } from "~/components/auth/protected-route";
 
-import { categoryApi } from "~/services";
-
-const DynamicTopHeader = dynamic(
-  () => import("~/components/header/top-header"),
-  { ssr: false }
-);
-
-const DynamicHeader = dynamic(() => import("~/components/header/header"), {
-  ssr: false,
-});
-
-const DynamicFooter = dynamic(() => import("~/components/footer"), {
-  ssr: false,
-});
-
-export default function AccountPage({
-  initialCategories,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function AccountPage() {
   return (
-    <ProtectedRoute>
-      <DynamicTopHeader />
-
-      <DynamicHeader categories={initialCategories} />
-
-      <Container>
-        <AccountBreadcrumb />
-
+    <Container className="pt-[150px]">
+      <AccountBreadcrumb />
+      <ProtectedRoute>
         <Account />
-      </Container>
-
-      <DynamicFooter />
-    </ProtectedRoute>
+      </ProtectedRoute>
+    </Container>
   );
 }
 
@@ -49,8 +24,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale);
-
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -59,8 +32,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         "account",
         "common",
       ])),
-      initialCategories,
     },
-    revalidate: 60,
   };
 };

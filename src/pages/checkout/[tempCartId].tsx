@@ -1,18 +1,11 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { CheckOut } from "~/components/cart/checkout";
-import { FixedHeader } from "~/components/header/fixed-header";
 
-import { categoryApi } from "~/services";
-
-export default function CheckOutPage({
-  initialCategories,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function CheckOutPage() {
   return (
     <>
-      <FixedHeader initialCategories={initialCategories} />
-
       <div className="pt-[150px]">
         <CheckOut />
       </div>
@@ -26,8 +19,6 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
       props: {},
     };
   }
-
-  const initialCategories = await categoryApi.getCategories(locale);
 
   return {
     props: {
@@ -44,8 +35,6 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
         "form",
         "cart",
       ])),
-
-      initialCategories,
     },
   };
 };

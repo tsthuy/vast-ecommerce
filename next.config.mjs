@@ -1,4 +1,4 @@
-import nextI18NextConfig from "./next-i18next.config.js"
+import nextI18NextConfig from "./next-i18next.config.js";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -10,6 +10,6 @@ const nextConfig = {
       "hebbkx1anhila5yf.public.blob.vercel-storage.com",
     ],
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { appWithTranslation } from "next-i18next";
 import { Toaster } from "sonner";
 
-import EmptyLayout from "~/components/layout/empty-layout";
+import MainLayout from "~/components/layout/main-layout";
 
 import queryClient from "~/utils/query-client.util";
 
@@ -29,8 +29,6 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export default appWithTranslation(MyApp);
-
 const roboto = Roboto({
   weight: ["300", "500", "700", "900"],
   subsets: ["latin", "vietnamese"],
@@ -52,7 +50,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       ? `${roboto.variable} ${quicksand.variable}`
       : `${poppins.variable} ${inter.variable}`;
 
-  const Layout = Component.Layout ? Component.Layout : EmptyLayout;
+  const Layout = Component.Layout ? Component.Layout : MainLayout;
   return (
     <main className={`${fontVariables} overflow-hidden font-sans`}>
       <style jsx global>{`
@@ -77,3 +75,5 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     </main>
   );
 }
+
+export default appWithTranslation(MyApp);

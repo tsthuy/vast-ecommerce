@@ -1,3 +1,4 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
@@ -13,8 +14,8 @@ import {
   SelectValue,
 } from "../ui/select";
 
-export default function TopHeader() {
-
+const TopHeader = () => {
+  console.log("TopHeader");
   const { t } = useTranslation(["common", "header"]);
   const router = useRouter();
 
@@ -47,7 +48,7 @@ export default function TopHeader() {
               <SelectValue placeholder={t("language")} className="" />
             </SelectTrigger>
 
-            <SelectContent className="backdrop-blur-3xl bg-transparent/50">
+            <SelectContent className="bg-transparent/50 backdrop-blur-3xl">
               <SelectItem value="en">English</SelectItem>
 
               <SelectItem value="vi">Vietnamese</SelectItem>
@@ -57,4 +58,5 @@ export default function TopHeader() {
       </Container>
     </div>
   );
-}
+};
+export default React.memo(TopHeader);

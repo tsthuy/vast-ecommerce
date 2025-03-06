@@ -2,10 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { CategoryList, PromoSlider } from "~/components/category";
-import UpButton from "~/components/category/up-button";
 import Container from "~/components/container";
-import Footer from "~/components/footer";
-import { FixedHeader } from "~/components/header/fixed-header";
 import {
   BestSelling,
   CategorySection,
@@ -22,12 +19,10 @@ export default function Home({
   initialCategories,
   initialCategoriesGird,
   productsBestSales,
-  productsExplore
+  productsExplore,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
-      <FixedHeader initialCategories={initialCategories} />
-
       <Container className="pt-[150px]">
         <div className="mx-auto grid grid-cols-1 gap-6 overflow-hidden xl:grid-cols-[240px_1fr]">
           <CategoryList categories={initialCategories} />
@@ -58,21 +53,14 @@ export default function Home({
         <NewArrival />
       </Container>
 
-      <Container>
+      <Container className="pb-[140px]">
         <ServiceFeatures />
       </Container>
-
-      <div className="pt-[140px]">
-        <UpButton />
-
-        <Footer />
-      </div>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-
   if (!locale) {
     return {
       props: {},

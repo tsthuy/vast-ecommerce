@@ -26,11 +26,9 @@ export default function ServiceFeatures() {
           <h3 className="pt-2 text-20 font-semibold">
             {t("customer_service")}
           </h3>{" "}
-          {/* Translated */}
           <p className="text-14 font-normal">
             {t("customer_description")}
           </p>{" "}
-          {/* Translated */}
         </div>
 
         {/* Money Back Guarantee Feature */}
@@ -39,9 +37,7 @@ export default function ServiceFeatures() {
             <Shield className="size-11 rounded-full bg-black p-2 text-white" />
           </div>
           <h3 className="pt-2 text-20 font-semibold">{t("money_back")}</h3>{" "}
-          {/* Translated */}
           <p className="text-14 font-normal">{t("money_description")}</p>{" "}
-          {/* Translated */}
         </div>
       </div>
     </section>

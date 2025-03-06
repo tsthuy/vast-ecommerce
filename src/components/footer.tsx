@@ -1,10 +1,12 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
 import { Input } from "./ui/input";
 
-export default function Footer() {
+const Footer = () => {
+  console.log("Footer");
   const { t } = useTranslation("footer");
 
   return (
@@ -290,4 +292,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default React.memo(Footer);

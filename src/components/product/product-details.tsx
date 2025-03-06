@@ -198,7 +198,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         <div className="flex flex-col-reverse gap-10 md:flex-row">
           <div
             ref={thumbnailsContainerRef}
-            className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 flex min-w-[170px] flex-row gap-[16px] overflow-auto md:h-[600px] md:flex-col"
+            className="custom-scrollbar flex min-w-[170px] flex-row gap-[16px] overflow-auto md:h-[600px] md:flex-col"
           >
             {images.map((image, index) => (
               <div

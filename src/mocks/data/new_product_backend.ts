@@ -1,3 +1,4 @@
+// eslint-disable-next-line check-file/filename-naming-convention
 export const new_products_backend: NewProductBackend[] = [
   {
     id: 1,
@@ -115,10 +116,7 @@ export const new_products_backend: NewProductBackend[] = [
     isNew: true,
     ratings: 4.5,
     reviews: 12,
-    images: [
-      { url: "/images/car.png" },
-      { url: "/images/jacket.png", isDefault: true },
-    ],
+    images: [{ url: "/images/cano.png", isDefault: true }],
     attributes: [
       {
         id: "attr1",

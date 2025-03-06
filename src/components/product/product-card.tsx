@@ -210,10 +210,9 @@ export default function ProductCard({
             ) : (
               <button
                 className="rounded-full bg-white p-2 hover:bg-gray-200"
-                onClick={handleToggleWishlist}
-                disabled={addWishlistMutation.isPending}
+                onClick={() => router.push(`/product/${product.id}`)}
               >
-                <Heart className="size-5" />
+                <Eye className="size-5" />
               </button>
             )
           ) : (
@@ -300,12 +299,13 @@ export default function ProductCard({
           </div>
         )}
 
-        {/* Variant Selector */}
-        <VariantSelector
-          product={product}
-          selectedVariant={selectedVariant}
-          onVariantChange={handleVariantChange}
-        />
+        <div className={cn(isInWishListPage && isInWishlist && "hidden")}>
+          <VariantSelector
+            product={product}
+            selectedVariant={selectedVariant}
+            onVariantChange={handleVariantChange}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,27 +1,17 @@
-import { GetStaticProps, InferGetStaticPropsType } from "next";
+import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { Footer } from "~/components";
 import { ProtectedRoute } from "~/components/auth/protected-route";
-import { Header, TopHeader } from "~/components/header";
-
-import { categoryApi } from "~/services";
 
 import { Cart } from "./../components/cart/cart";
 
-export default function CartPage({
-  initialCategories,
-}: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function CartPage() {
   return (
-    <ProtectedRoute>
-      <TopHeader />
-
-      <Header categories={initialCategories} />
-
-      <Cart />
-
-      <Footer />
-    </ProtectedRoute>
+    <div className="pt-[150px]">
+      <ProtectedRoute>
+        <Cart />
+      </ProtectedRoute>
+    </div>
   );
 }
 
@@ -32,8 +22,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     };
   }
 
-  const initialCategories = await categoryApi.getCategories(locale);
-
   return {
     props: {
       ...(await serverSideTranslations(locale, [
@@ -42,7 +30,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         "footer",
         "cart",
       ])),
-      initialCategories,
     },
   };
 };
