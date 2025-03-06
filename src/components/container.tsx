@@ -1,8 +1,8 @@
-import React from "react"
+import React, { memo } from "react";
 
 interface ContainerProps {
-  children?: React.ReactNode
-  className?: string
+  children?: React.ReactNode;
+  className?: string;
 }
 
 const Container: React.FC<ContainerProps> = ({
@@ -10,18 +10,19 @@ const Container: React.FC<ContainerProps> = ({
   className,
   ...props
 }) => {
+  console.log("Container");
   const containerStyles = `
     mx-auto
     max-w-[1186px]
     px-4
     ${className || ""}
-  `
+  `;
 
   return (
     <div className={containerStyles} {...props}>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Container
+export default memo(Container);

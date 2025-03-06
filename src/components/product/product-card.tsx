@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,14 +32,13 @@ import VariantSelector from "./product-variant-selector";
 interface ProductCardProps {
   product: NewProduct;
   variantId?: string;
-  onRemoveFromWishlist?: (wishlistItemId: string) => void;
 }
 
-export default function ProductCard({
+export default memo(function ProductCard({
   product,
   variantId,
-  onRemoveFromWishlist,
 }: ProductCardProps) {
+  console.log("ProductCard");
   const { user } = useAuthStore();
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
   const isLoading = useAuthStore((state) => state.isLoading);
@@ -82,10 +81,6 @@ export default function ProductCard({
       if (isInWishlist && wishlistItemId) {
         await removeWishlistMutation.mutateAsync(wishlistItemId);
         toast.success(t("common.removed_from_wishlist"));
-
-        if (onRemoveFromWishlist && isInWishListPage) {
-          onRemoveFromWishlist(wishlistItemId);
-        }
       } else {
         await addWishlistMutation.mutateAsync({
           productId: product.id,
@@ -309,4 +304,4 @@ export default function ProductCard({
       </div>
     </div>
   );
-}
+});

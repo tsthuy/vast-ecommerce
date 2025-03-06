@@ -12,6 +12,7 @@ export default function ProductDetailsPage({
   initialProduct,
   initialImages,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log("detailsPage re-rendered");
   return (
     <>
       <Container className="pt-[150px]">

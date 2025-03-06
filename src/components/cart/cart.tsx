@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,10 +24,10 @@ import { useAuthStore } from "~/stores/auth.store";
 import Breadcrumbs from "../breadcrumbs";
 import Container from "../container";
 import MyButton from "../custom/button";
+import Loader8 from "../loader8";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import Spinner from "../ui/spinner";
 import {
   Table,
   TableBody,
@@ -38,6 +38,7 @@ import {
 } from "../ui/table";
 
 export const Cart = () => {
+  console.log("Cart");
   const router = useRouter();
   const { t } = useTranslation("common");
   const { user } = useAuthStore();
@@ -46,6 +47,7 @@ export const Cart = () => {
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon>();
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState<boolean>(false);
 
   const { data: cart } = useCarts(user?.uid || "", router.locale || "");
   const createCheckoutCartMutation = useCreateCheckoutCart(
@@ -86,6 +88,7 @@ export const Cart = () => {
     }
 
     try {
+      setIsApplyingCoupon(true);
       if (cart && cart.meta.total_price) {
         const coupon = await couponApi.applyCoupon(
           couponCode,
@@ -97,6 +100,8 @@ export const Cart = () => {
       }
     } catch (error) {
       toast.error(customErrorMessage(error));
+    } finally {
+      setIsApplyingCoupon(false);
     }
   };
 
@@ -122,7 +127,8 @@ export const Cart = () => {
     }
   };
 
-  const calculateTotalPrice = () => {
+  const totalPrice = useMemo(() => {
+    console.log("totalPrice");
     if (!cart) return 0;
 
     let totalPrice = cart.meta.total_price;
@@ -134,9 +140,11 @@ export const Cart = () => {
         totalPrice -= (totalPrice * appliedCoupon.value) / 100;
       }
     }
+
     totalPrice += 10;
     return totalPrice.toFixed(2);
-  };
+  }, [cart, appliedCoupon]);
+
   return (
     <Container>
       <div className="pb-[40px]">
@@ -299,7 +307,8 @@ export const Cart = () => {
                 className="xss:max-w-[300px] xs:py-6 sm:px-[48px] sm:py-[25px]"
               />
 
-              <MyButton onClick={handleApplyCoupon}>
+              <MyButton disabled={isApplyingCoupon} onClick={handleApplyCoupon}>
+                {isApplyingCoupon && <Loader8 />}
                 {t("cart.apply_coupon")}
               </MyButton>
             </div>
@@ -348,12 +357,12 @@ export const Cart = () => {
                   <div className="flex justify-between text-lg font-semibold">
                     <span>{t("cart.total")}:</span>
 
-                    <span>${calculateTotalPrice()}</span>
+                    <span>${totalPrice}</span>
                   </div>
 
                   <div className="flex justify-center">
                     <MyButton onClick={handleProceedToCheckout}>
-                      {createCheckoutCartMutation.isPending && <Spinner />}{" "}
+                      {createCheckoutCartMutation.isPending && <Loader8 />}
                       {t("cart.proceed_to_checkout")}
                     </MyButton>
                   </div>

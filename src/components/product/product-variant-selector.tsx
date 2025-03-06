@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 import { cn } from "~/libs/utils";
 
@@ -11,12 +11,14 @@ interface VariantSelectorProps {
   disabled?: boolean;
 }
 
-export default function VariantSelector({
+export default memo(function VariantSelector({
   product,
   onVariantChange,
   selectedVariant,
   disabled = false,
 }: VariantSelectorProps) {
+  console.log("VariantSelector");
+
   const colorAttribute = product.attributes.find(
     (attr) => attr.name === "Color"
   );
@@ -176,4 +178,4 @@ export default function VariantSelector({
       )}
     </div>
   );
-}
+});

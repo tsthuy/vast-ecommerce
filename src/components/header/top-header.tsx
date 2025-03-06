@@ -15,7 +15,6 @@ import {
 } from "../ui/select";
 
 const TopHeader = () => {
-  console.log("TopHeader");
   const { t } = useTranslation("common");
   const router = useRouter();
 

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import {
   useApplyCouponInCheckout,
   useCheckoutCart,
-  useCompleteCheckout,
 } from "~/hooks/use-carts.hook";
 
 import { cn } from "~/libs/utils";
@@ -23,6 +22,7 @@ import { useAuthStore } from "~/stores/auth.store";
 
 import Container from "../container";
 import MyButton from "../custom/button";
+import Loader8 from "../loader8";
 import { NotFound } from "../not-found";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -30,10 +30,11 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import Spinner from "../ui/spinner";
 
 import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
-import { PaymentForm } from "./payment-form";
-import { StripeProvider } from "./stripe-provider";
+import PaymentForm from "./payment-form";
+import StripeProvider from "./stripe-provider";
 
 export const CheckOut = () => {
+  console.log("CheckOut");
   const { t } = useTranslation("common");
   const { user } = useAuthStore();
   const router = useRouter();
@@ -42,36 +43,30 @@ export const CheckOut = () => {
 
   const checkoutFormRef = useRef<CheckOutFormHandle>(null);
 
-  const {
-    data: cart,
-    error: cartError,
-    isLoading: cartLoading,
-  } = useCheckoutCart(router.locale || "en", tempCartId);
+  const { data: cart, isLoading: cartLoading } = useCheckoutCart(
+    router.locale || "en",
+    tempCartId
+  );
 
   const applyCouponMutation = useApplyCouponInCheckout(
     router.locale || "en",
     tempCartId
   );
 
-  const completeCheckoutMutation = useCompleteCheckout(
-    user?.uid || "",
-    tempCartId
-  );
-
   const [couponCode, setCouponCode] = useState<string>("");
 
-  const handleExternalValidation = async () => {
+  const handleExternalValidation = useCallback(async () => {
     if (checkoutFormRef.current) {
       const isValid = await checkoutFormRef.current.triggerFormValidation();
       return isValid;
     }
-  };
+  }, [checkoutFormRef]);
 
   const [paymentMethod, setPaymentMethod] = useState<"bank" | "cash">("cash");
   const [clientSecret, setClientSecret] = useState<string>();
 
   const handlePaymentMethodChange = async (value: string) => {
-    const totalAmount = parseFloat(calculateTotalPrice());
+    const totalAmount = parseFloat(calculateTotalPrice);
     if (value === "bank") {
       try {
         const response = await axios.post("/api/create-payment-intent", {
@@ -87,7 +82,7 @@ export const CheckOut = () => {
     setPaymentMethod(value as "bank" | "cash");
   };
 
-  const calculateTotalPrice = () => {
+  const calculateTotalPrice = useMemo(() => {
     let totalPrice = cart?.meta?.total_price || 0;
     if (cart?.applied_coupon) {
       if (cart.applied_coupon.type === "fixed") {
@@ -98,7 +93,7 @@ export const CheckOut = () => {
     }
     totalPrice += 10;
     return totalPrice.toFixed(2);
-  };
+  }, [cart]);
 
   const handleApplyCoupon = async () => {
     if (!couponCode) {
@@ -114,7 +109,7 @@ export const CheckOut = () => {
     setCouponCode("");
   };
 
-  const handlePayNow = async () => {
+  const handlePayNow = useCallback(async () => {
     const isValid = await handleExternalValidation();
     if (!isValid) {
       toast.error("Form validation failed. Please check the fields.");
@@ -122,7 +117,7 @@ export const CheckOut = () => {
     }
 
     return true;
-  };
+  }, [handleExternalValidation]);
 
   const handlePayOnDelivery = async () => {
     const isValid = await handleExternalValidation();
@@ -131,15 +126,6 @@ export const CheckOut = () => {
       return;
     }
     router.push(`/payment/success?tempCartId=${tempCartId}`);
-  };
-
-  const handleCancelCheckout = async () => {
-    try {
-      await completeCheckoutMutation.mutateAsync(false);
-      router.push("/cart");
-    } catch (error) {
-      toast.error(customErrorMessage(error));
-    }
   };
 
   if (cartLoading) {
@@ -309,7 +295,7 @@ export const CheckOut = () => {
                   <span>{t("cart.total")}:</span>
 
                   <span className="font-inter font-bold">
-                    ${calculateTotalPrice()}
+                    ${calculateTotalPrice}
                   </span>
                 </div>
               </div>
@@ -360,7 +346,9 @@ export const CheckOut = () => {
                 <MyButton
                   onClick={handleApplyCoupon}
                   className="max-w-fit pt-2"
+                  disabled={applyCouponMutation.isPending}
                 >
+                  {applyCouponMutation.isPending && <Loader8 />}
                   {t("cart.apply_coupon")}
                 </MyButton>
               </div>

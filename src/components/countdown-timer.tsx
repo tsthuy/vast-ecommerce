@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 
 import { cn } from "~/libs/utils";
@@ -16,7 +16,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-export default function CountTimer({
+export default memo(function CountTimer({
   variant = "default",
   targetDate,
   className,
@@ -129,4 +129,4 @@ export default function CountTimer({
       </div>
     </div>
   );
-}
+});

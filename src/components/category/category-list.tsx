@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Link from "next/link";
 
 import { cn } from "~/libs/utils";
@@ -6,7 +7,9 @@ interface CategoryListProps {
   categories: Category[];
 }
 
-export function CategoryList({ categories }: CategoryListProps) {
+const CategoryList = memo(function CategoryList({
+  categories,
+}: CategoryListProps) {
   return (
     <nav className="hidden w-full max-w-[240px] border-r pt-10 xl:block">
       {categories.map((category) => (
@@ -23,4 +26,6 @@ export function CategoryList({ categories }: CategoryListProps) {
       ))}
     </nav>
   );
-}
+});
+
+export { CategoryList };

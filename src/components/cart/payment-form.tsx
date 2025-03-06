@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Loader2 } from "lucide-react";
 import type React from "react";
+import { toast } from "sonner";
+
+import { customErrorMessage } from "~/utils/custom-error.util";
 
 import MyButton from "../custom/button";
 import {
@@ -28,7 +31,8 @@ interface PaymentFormProps {
   onPayNow: () => Promise<boolean>;
 }
 
-export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
+function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
+  console.log("PaymentForm");
   const { t } = useTranslation("common");
   const router = useRouter();
   const stripe = useStripe();
@@ -59,8 +63,10 @@ export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
       });
 
       if (error) {
+        toast.error(customErrorMessage(error));
       }
     } catch (err) {
+      toast.error(customErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -82,8 +88,10 @@ export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
       });
 
       if (error) {
+        toast.error(customErrorMessage(error));
       }
     } catch (err) {
+      toast.error(customErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -141,3 +149,5 @@ export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
     </form>
   );
 }
+
+export default memo(PaymentForm);

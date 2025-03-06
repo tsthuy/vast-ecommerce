@@ -22,6 +22,7 @@ import { customErrorMessage } from "~/utils/custom-error.util";
 import { useAuthStore } from "~/stores/auth.store";
 
 import MyButton from "../custom/button";
+import Loader8 from "../loader8";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -58,6 +59,7 @@ const formSchema = z
   );
 
 export default function AccountContent() {
+  console.log("AccountContent");
   const { t } = useTranslation("common");
   const { user, setUser, isLoading: isLoadingAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -208,6 +210,7 @@ export default function AccountContent() {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading || isLoadingAuth}
                         className="bg-secondary-2 py-5"
                         placeholder="Md"
                         type="text"
@@ -231,6 +234,7 @@ export default function AccountContent() {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading || isLoadingAuth}
                         className="bg-secondary-2 py-5"
                         placeholder="Rimel"
                         type="text"
@@ -254,6 +258,7 @@ export default function AccountContent() {
                     <FormLabel className="text-16 font-normal">Email</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading || isLoadingAuth}
                         className="bg-secondary-2 py-5"
                         placeholder="rimel1111@hmail.com"
                         type="email"
@@ -277,6 +282,7 @@ export default function AccountContent() {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading || isLoadingAuth}
                         className="bg-secondary-2 py-5"
                         placeholder="Kingston, 5236, United States"
                         type="text"
@@ -356,7 +362,9 @@ export default function AccountContent() {
           <div className="flex items-center justify-end gap-8">
             <Button variant={"ghost"}>{t("account.cancel")}</Button>
             <MyButton type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : t("account.save_changes")}
+              {isLoading
+                ? <Loader8 /> + "Saving..."
+                : t("account.save_changes")}
             </MyButton>
           </div>
         </form>

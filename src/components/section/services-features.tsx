@@ -1,7 +1,9 @@
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 import { Headphones, Shield, Truck } from "lucide-react";
 
-export default function ServiceFeatures() {
+const ServiceFeatures = memo(function ServiceFeatures() {
+  console.log("ServiceFeatures");
   const { t } = useTranslation("common");
 
   return (
@@ -17,7 +19,7 @@ export default function ServiceFeatures() {
           </h3>
           <p className="text-14 font-normal">
             {t("service.delivery_description")}
-          </p>{" "}
+          </p>
         </div>
 
         {/* Customer Service Feature */}
@@ -27,10 +29,10 @@ export default function ServiceFeatures() {
           </div>
           <h3 className="pt-2 text-20 font-semibold">
             {t("service.customer_service")}
-          </h3>{" "}
+          </h3>
           <p className="text-14 font-normal">
             {t("service.customer_description")}
-          </p>{" "}
+          </p>
         </div>
 
         {/* Money Back Guarantee Feature */}
@@ -40,12 +42,14 @@ export default function ServiceFeatures() {
           </div>
           <h3 className="pt-2 text-20 font-semibold">
             {t("service.money_back")}
-          </h3>{" "}
+          </h3>
           <p className="text-14 font-normal">
             {t("service.money_description")}
-          </p>{" "}
+          </p>
         </div>
       </div>
     </section>
   );
-}
+});
+
+export { ServiceFeatures };

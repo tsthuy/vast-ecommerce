@@ -17,7 +17,8 @@ import {
 
 import ProductCard from "./product-card";
 
-export default function ProductSlider() {
+export default React.memo(function ProductSlider() {
+  console.log("ProductSlider");
   const router = useRouter();
 
   const { data: products, isLoading } = useProductsFlashSales(
@@ -72,4 +73,4 @@ export default function ProductSlider() {
       </div>
     </>
   );
-}
+});

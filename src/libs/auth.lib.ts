@@ -7,9 +7,6 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { toast } from "sonner";
-
-import { customErrorMessage } from "~/utils/custom-error.util";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -46,7 +43,7 @@ export const logout = async () => {
     await signOut(auth);
     useAuthStore.getState().clearUser();
   } catch (error) {
-    toast.error(customErrorMessage(error));
+    throw error;
   }
 };
 
@@ -56,8 +53,6 @@ export const signUpWithEmail = async (
   password: string
 ) => {
   try {
-    console.log("signing up with email", email);
-
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -70,7 +65,7 @@ export const signUpWithEmail = async (
 
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    toast.error(customErrorMessage(error));
+    throw error;
   }
 };
 
@@ -101,6 +96,6 @@ export const signUpWithPhone = async (phoneNumber: string, name: string) => {
 
     useAuthStore.getState().setUser(userCredential.user);
   } catch (error) {
-    toast.error(customErrorMessage(error));
+    throw error;
   }
 };

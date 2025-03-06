@@ -1,30 +1,31 @@
-import * as React from "react"
-import { Star } from "lucide-react"
+import * as React from "react";
+import { memo } from "react";
+import { Star } from "lucide-react";
 
-import { Skeleton } from "~/components/ui/skeleton"
+import { Skeleton } from "~/components/ui/skeleton";
 
-export default function FlashSalesSkeleton() {
-  const [numberOfItems, setNumberOfItems] = React.useState(1)
+export default memo(function FlashSalesSkeleton() {
+  const [numberOfItems, setNumberOfItems] = React.useState(1);
 
   React.useEffect(() => {
     const updateNumberOfItems = () => {
       if (window.matchMedia("(min-width: 1024px)").matches) {
-        setNumberOfItems(4)
+        setNumberOfItems(4);
       } else if (window.matchMedia("(min-width: 768px)").matches) {
-        setNumberOfItems(2)
+        setNumberOfItems(2);
       } else {
-        setNumberOfItems(1)
+        setNumberOfItems(1);
       }
-    }
+    };
 
-    updateNumberOfItems()
+    updateNumberOfItems();
 
-    window.addEventListener("resize", updateNumberOfItems)
+    window.addEventListener("resize", updateNumberOfItems);
 
     return () => {
-      window.removeEventListener("resize", updateNumberOfItems)
-    }
-  }, [])
+      window.removeEventListener("resize", updateNumberOfItems);
+    };
+  }, []);
 
   return (
     <>
@@ -80,19 +81,15 @@ export default function FlashSalesSkeleton() {
                     {/* Product Details Skeleton */}
                     <div className="flex flex-col px-4">
                       <Skeleton className="h-6 w-3/4 rounded-lg border" />{" "}
-
                       {/* Product Name Skeleton */}
                       <div className="mt-2 flex flex-col gap-3">
                         <div className="flex gap-4">
                           <Skeleton className="h-6 w-16 rounded-lg" />
-
                           {/* Discount Price Skeleton */}
                           <Skeleton className="h-6 w-16 rounded-lg" />{" "}
-
                           {/* Original Price Skeleton */}
                         </div>
                       </div>
-
                       {/* Color Options Skeleton */}
                       <div className="flex pt-2">
                         {[...Array(5)].map((_, index) => (
@@ -111,5 +108,5 @@ export default function FlashSalesSkeleton() {
         </div>
       </div>
     </>
-  )
-}
+  );
+});

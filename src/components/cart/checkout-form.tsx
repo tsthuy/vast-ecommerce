@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, memo, useImperativeHandle, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -312,4 +312,4 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
 CheckOutForm.displayName = "CheckOutForm";
 
-export default CheckOutForm;
+export default memo(CheckOutForm);

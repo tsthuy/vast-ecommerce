@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ import {
   CarouselItem,
 } from "../ui/carousel";
 
-export function PromoSlider() {
+const PromoSlider = memo(function PromoSlider() {
   const { t } = useTranslation("common");
 
   const [api, setApi] = useState<CarouselApi>();
@@ -127,4 +127,6 @@ export function PromoSlider() {
       </Carousel>
     </div>
   );
-}
+});
+
+export { PromoSlider };

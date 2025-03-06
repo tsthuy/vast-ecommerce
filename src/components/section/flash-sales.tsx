@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 
 import MyButton from "../custom/button";
 import { ProductSlider } from "../product";
 
-export default function FlashSales() {
+export default memo(function FlashSales() {
   const { t } = useTranslation("common");
   return (
     <>
@@ -14,4 +15,4 @@ export default function FlashSales() {
       </div>
     </>
   );
-}
+});

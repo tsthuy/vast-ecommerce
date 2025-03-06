@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 
 import resources from "~/utils/resources.util";
@@ -6,7 +7,9 @@ interface SectionHeadingProps {
   section_key: keyof typeof resources.common.section;
 }
 
-export default function SectionHeading({ section_key }: SectionHeadingProps) {
+export default memo(function SectionHeading({
+  section_key,
+}: SectionHeadingProps) {
   const { t } = useTranslation("common");
   return (
     <section className="pb-5 pt-20">
@@ -23,4 +26,4 @@ export default function SectionHeading({ section_key }: SectionHeadingProps) {
       </div>
     </section>
   );
-}
+});

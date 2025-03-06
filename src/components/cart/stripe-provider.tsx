@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { useRouter } from "next/router";
 import type React from "react";
 
@@ -18,27 +19,31 @@ interface StripeProviderProps {
   clientSecret: string;
 }
 
-export function StripeProvider({
-  children,
-  clientSecret,
-}: StripeProviderProps) {
+function StripeProvider({ children, clientSecret }: StripeProviderProps) {
   const router = useRouter();
   const locale = getStripeLocale(router.locale || "en");
+  console.log("stripe-provider.tsx", stripePromise);
+  const promise = useMemo(() => stripePromise, []);
 
-  const options: StripeElementsOptions = {
-    clientSecret,
-    locale,
-    appearance: {
-      theme: "flat",
-      variables: {
-        colorPrimary: "#0F172A",
+  const options = useMemo<StripeElementsOptions>(
+    () => ({
+      clientSecret,
+      locale,
+      appearance: {
+        theme: "flat",
+        variables: {
+          colorPrimary: "#0F172A",
+        },
       },
-    },
-  };
+    }),
+    [clientSecret, locale]
+  );
 
   return (
-    <Elements stripe={stripePromise} options={options}>
+    <Elements stripe={promise} options={options}>
       {children}
     </Elements>
   );
 }
+
+export default memo(StripeProvider);

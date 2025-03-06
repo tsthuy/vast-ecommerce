@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Smartphone } from "lucide-react";
 import type React from "react";
 
@@ -16,7 +17,9 @@ interface CategoryGridProps {
   initialCategoriesGird: CategoryGrid[];
 }
 
-export function CategoryGrid({ initialCategoriesGird }: CategoryGridProps) {
+const CategoryGrid = memo(function CategoryGrid({
+  initialCategoriesGird,
+}: CategoryGridProps) {
   return (
     <div className="relative w-full">
       <Carousel
@@ -54,4 +57,6 @@ export function CategoryGrid({ initialCategoriesGird }: CategoryGridProps) {
       </Carousel>
     </div>
   );
-}
+});
+
+export { CategoryGrid };

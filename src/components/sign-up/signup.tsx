@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { Loader } from "lucide-react";
 import type React from "react";
 import { toast } from "sonner";
 
@@ -108,7 +109,9 @@ export const SignUp = () => {
 
                 <div>
                   <MyButton disabled={isLoading} className="w-full">
-                    {" "}
+                    {isLoading && (
+                      <Loader className="mr-2 h-4 w-4 animate-spin"></Loader>
+                    )}
                     {t("auth.create_account")}
                   </MyButton>
                 </div>

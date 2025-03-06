@@ -45,7 +45,6 @@ interface HeaderProps {
 }
 
 const Header = ({ categories }: HeaderProps) => {
-  console.log("Header");
   const { user } = useAuthStore();
   const router = useRouter();
   const isInAccountPage = useMemo(
@@ -160,7 +159,7 @@ const Header = ({ categories }: HeaderProps) => {
 
             {user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild className="">
+                <DropdownMenuTrigger className="">
                   <Button
                     variant="ghost"
                     size="icon"
@@ -179,15 +178,15 @@ const Header = ({ categories }: HeaderProps) => {
                   align="end"
                   className="max-w-64 space-y-2 border-none bg-transparent/50 pb-[10px] pl-[20px] pr-[12px] pt-[18px] text-white backdrop-blur-3xl"
                 >
-                  <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
-                    <button>
-                      <UserRoundPen className="size-6" />
-                    </button>
+                  <Link href={"/account"} className="text-14 font-normal">
+                    <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
+                      <button>
+                        <UserRoundPen className="size-6" />
+                      </button>
 
-                    <Link href={"/account"} className="text-14 font-normal">
                       {t("common.manage_my_account")}
-                    </Link>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  </Link>
 
                   <DropdownMenuItem className="flex cursor-pointer items-center gap-4">
                     <button>

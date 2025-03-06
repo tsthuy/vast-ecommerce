@@ -13,6 +13,7 @@ import { customErrorMessage } from "~/utils/custom-error.util";
 
 import Container from "../container";
 import MyButton from "../custom/button";
+import Loader8 from "../loader8";
 
 export const SignIn = () => {
   const { t } = useTranslation("common");
@@ -85,6 +86,7 @@ export const SignIn = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <MyButton disabled={isLoading} className="">
+                      {isLoading && <Loader8 />}
                       {t("auth.login")}
                     </MyButton>
                   </div>

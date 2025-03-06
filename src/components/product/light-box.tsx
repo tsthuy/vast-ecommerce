@@ -95,6 +95,9 @@ export default function LightBoxImage({
           on={{
             view: handleLightboxImageSelect,
           }}
+          fullscreen={{
+            auto: false,
+          }}
           zoom={{
             maxZoomPixelRatio: 3,
             zoomInMultiplier: 2,
@@ -102,10 +105,19 @@ export default function LightBoxImage({
             doubleTapDelay: 300,
             doubleClickMaxStops: 2,
           }}
+          slideshow={{}}
           styles={{
+            root: {},
+            slide: {},
+
             container: {
-              backgroundColor: "rgba(0, 0, 0, 0.9)",
+              backgroundColor: "black",
+              height: "80%",
+              width: "60%",
+              margin: "auto",
+              borderRadius: "10px",
             },
+
             navigationPrev: { color: "white" },
             navigationNext: { color: "white" },
           }}

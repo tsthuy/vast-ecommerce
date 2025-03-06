@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Slash } from "lucide-react";
@@ -65,4 +65,4 @@ const Breadcrumbs = () => {
   );
 };
 
-export default Breadcrumbs;
+export default memo(Breadcrumbs);
