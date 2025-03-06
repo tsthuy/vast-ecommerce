@@ -15,7 +15,7 @@ import Container from "../container";
 import MyButton from "../custom/button";
 
 export const SignIn = () => {
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const { callbackUrl } = router.query;
@@ -33,9 +33,9 @@ export const SignIn = () => {
 
       if (callbackUrl) {
         router.push(callbackUrl as string);
-        toast.success(t("login_successfully"));
+        toast.success(t("auth.login_successfully"));
       } else router.push("/");
-      toast.success(t("login_successfully"));
+      toast.success(t("auth.login_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     } finally {
@@ -50,11 +50,11 @@ export const SignIn = () => {
           <div className="flex flex-col justify-end py-10 xl:py-[125px]">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
               <h1 className="font-inter text-36 font-medium tracking-[0.04em]">
-                {t("login_in_to_exclusive")}
+                {t("auth.login_in_to_exclusive")}
               </h1>
 
               <p className="pb-[48px] pt-[24px]">
-                {t("enter_ur_details_below")}
+                {t("auth.enter_ur_details_below")}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -62,7 +62,7 @@ export const SignIn = () => {
                   <input
                     type="text"
                     name="emailOrPhone"
-                    placeholder={t("email_or_phone_number")}
+                    placeholder={t("auth.email_or_phone_number")}
                     disabled={isLoading}
                     required
                     onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +74,7 @@ export const SignIn = () => {
                   <input
                     type="password"
                     name="password"
-                    placeholder={t("password")}
+                    placeholder={t("auth.password")}
                     disabled={isLoading}
                     required
                     onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +85,7 @@ export const SignIn = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <MyButton disabled={isLoading} className="">
-                      {t("login")}
+                      {t("auth.login")}
                     </MyButton>
                   </div>
 
@@ -94,7 +94,7 @@ export const SignIn = () => {
                       className="text-button-2 hover:underline"
                       href={"/forgot-password"}
                     >
-                      {t("forget_password")}
+                      {t("auth.forget_password")}
                     </Link>
                   </div>
                 </div>

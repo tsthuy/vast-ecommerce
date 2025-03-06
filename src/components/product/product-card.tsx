@@ -81,7 +81,7 @@ export default function ProductCard({
     try {
       if (isInWishlist && wishlistItemId) {
         await removeWishlistMutation.mutateAsync(wishlistItemId);
-        toast.success(t("removed_from_wishlist"));
+        toast.success(t("common.removed_from_wishlist"));
 
         if (onRemoveFromWishlist && isInWishListPage) {
           onRemoveFromWishlist(wishlistItemId);
@@ -92,7 +92,7 @@ export default function ProductCard({
           variantId: selectedVariant.id,
         });
 
-        toast.success(t("added_to_wishlist"));
+        toast.success(t("common.added_to_wishlist"));
       }
     } catch (error) {
       toast.error(customErrorMessage(error));
@@ -106,13 +106,13 @@ export default function ProductCard({
         variant_id: selectedVariant.id,
         quantity: 1,
       });
-      toast.info(t("please_login_to_add_to_cart"));
+      toast.info(t("common.please_login_to_add_to_cart"));
       router.push("/login");
       return;
     }
 
     if (selectedVariant.stock <= 0) {
-      toast.error(t("out_of_stock"));
+      toast.error(t("common.out_of_stock"));
       return;
     }
 
@@ -122,7 +122,7 @@ export default function ProductCard({
         variant_id: selectedVariant.id,
         quantity: 1,
       });
-      toast.success(t("added_to_cart"));
+      toast.success(t("common.added_to_cart"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     }
@@ -164,8 +164,8 @@ export default function ProductCard({
                 className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
               >
                 {selectedVariant.stock === 0
-                  ? t("out_of_stock")
-                  : t("add-to-cart")}
+                  ? t("common.out_of_stock")
+                  : t("common.add-to-cart")}
               </Button>
             </div>
           ) : (
@@ -175,7 +175,7 @@ export default function ProductCard({
                 className="w-full rounded-none bg-black py-4 text-base font-medium hover:bg-button-1"
                 disabled={addToCartMutation.isPending}
               >
-                {t("add-to-cart")}
+                {t("common.add-to-cart")}
               </Button>
             </div>
           )}

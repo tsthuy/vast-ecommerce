@@ -58,7 +58,7 @@ const formSchema = z
   );
 
 export default function AccountContent() {
-  const { t } = useTranslation(["account", "common"]);
+  const { t } = useTranslation("common");
   const { user, setUser, isLoading: isLoadingAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
@@ -193,7 +193,7 @@ export default function AccountContent() {
           className="mx-auto max-w-2xl space-y-4"
         >
           <h2 className="text-center text-20 font-medium text-button-2">
-            {t("edit_ur_profile")}
+            {t("account.edit_ur_profile")}
           </h2>
 
           <div className="grid gap-4 md:grid-cols-12">
@@ -204,7 +204,7 @@ export default function AccountContent() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-16 font-normal">
-                      {t("first_name")}
+                      {t("account.first_name")}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -227,7 +227,7 @@ export default function AccountContent() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-16 font-normal">
-                      {t("last_name")}
+                      {t("account.last_name")}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -273,7 +273,7 @@ export default function AccountContent() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-16 font-normal">
-                      {t("address")}
+                      {t("account.address")}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -296,12 +296,12 @@ export default function AccountContent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-16 font-normal">
-                  {t("current_password")}
+                  {t("account.current_password")}
                 </FormLabel>
                 <FormControl>
                   <Input
                     className="bg-secondary-2 py-5"
-                    placeholder={t("current_password")}
+                    placeholder={t("account.current_password")}
                     type="password"
                     {...field}
                   />
@@ -317,12 +317,12 @@ export default function AccountContent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-16 font-normal">
-                  {t("new_password")}
+                  {t("account.new_password")}
                 </FormLabel>
                 <FormControl>
                   <Input
                     className="bg-secondary-2 py-5"
-                    placeholder={t("new_password")}
+                    placeholder={t("account.new_password")}
                     type="password"
                     {...field}
                   />
@@ -338,7 +338,7 @@ export default function AccountContent() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-16 font-normal">
-                  {t("account:confirm_new_password")}
+                  {t("account.confirm_new_password")}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -354,9 +354,9 @@ export default function AccountContent() {
           />
 
           <div className="flex items-center justify-end gap-8">
-            <Button variant={"ghost"}>{t("cancel")}</Button>
+            <Button variant={"ghost"}>{t("account.cancel")}</Button>
             <MyButton type="submit" disabled={isLoading}>
-              {isLoading ? "Saving..." : t("save_changes")}
+              {isLoading ? "Saving..." : t("account.save_changes")}
             </MyButton>
           </div>
         </form>

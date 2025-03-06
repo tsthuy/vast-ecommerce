@@ -78,7 +78,7 @@ export default function CountTimer({
     <div className={cn("flex items-center pb-[60px] xs:p-0", className)}>
       <div className="relative flex flex-col items-center">
         <span className="absolute top-[-15px] text-sm font-medium">
-          {t("days")}
+          {t("common.days")}
         </span>
 
         <span className="font-inter text-16 font-bold md:text-32">
@@ -92,7 +92,7 @@ export default function CountTimer({
 
       <div className="relative flex flex-col items-center text-left">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
-          {t("hours")}
+          {t("common.hours")}
         </span>
 
         <span className="font-inter text-16 font-bold md:text-32">
@@ -106,7 +106,7 @@ export default function CountTimer({
 
       <div className="relative flex min-w-[44px] flex-col items-center text-left">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
-          {t("minutes")}
+          {t("common.minutes")}
         </span>
 
         <span className="font-inter text-16 font-bold md:text-32">
@@ -120,7 +120,7 @@ export default function CountTimer({
 
       <div className="relative flex min-w-[44px] flex-col items-center text-left">
         <span className="l-0 absolute top-[-15px] text-sm font-medium">
-          {t("seconds")}
+          {t("common.seconds")}
         </span>
 
         <span className="font-inter text-16 font-bold md:text-32">

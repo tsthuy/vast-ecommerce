@@ -1,7 +1,5 @@
 import { useTranslation } from "next-i18next";
 
-import { NewProduct } from "~/types/product";
-
 import MyButton from "../custom/button";
 import ProductList from "../product/product-list";
 import SectionHeading from "../section-heading";
@@ -20,7 +18,7 @@ export default function BestSelling({ initialProducts }: BestSellingProps) {
       <div className="flex justify-between gap-2">
         <TitleHeading heading_key="best_sales" />
 
-        <MyButton className="">{t("view_all")}</MyButton>
+        <MyButton className="">{t("common.view_all")}</MyButton>
       </div>
 
       <ProductList products={initialProducts} />

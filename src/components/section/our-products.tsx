@@ -59,7 +59,7 @@ export default function OurProducts({
       />
 
       <div className="flex justify-center pt-[60px]">
-        <MyButton>{t("view_all_products")}</MyButton>
+        <MyButton>{t("common.view_all_products")}</MyButton>
       </div>
     </>
   );

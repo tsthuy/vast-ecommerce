@@ -14,7 +14,7 @@ import Container from "../../components/container";
 import { Button } from "../../components/ui/button";
 
 export default function Success() {
-  const { t } = useTranslation("payment");
+  const { t } = useTranslation("common");
   const router = useRouter();
   const { user } = useAuthStore();
   const searchParams = useSearchParams();
@@ -45,11 +45,11 @@ export default function Success() {
   return (
     <Container className="py-20 text-center">
       <h2 className="mb-4 font-inter text-36 font-semibold text-button-2">
-        {t("payment_successful")}
+        {t("payment.payment_successful")}
       </h2>
-      <p className="mb-6">{t("thank_u")}</p>
+      <p className="mb-6">{t("payment.thank_u")}</p>
       <Button asChild className="p-6 hover:bg-button-2">
-        <Link href="/">{t("continue_shopping")}</Link>
+        <Link href="/">{t("payment.continue_shopping")}</Link>
       </Button>
     </Container>
   );

@@ -1,17 +1,17 @@
-import { useTranslation } from "next-i18next"
+import { useTranslation } from "next-i18next";
 
-import MyButton from "../custom/button"
-import { ProductSlider } from "../product"
+import MyButton from "../custom/button";
+import { ProductSlider } from "../product";
 
 export default function FlashSales() {
-  const { t } = useTranslation("common")
+  const { t } = useTranslation("common");
   return (
     <>
       <ProductSlider />
 
       <div className="flex items-center justify-center border-b py-[60px]">
-        <MyButton>{t("view_all_products")}</MyButton>
+        <MyButton>{t("common.view_all_products")}</MyButton>
       </div>
     </>
-  )
+  );
 }

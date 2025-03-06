@@ -179,7 +179,7 @@ export function useCompleteCheckout(userId: string, tempCartId: string) {
 }
 
 export function usePostLoginActions(locale: string) {
-  const { t } = useTranslation(["common", "auth"]);
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const { user } = useAuthStore();
@@ -201,7 +201,7 @@ export function usePostLoginActions(locale: string) {
               quantity: pendingCartItem.quantity,
             });
 
-            toast.success(t("added_to_cart"));
+            toast.success(t("common.added_to_cart"));
           } catch (error) {
             toast.error(customErrorMessage(error));
           } finally {

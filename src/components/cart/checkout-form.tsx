@@ -56,7 +56,7 @@ export type CheckOutFormHandle = {
 };
 
 const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
-  const { t } = useTranslation("form");
+  const { t } = useTranslation("common");
 
   const [phoneValidation, setPhoneValidation] = useState<{
     isValid: boolean;
@@ -101,7 +101,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {t("first_name")}
+                {t("form.first_name")}
                 <span className="text-red-600">*</span>
               </FormLabel>
 
@@ -124,7 +124,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="company"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("company_name")}</FormLabel>
+              <FormLabel>{t("form.company_name")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -164,7 +164,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {t("street_address")}
+                {t("form.street_address")}
                 <span className="text-red-600">*</span>
               </FormLabel>
 
@@ -187,7 +187,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="apartment"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("apartment")}</FormLabel>
+              <FormLabel>{t("form.apartment")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -209,7 +209,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {t("city")}
+                {t("form.city")}
                 <span className="text-red-600">*</span>
               </FormLabel>
 
@@ -234,7 +234,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                {t("phone_number")}
+                {t("form.phone_number")}
                 <span className="text-red-600">*</span>
               </FormLabel>
 
@@ -266,7 +266,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("email_address")}</FormLabel>
+              <FormLabel>{t("form.email_address")}</FormLabel>
 
               <FormControl>
                 <Input
@@ -297,7 +297,7 @@ const CheckOutForm = forwardRef<CheckOutFormHandle>((props, ref) => {
 
               <div className="space-y-1 leading-none">
                 <FormDescription className="text-16 font-normal">
-                  {t("save_this_information_for_next_time")}
+                  {t("form.save_this_information_for_next_time")}
                 </FormDescription>
 
                 <FormMessage />

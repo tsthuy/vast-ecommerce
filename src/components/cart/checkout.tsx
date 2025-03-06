@@ -34,7 +34,7 @@ import { PaymentForm } from "./payment-form";
 import { StripeProvider } from "./stripe-provider";
 
 export const CheckOut = () => {
-  const { t } = useTranslation("cart");
+  const { t } = useTranslation("common");
   const { user } = useAuthStore();
   const router = useRouter();
   const params = useParams();
@@ -211,7 +211,7 @@ export const CheckOut = () => {
       </nav>
 
       <h3 className="font-inter text-36 font-medium">
-        {t("billings_details")}
+        {t("cart.billings_details")}
       </h3>
 
       <div className="flex flex-col items-center justify-center md:flex-row md:justify-between lg:items-start">
@@ -275,13 +275,13 @@ export const CheckOut = () => {
               {/* Order Summary */}
               <div className="space-y-2 pt-4">
                 <div className="flex justify-between border-b border-black pb-[16px]">
-                  <span className="">{t("subtotal")}:</span>
+                  <span className="">{t("cart.subtotal")}:</span>
 
                   <span>${cart && cart.meta.total_price.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between border-b border-black py-[16px]">
-                  <span>{t("shipping")}:</span>
+                  <span>{t("cart.shipping")}:</span>
 
                   <span className="">$10.00</span>
                 </div>
@@ -306,7 +306,7 @@ export const CheckOut = () => {
                 )}
 
                 <div className="flex justify-between pt-2">
-                  <span>{t("total")}:</span>
+                  <span>{t("cart.total")}:</span>
 
                   <span className="font-inter font-bold">
                     ${calculateTotalPrice()}
@@ -325,7 +325,7 @@ export const CheckOut = () => {
                     <div className="flex items-center gap-2">
                       <RadioGroupItem value="bank" id="bank" />
 
-                      <Label htmlFor="bank">{t("bank")}</Label>
+                      <Label htmlFor="bank">{t("cart.bank")}</Label>
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
@@ -343,7 +343,7 @@ export const CheckOut = () => {
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem className="" value="cash" id="cash" />
 
-                    <Label htmlFor="cash">{t("cash_on_delivery")}</Label>
+                    <Label htmlFor="cash">{t("cart.cash_on_delivery")}</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -354,14 +354,14 @@ export const CheckOut = () => {
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
                   className="py-6"
-                  placeholder={t("coupon_code")}
+                  placeholder={t("cart.coupon_code")}
                 />
 
                 <MyButton
                   onClick={handleApplyCoupon}
                   className="max-w-fit pt-2"
                 >
-                  {t("apply_coupon")}
+                  {t("cart.apply_coupon")}
                 </MyButton>
               </div>
 
@@ -386,7 +386,7 @@ export const CheckOut = () => {
                     "w-full xl:w-fit"
                   )}
                 >
-                  {t("place_order")}
+                  {t("cart.place_order")}
                 </MyButton>
               </div>
             </div>

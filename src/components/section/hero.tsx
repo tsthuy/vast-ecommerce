@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { useTranslation } from "next-i18next"
+import Image from "next/image";
+import { useTranslation } from "next-i18next";
 
-import CountTimer from "../countdown-timer"
-import MyButton from "../custom/button"
+import CountTimer from "../countdown-timer";
+import MyButton from "../custom/button";
 
 export default function Hero() {
-  const { t } = useTranslation("hero")
+  const { t } = useTranslation("common");
 
-  const targetDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000)
+  const targetDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
 
   return (
     <div className="bg-black lg:min-h-[500px]">
@@ -18,18 +18,18 @@ export default function Hero() {
           {/* Left Content */}
           <div className="flex flex-col items-center justify-center gap-8 md:items-start md:justify-start">
             <span className="text-16 font-semibold text-button-1">
-              {t("categories")}
+              {t("hero.categories")}
             </span>
 
             <h2 className="text-center font-inter text-32 font-semibold tracking-[0.04] text-secondary-2 md:text-left lg:text-48">
-              {t("title")}
+              {t("hero.title")}
             </h2>
 
             {/* Countdown Timer */}
             <CountTimer targetDate={targetDate} variant="circular" />
 
             <MyButton myVariant="button1" className="">
-              {t("buy_now")}
+              {t("hero.buy_now")}
             </MyButton>
           </div>
 
@@ -48,12 +48,12 @@ export default function Hero() {
                 src="/images/single_speaker.png"
                 alt="JBL Boombox with glow"
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
+                className="object-cover transition-transform duration-300 hover:scale-105"
               />
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

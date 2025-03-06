@@ -1,55 +1,55 @@
-"use client"
+"use client";
 
-import { useCallback, useEffect, useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
-import { ArrowRight } from "lucide-react"
+import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { ArrowRight } from "lucide-react";
 
-import { usePromo } from "~/hooks/use-promo.hook"
+import { usePromo } from "~/hooks/use-promo.hook";
 
-import { cn } from "~/libs/utils"
+import { cn } from "~/libs/utils";
 
-import { ProMoSkeleton } from "../skeletons"
-import { Button } from "../ui/button"
+import { ProMoSkeleton } from "../skeletons";
+import { Button } from "../ui/button";
 import {
   Carousel,
   CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "../ui/carousel"
+} from "../ui/carousel";
 
 export function PromoSlider() {
-  const { t } = useTranslation("common")
+  const { t } = useTranslation("common");
 
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
-  const router = useRouter()
-  const { data: slides, isLoading } = usePromo(router.locale || "en")
+  const router = useRouter();
+  const { data: slides, isLoading } = usePromo(router.locale || "en");
 
   useEffect(() => {
     if (!api) {
-      return
+      return;
     }
 
-    setCurrent(api.selectedScrollSnap())
+    setCurrent(api.selectedScrollSnap());
 
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
-    })
-  }, [api])
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   const scrollTo = useCallback(
     (index: number) => {
-      api?.scrollTo(index)
+      api?.scrollTo(index);
     },
     [api]
-  )
+  );
 
   if (isLoading) {
-    return <ProMoSkeleton />
+    return <ProMoSkeleton />;
   }
 
   return (
@@ -84,7 +84,7 @@ export function PromoSlider() {
                         href="#"
                         className="flex items-center gap-2 text-16 font-medium text-text-secondary underline underline-offset-8 hover:text-button-2"
                       >
-                        {t("shop_now")}
+                        {t("common.shop_now")}
 
                         <ArrowRight className="size-5 text-white hover:text-button-2" />
                       </Link>
@@ -126,5 +126,5 @@ export function PromoSlider() {
         </div>
       </Carousel>
     </div>
-  )
+  );
 }

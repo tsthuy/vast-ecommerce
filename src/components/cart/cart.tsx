@@ -39,7 +39,7 @@ import {
 
 export const Cart = () => {
   const router = useRouter();
-  const { t } = useTranslation(["common", "cart"]);
+  const { t } = useTranslation("common");
   const { user } = useAuthStore();
 
   const isLoading = useAuthStore((state) => state.isLoading);
@@ -102,12 +102,12 @@ export const Cart = () => {
 
   const handleProceedToCheckout = async () => {
     if (!user?.uid) {
-      toast.error(t("common:please_login"));
+      toast.error(t("common.please_login"));
       return;
     }
 
     if (!cart || cart.cart_items.length === 0) {
-      toast.error(t("cart:no_item"));
+      toast.error(t("cart.no_item"));
       return;
     }
 
@@ -145,10 +145,10 @@ export const Cart = () => {
 
       {cart?.cart_items.length === 0 && !isLoading ? (
         <div className="py-[92px] text-center">
-          <h2 className="mb-4 text-2xl font-semibold"> {t("cart:no_item")}</h2>
+          <h2 className="mb-4 text-2xl font-semibold"> {t("cart.no_item")}</h2>
 
           <Button asChild>
-            <Link href="/"> {t("common:return_to_shop")}</Link>
+            <Link href="/"> {t("common.return_to_shop")}</Link>
           </Button>
         </div>
       ) : (
@@ -158,19 +158,19 @@ export const Cart = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[300px] text-center">
-                    {t("cart:product")}
+                    {t("cart.product")}
                   </TableHead>
 
                   <TableHead className="w-[300px] text-center">
-                    {t("cart:price")}
+                    {t("cart.price")}
                   </TableHead>
 
                   <TableHead className="w-[300px] text-center">
-                    {t("cart:quantity")}
+                    {t("cart.quantity")}
                   </TableHead>
 
                   <TableHead className="w-[300px] text-center">
-                    {t("cart:subtotal")}
+                    {t("cart.subtotal")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -286,39 +286,39 @@ export const Cart = () => {
           </div>
           <div className="mt-8 flex flex-col flex-wrap gap-4">
             <MyButton className="max-w-fit border border-black bg-transparent text-black">
-              <Link href="/">{t("return_to_shop")}</Link>
+              <Link href="/">{t("common.return_to_shop")}</Link>
             </MyButton>
           </div>
 
           <div className="flex flex-col justify-center pt-10 lg:justify-between lg:pt-[80px] xl:flex-row xl:gap-[173px]">
             <div className="flex flex-col gap-4 xss:flex-row">
               <Input
-                placeholder={t("cart:coupon_code")}
+                placeholder={t("cart.coupon_code")}
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
                 className="xss:max-w-[300px] xs:py-6 sm:px-[48px] sm:py-[25px]"
               />
 
               <MyButton onClick={handleApplyCoupon}>
-                {t("cart:apply_coupon")}
+                {t("cart.apply_coupon")}
               </MyButton>
             </div>
 
             <div className="flex min-w-[470px] flex-col pb-20 pt-10 lg:pt-20 xl:pb-[140px] xl:pt-0">
               <div className="rounded-lg border p-6">
                 <h2 className="mb-4 text-xl font-semibold">
-                  {t("cart:cart_total")}
+                  {t("cart.cart_total")}
                 </h2>
 
                 <div className="space-y-4">
                   <div className="flex justify-between">
-                    <span>{t("cart:subtotal")}:</span>
+                    <span>{t("cart.subtotal")}:</span>
 
                     <span>${cart && cart.meta.total_price.toFixed(2)}</span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span>{t("cart:shipping")}:</span>
+                    <span>{t("cart.shipping")}:</span>
 
                     <span>$10.00</span>
                   </div>
@@ -346,7 +346,7 @@ export const Cart = () => {
                   <Separator />
 
                   <div className="flex justify-between text-lg font-semibold">
-                    <span>{t("cart:total")}:</span>
+                    <span>{t("cart.total")}:</span>
 
                     <span>${calculateTotalPrice()}</span>
                   </div>
@@ -354,7 +354,7 @@ export const Cart = () => {
                   <div className="flex justify-center">
                     <MyButton onClick={handleProceedToCheckout}>
                       {createCheckoutCartMutation.isPending && <Spinner />}{" "}
-                      {t("cart:proceed_to_checkout")}
+                      {t("cart.proceed_to_checkout")}
                     </MyButton>
                   </div>
                 </div>

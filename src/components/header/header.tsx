@@ -53,7 +53,7 @@ const Header = ({ categories }: HeaderProps) => {
     [router.pathname]
   );
 
-  const { t } = useTranslation(["header", "common"]);
+  const { t } = useTranslation("common");
 
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -72,17 +72,17 @@ const Header = ({ categories }: HeaderProps) => {
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success(t("common:logout_successfully"));
+      toast.success(t("common.logout_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
     }
   };
 
   const navLinks = [
-    { href: "/", label: t("home") },
-    { href: "/contact", label: t("contact") },
-    { href: "/about", label: t("about") },
-    { href: "/signup", label: t("signup") },
+    { href: "/", label: t("header.home") },
+    { href: "/contact", label: t("header.contact") },
+    { href: "/about", label: t("header.about") },
+    { href: "/signup", label: t("header.signup") },
   ];
 
   return (
@@ -116,7 +116,7 @@ const Header = ({ categories }: HeaderProps) => {
               <div className="relative">
                 <Input
                   type="search"
-                  placeholder={t("search")}
+                  placeholder={t("header.search")}
                   className="w-[200px] bg-secondary-2 py-5 pl-3 pr-10 text-xs lg:w-[250px] xl:w-[300px]"
                 />
 
@@ -185,7 +185,7 @@ const Header = ({ categories }: HeaderProps) => {
                     </button>
 
                     <Link href={"/account"} className="text-14 font-normal">
-                      {t("common:manage_my_account")}
+                      {t("common.manage_my_account")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -195,7 +195,7 @@ const Header = ({ categories }: HeaderProps) => {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      {t("common:my_order")}
+                      {t("common.my_order")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -205,7 +205,7 @@ const Header = ({ categories }: HeaderProps) => {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      {t("common:my_cancellation")}
+                      {t("common.my_cancellation")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -215,7 +215,7 @@ const Header = ({ categories }: HeaderProps) => {
                     </button>
 
                     <Link href={""} className="text-14 font-normal">
-                      {t("common:my_reviews")}
+                      {t("common.my_reviews")}
                     </Link>
                   </DropdownMenuItem>
 
@@ -229,7 +229,7 @@ const Header = ({ categories }: HeaderProps) => {
                       className="text-14 font-normal"
                       onClick={handleLogout}
                     >
-                      {t("common:logout")}
+                      {t("common.logout")}
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

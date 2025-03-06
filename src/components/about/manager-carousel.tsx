@@ -22,7 +22,7 @@ interface StatCardProps {
 }
 
 export function ManagerCarousel() {
-  const { t } = useTranslation("about");
+  const { t } = useTranslation("common");
 
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [api, setApi] = React.useState<CarouselApi>();
@@ -58,27 +58,27 @@ export function ManagerCarousel() {
   const teamMembers: StatItem[] = [
     {
       name: "Tom Cruise",
-      position: `${t("founder")} & ${t("chairman")}`,
+      position: `${t("about.founder")} & ${t("about.chairman")}`,
       image_url: "/images/tom.png",
     },
     {
       name: "Emma Watson",
-      position: `${t("managing_director")}`,
+      position: `${t("about.managing_director")}`,
       image_url: "/images/emma.png",
     },
     {
       name: "Will Smith",
-      position: `${t("product_designer")}`,
+      position: `${t("about.product_designer")}`,
       image_url: "/images/will.png",
     },
     {
       name: "Tom Cruise",
-      position: `${t("founder")} & ${t("chairman")}`,
+      position: `${t("about.founder")} & ${t("about.chairman")}`,
       image_url: "/images/tom.png",
     },
     {
       name: "Emma Watson",
-      position: `${t("managing_director")}`,
+      position: `${t("about.managing_director")}`,
       image_url: "/images/emma.png",
     },
   ];

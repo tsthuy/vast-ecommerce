@@ -29,7 +29,7 @@ interface PaymentFormProps {
 }
 
 export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
-  const { t } = useTranslation("cart");
+  const { t } = useTranslation("common");
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
@@ -93,19 +93,23 @@ export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
-          <CardTitle>{t("complete_payment")}</CardTitle>
+          <CardTitle>{t("cart.complete_payment")}</CardTitle>
 
-          <CardDescription>{t("choose_ur_preferred_payment")}</CardDescription>
+          <CardDescription>
+            {t("cart.choose_ur_preferred_payment")}
+          </CardDescription>
         </CardHeader>
 
         <CardContent>
           <Tabs defaultValue="standard" className="w-full pb-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="standard">
-                {t("standard_checkout")}
+                {t("cart.standard_checkout")}
               </TabsTrigger>
 
-              <TabsTrigger value="express">{t("express_checkout")}</TabsTrigger>
+              <TabsTrigger value="express">
+                {t("cart.express_checkout")}
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="standard">
@@ -130,7 +134,7 @@ export function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
             disabled={isLoading || !stripe || !elements}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {t("pay_now")}
+            {t("cart.pay_now")}
           </MyButton>
         </CardContent>
       </Card>

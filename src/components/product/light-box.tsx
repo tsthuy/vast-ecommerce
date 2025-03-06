@@ -80,7 +80,7 @@ export default function LightBoxImage({
         />
         {!isLightboxOpen && isHovered && (
           <div className="absolute bottom-2 z-10 rounded px-3 py-1 text-sm text-black">
-            {t("click_to_zoom")}
+            {t("common.click_to_zoom")}
           </div>
         )}
       </div>

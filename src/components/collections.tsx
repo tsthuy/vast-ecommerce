@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
 export default function Collections() {
-  const { t } = useTranslation(["common", "collection"]);
+  const { t } = useTranslation("common");
 
   return (
     <div className="">
@@ -25,18 +25,18 @@ export default function Collections() {
 
             <div className="absolute bottom-2 left-0 w-full p-8">
               <h2 className="font-inter text-xl font-semibold text-secondary-2 xss:text-24">
-                {t("collection:ps5_title")}
+                {t("collection.ps5_title")}
               </h2>
 
               <p className="max-w-[40%] py-4 text-14 font-normal text-secondary-2 xs:max-w-[80%]">
-                {t("collection:ps5_description")}
+                {t("collection.ps5_description")}
               </p>
 
               <Button
                 variant="link"
                 className="flex h-auto p-0 text-16 font-medium text-secondary-2 underline hover:text-button-2"
               >
-                {t("common:shop-now")}
+                {t("common.shop-now")}
               </Button>
             </div>
           </CardContent>
@@ -56,18 +56,18 @@ export default function Collections() {
 
               <div className="absolute bottom-6 left-0 w-full px-8">
                 <h2 className="font-inter text-xl font-semibold text-secondary-2 xss:text-24">
-                  {t("collection:women_collections")}
+                  {t("collection.women_collections")}
                 </h2>
 
                 <p className="py-4 text-14 font-normal text-secondary-2">
-                  {t("collection:women_description")}
+                  {t("collection.women_description")}
                 </p>
 
                 <Button
                   variant="link"
                   className="flex h-auto p-0 text-16 font-medium text-secondary-2 underline hover:text-button-2"
                 >
-                  {t("common:shop-now")}
+                  {t("common.shop-now")}
                 </Button>
               </div>
             </CardContent>
@@ -89,18 +89,18 @@ export default function Collections() {
 
                 <div className="absolute bottom-6 left-0 w-full px-6">
                   <h2 className="max-w-fit bg-black/50 font-inter text-xl font-semibold text-secondary-2 xss:text-24 sm:max-w-none sm:bg-transparent">
-                    {t("collection:speakers_title")}
+                    {t("collection.speakers_title")}
                   </h2>
 
                   <p className="max-w-[60%] py-4 text-14 font-normal text-secondary-2 xss:max-w-[90%]">
-                    {t("collection:speakers_description")}
+                    {t("collection.speakers_description")}
                   </p>
 
                   <Button
                     variant="link"
                     className="flex h-auto p-0 text-16 font-medium text-secondary-2 underline hover:text-button-2"
                   >
-                    {t("common:shop-now")}
+                    {t("common.shop-now")}
                   </Button>
                 </div>
               </CardContent>
@@ -120,18 +120,18 @@ export default function Collections() {
 
                 <div className="absolute bottom-6 left-0 w-full px-6">
                   <h2 className="font-inter text-24 font-semibold text-secondary-2">
-                    {t("collection:perfume_title")}
+                    {t("collection.perfume_title")}
                   </h2>
 
                   <p className="max-w-[70%] py-4 text-14 font-normal text-secondary-2 xss:max-w-[90%]">
-                    {t("collection:perfume_description")}
+                    {t("collection.perfume_description")}
                   </p>
 
                   <Button
                     variant="link"
                     className="flex h-auto p-0 text-16 font-medium text-secondary-2 underline hover:text-button-2"
                   >
-                    {t("common:shop-now")}
+                    {t("common.shop-now")}
                   </Button>
                 </div>
               </CardContent>

@@ -32,7 +32,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails = ({ product, images }: ProductDetailsProps) => {
-  const { t } = useTranslation(["header", "common", "details"]);
+  const { t } = useTranslation("common");
   const router = useRouter();
 
   const { user } = useAuthStore();
@@ -95,13 +95,13 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
         variant_id: selectedVariant.id,
         quantity,
       });
-      toast.info(t("common:please_login"));
+      toast.info(t("common.please_login"));
       router.push("/login");
       return;
     }
 
     if (!selectedVariant || selectedVariant.stock <= 0) {
-      toast.error(t("common:out_of_stock"));
+      toast.error(t("common.out_of_stock"));
       return;
     }
 
@@ -138,7 +138,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
     if (isInWishlist) {
       removeWishlistMutation.mutateAsync(wishlistItem.wishlist_item_id);
-      toast.success(t("common:removed_from_wishlist"));
+      toast.success(t("common.removed_from_wishlist"));
       return;
     }
 
@@ -146,7 +146,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
       productId: product.id,
       variantId: selectedVariant.id,
     });
-    toast.success(t("common:added_to_wishlist"));
+    toast.success(t("common.added_to_wishlist"));
   };
 
   const handleImageSelect = (image: ProductImage, index: number) => {
@@ -355,7 +355,7 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
             disabled={createCheckoutCartMutation.isPending}
           >
             {createCheckoutCartMutation.isPending && <Spinner />}{" "}
-            {t("common:buy_now")}
+            {t("common.buy_now")}
           </Button>
 
           <button
@@ -378,11 +378,11 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
             <div className="">
               <p className="text-16 font-medium">
-                {t("details:free_delivery")}
+                {t("service.free_delivery")}
               </p>
 
               <span className="cursor-pointer text-12 font-medium underline hover:text-button-2">
-                {t("details:enter_postcode")}
+                {t("details.enter_postcode")}
               </span>
             </div>
           </div>
@@ -394,15 +394,15 @@ const ProductDetails = ({ product, images }: ProductDetailsProps) => {
 
             <div className="">
               <p className="text-16 font-medium">
-                {t("details:return_delivery")}
+                {t("details.return_delivery")}
               </p>
 
               <span className="text-12 font-medium">
-                {t("details:free_30_days_return")}
+                {t("details.free_30_days_return")}
               </span>
 
               <span className="cursor-pointer text-12 font-medium underline hover:text-button-2">
-                {t("details:details")}
+                {t("details.details")}
               </span>
             </div>
           </div>

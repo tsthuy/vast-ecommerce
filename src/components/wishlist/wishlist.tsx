@@ -19,7 +19,7 @@ import { Button } from "../ui/button";
 export const WishList = () => {
   const router = useRouter();
 
-  const { t } = useTranslation(["wishlist", "common"]);
+  const { t } = useTranslation("common");
   const { user } = useAuthStore();
 
   const { data: products_for_u } = useProductsJustForU(
@@ -39,12 +39,12 @@ export const WishList = () => {
 
   const handleMoveAllToBag = () => {
     if (!user?.uid) {
-      toast.error(t("common:please_login"));
+      toast.error(t("common.please_login"));
       return;
     }
 
     if (!wishlist || wishlist.wishlist_items.length === 0) {
-      toast.error(t("wishlist_empty"));
+      toast.error(t("wishlist.wishlist_empty"));
       return;
     }
 
@@ -61,7 +61,7 @@ export const WishList = () => {
     <Container className="pb-20 pt-10 lg:pb-[140px] lg:pt-[80px]">
       <div className="flex items-center justify-between gap-3 pb-[60px]">
         <h3>
-          {t("wishlist")}({wishlist?.wishlist_items.length || 0})
+          {t("wishlist.wishlist")}({wishlist?.wishlist_items.length || 0})
         </h3>
 
         <MyButton
@@ -69,15 +69,17 @@ export const WishList = () => {
           disabled={moveWishlistToCartMutation.isPending}
           className="border bg-transparent text-black"
         >
-          {t("move_all_to_bag")}
+          {t("wishlist.move_all_to_bag")}
         </MyButton>
       </div>
 
       {wishlist?.wishlist_items.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2">
-          <h3 className="text-2xl font-semibold">{t("wishlist_empty")}</h3>
+          <h3 className="text-2xl font-semibold">
+            {t("wishlist.wishlist_empty")}
+          </h3>
 
-          <Button> {t("common:return_to_shop")}</Button>
+          <Button> {t("common.return_to_shop")}</Button>
         </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-[30px] pt-[60px] sm:justify-start lg:justify-start">
@@ -100,7 +102,7 @@ export const WishList = () => {
         <SectionHeading section_key="just_for_you" />
         <div className="pb-5 pt-20">
           <MyButton className="bg-transparent text-black">
-            {t("see_all")}
+            {t("wishlist.see_all")}
           </MyButton>
         </div>
       </div>

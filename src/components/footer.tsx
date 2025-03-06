@@ -7,7 +7,7 @@ import { Input } from "./ui/input";
 
 const Footer = () => {
   console.log("Footer");
-  const { t } = useTranslation("footer");
+  const { t } = useTranslation("common");
 
   return (
     <footer className="bg-black text-white">
@@ -20,16 +20,16 @@ const Footer = () => {
             </h2>
 
             <div className="space-y-4">
-              <h3 className="text-20 font-medium">{t("subscribe")}</h3>
+              <h3 className="text-20 font-medium">{t("footer.subscribe")}</h3>
 
               <p className="max-w-[213px] break-words text-16 font-normal text-secondary-2">
-                {t("get_10_off")}
+                {t("footer.get_10_off")}
               </p>
 
               <form className="flex max-w-[213px] rounded border p-1">
                 <Input
                   type="email"
-                  placeholder={t("enter_email")}
+                  placeholder={t("footer.enter_email")}
                   className="hover- rounded-r-none border-0 bg-transparent text-white focus:border-0"
                 />
 
@@ -61,7 +61,7 @@ const Footer = () => {
 
           {/* Support Section */}
           <div className="space-y-4">
-            <h2 className="text-20 font-medium">{t("support")}</h2>
+            <h2 className="text-20 font-medium">{t("footer.support")}</h2>
 
             <div className="space-y-4 text-16 font-normal">
               <p>111 Bijoy sarani, Dhaka,</p>
@@ -76,63 +76,63 @@ const Footer = () => {
 
           {/* Account Section */}
           <div className="space-y-4">
-            <h2 className="text-20 font-medium">{t("account")}</h2>
+            <h2 className="text-20 font-medium">{t("footer.account")}</h2>
 
             <nav className="space-y-4 text-16 font-normal">
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("my_account")}
+                {t("footer.my_account")}
               </Link>
 
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("login_register")}
+                {t("footer.login_register")}
               </Link>
 
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("cart")}
+                {t("footer.cart")}
               </Link>
 
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("wishlist")}
+                {t("footer.wishlist")}
               </Link>
 
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("shop")}
+                {t("footer.shop")}
               </Link>
             </nav>
           </div>
 
           {/* Quick Link Section */}
           <div className="space-y-4">
-            <h2 className="text-20 font-medium">{t("quick_link")}</h2>
+            <h2 className="text-20 font-medium">{t("footer.quick_link")}</h2>
 
             <nav className="space-y-4 text-16 font-normal">
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("privacy_policy")}
+                {t("footer.privacy_policy")}
               </Link>
 
               <Link
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("terms_of_use")}
+                {t("footer.terms_of_use")}
               </Link>
 
               <Link
@@ -146,17 +146,17 @@ const Footer = () => {
                 href="#"
                 className="block hover:text-button-2 hover:underline"
               >
-                {t("contact")}
+                {t("footer.contact")}
               </Link>
             </nav>
           </div>
 
           {/* Download App Section */}
           <div className="space-y-4">
-            <h2 className="text-20 font-medium">{t("download_app")}</h2>
+            <h2 className="text-20 font-medium">{t("footer.download_app")}</h2>
 
             <p className="text-12 font-medium opacity-70">
-              {t("download_app")}
+              {t("footer.download_app")}
             </p>
 
             <div className="flex flex-row">
@@ -286,7 +286,7 @@ const Footer = () => {
       <div className="border-t border-gray-800">
         <div className="container mx-auto p-4 opacity-40">
           <p className="text-center text-16 font-normal text-secondary-2">
-            {t("copyright")}
+            {t("footer.copyright")}
           </p>
         </div>
       </div>

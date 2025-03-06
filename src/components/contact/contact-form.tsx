@@ -31,7 +31,7 @@ const formSchema = z.object({
 });
 
 export default function ContactForm() {
-  const { t } = useTranslation("contact");
+  const { t } = useTranslation("common");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,7 +79,7 @@ export default function ContactForm() {
                             field.value ? "opacity-0" : "opacity-70"
                           )}
                         >
-                          {t("ur_name")}
+                          {t("contact.ur_name")}
 
                           <span className="text-red-500">*</span>
                         </span>
@@ -114,7 +114,7 @@ export default function ContactForm() {
                             field.value ? "opacity-0" : "opacity-70"
                           )}
                         >
-                          {t("ur_email")}
+                          {t("contact.ur_email")}
 
                           <span className="text-red-500">*</span>
                         </span>
@@ -149,7 +149,7 @@ export default function ContactForm() {
                             field.value ? "opacity-0" : "opacity-70"
                           )}
                         >
-                          {t("ur_phone")}
+                          {t("contact.ur_phone")}
 
                           <span className="text-red-500">*</span>
                         </span>
@@ -173,7 +173,7 @@ export default function ContactForm() {
                 <FormControl>
                   <Textarea
                     rows={8}
-                    placeholder={t("ur_message")}
+                    placeholder={t("contact.ur_message")}
                     className="resize-none bg-secondary-2"
                     {...field}
                   />
@@ -185,7 +185,7 @@ export default function ContactForm() {
           />
 
           <div className="flex justify-end">
-            <MyButton>{t("send_messages")}</MyButton>
+            <MyButton>{t("contact.send_messages")}</MyButton>
           </div>
         </form>
       </Form>
