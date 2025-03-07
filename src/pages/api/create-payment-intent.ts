@@ -26,6 +26,7 @@ export default async function handler(
 
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error creating payment intent" });
   }
 }

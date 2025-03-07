@@ -3,8 +3,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { Container } from "~/components";
 import Breadcrumbs from "~/components/breadcrumbs";
+import { RelatedProduct } from "~/components/product/details";
 import ProductDetails from "~/components/product/product-details";
-import { RelatedProduct } from "~/components/product/related-product";
 
 import { categoryApi, productApi } from "~/services";
 

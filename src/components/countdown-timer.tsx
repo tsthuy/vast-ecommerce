@@ -67,7 +67,15 @@ export default memo(function CountTimer({
               {value.toString().padStart(2, "0")}
             </span>
 
-            <span className="text-12 font-normal capitalize">{t(key)}</span>
+            <span className="text-12 font-normal capitalize">
+              {t(
+                `common.${key}` as
+                  | "common.days"
+                  | "common.hours"
+                  | "common.minutes"
+                  | "common.seconds"
+              )}
+            </span>
           </div>
         ))}
       </div>

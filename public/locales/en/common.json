@@ -117,6 +117,8 @@
     "login": "Login",
     "login_to_save_wishlist": "Login to save wishlist",
     "please_login_to_add_to_cart": "Please login to add to cart",
+    "please_enter_coupon_code": "Please enter coupon code",
+    "coupon_applied_successfully": "Coupon applied successfully",
     "logout_successfully": "Logout successfully",
     "buy_now": "Buy Now"
   },

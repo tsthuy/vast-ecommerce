@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 
+import { SectionHeading } from "~/components";
+
 import { useRelatedProducts } from "~/hooks";
 
-import SectionHeading from "../section-heading";
-
-import ProductList from "./product-list";
+import ProductList from "../product-list";
 
 interface RelatedProductProps {
   categoryId: string;

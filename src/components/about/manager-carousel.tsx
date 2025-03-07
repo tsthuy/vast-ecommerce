@@ -23,6 +23,33 @@ interface StatCardProps {
 
 export function ManagerCarousel() {
   const { t } = useTranslation("common");
+  const teamMembers: StatItem[] = [
+    {
+      name: "Tom Cruise",
+      position: `${t("about.founder")} & ${t("about.chairman")}`,
+      image_url: "/images/tom.png",
+    },
+    {
+      name: "Emma Watson",
+      position: `${t("about.managing_director")}`,
+      image_url: "/images/emma.png",
+    },
+    {
+      name: "Will Smith",
+      position: `${t("about.product_designer")}`,
+      image_url: "/images/will.png",
+    },
+    {
+      name: "Tom Cruise",
+      position: `${t("about.founder")} & ${t("about.chairman")}`,
+      image_url: "/images/tom.png",
+    },
+    {
+      name: "Emma Watson",
+      position: `${t("about.managing_director")}`,
+      image_url: "/images/emma.png",
+    },
+  ];
 
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [api, setApi] = React.useState<CarouselApi>();
@@ -53,35 +80,7 @@ export function ManagerCarousel() {
       api.off("select", handleSelect);
       window.removeEventListener("resize", updateTotalPages);
     };
-  }, [api]);
-
-  const teamMembers: StatItem[] = [
-    {
-      name: "Tom Cruise",
-      position: `${t("about.founder")} & ${t("about.chairman")}`,
-      image_url: "/images/tom.png",
-    },
-    {
-      name: "Emma Watson",
-      position: `${t("about.managing_director")}`,
-      image_url: "/images/emma.png",
-    },
-    {
-      name: "Will Smith",
-      position: `${t("about.product_designer")}`,
-      image_url: "/images/will.png",
-    },
-    {
-      name: "Tom Cruise",
-      position: `${t("about.founder")} & ${t("about.chairman")}`,
-      image_url: "/images/tom.png",
-    },
-    {
-      name: "Emma Watson",
-      position: `${t("about.managing_director")}`,
-      image_url: "/images/emma.png",
-    },
-  ];
+  }, [api, teamMembers?.length]);
 
   function StatCard({ stat }: StatCardProps) {
     return (

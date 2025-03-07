@@ -21,7 +21,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isLoading && !user?.uid) {
       router.push(`/login?callbackUrl=${encodeURIComponent(router.asPath)}`);
     }
-  }, [user?.uid]);
+  }, [isLoading, router, user?.uid]);
 
   if (!user?.uid) {
     return null;

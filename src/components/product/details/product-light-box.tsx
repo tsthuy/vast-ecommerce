@@ -109,17 +109,21 @@ export default function LightBoxImage({
           styles={{
             root: {},
             slide: {},
+            toolbar: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              color: "black",
+            },
 
             container: {
-              backgroundColor: "black",
+              backgroundColor: "white",
               height: "80%",
               width: "60%",
               margin: "auto",
               borderRadius: "10px",
             },
 
-            navigationPrev: { color: "white" },
-            navigationNext: { color: "white" },
+            navigationPrev: { color: "black" },
+            navigationNext: { color: "black" },
           }}
           className="custom-lightbox"
         />

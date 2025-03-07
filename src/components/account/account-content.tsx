@@ -104,18 +104,6 @@ export default function AccountContent() {
     return () => unsubscribe();
   }, [setUser]);
 
-  const handleSendEmailVerification = async () => {
-    if (!user) return;
-    try {
-      await sendEmailVerification(user);
-      toast.success("Verification email sent! Please check your inbox.");
-    } catch (error) {
-      toast.error(
-        customErrorMessage(error, "Failed to send verification email")
-      );
-    }
-  };
-
   const reauthenticateUser = async (currentPassword: string) => {
     if (!user || !user.email) {
       throw new Error("User not found or email not available.");

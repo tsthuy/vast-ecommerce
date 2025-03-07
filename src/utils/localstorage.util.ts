@@ -36,7 +36,7 @@ const loadFromLocalStorageWithExpiration = <T>(
       (item) => item.created_at && now - item.created_at < expirationMs
     );
     saveToLocalStorage(key, filteredData);
-    return filteredData;
+    return filteredData as unknown as T;
   }
 
   return parsedData;

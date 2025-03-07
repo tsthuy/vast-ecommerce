@@ -117,6 +117,8 @@
     "login": "Đăng nhập",
     "login_to_save_wishlist": "Đăng nhập để lưu danh sách yêu thích",
     "please_login_to_add_to_cart": "Vui lòng đăng nhập để thêm vào giỏ hàng",
+    "please_enter_coupon_code": "Vui lòng nhập mã giảm giá",
+    "coupon_applied_successfully": "Mã giảm giá đã được áp dụng",
     "logout_successfully": "Đăng xuất thành công",
     "buy_now": "Mua ngay"
   },

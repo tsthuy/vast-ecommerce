@@ -1,13 +1,15 @@
 import MockAdapter from "axios-mock-adapter";
-import { new_products_schema } from "./data/new_product_schema";
-import { new_products_backend } from "./data/new_product_backend";
-import { filterProductByLocale } from "~/utils/product.util";
+
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
 } from "~/utils/localstorage.util";
+import { filterProductByLocale } from "~/utils/product.util";
 
-export let wishlistItems: Array<{
+import { new_products_backend } from "./data/new_product_backend";
+import { new_products_schema } from "./data/new_product_schema";
+
+export const wishlistItems: Array<{
   wishlist_item_id: string;
   user_id: string;
   product_id: number;

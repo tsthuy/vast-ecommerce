@@ -15,6 +15,7 @@ import { customErrorMessage } from "~/utils/custom-error.util";
 
 import Container from "../container";
 import MyButton from "../custom/button";
+import Loader8 from "../loader8";
 
 export const SignUp = () => {
   const { t } = useTranslation("common");
@@ -23,6 +24,7 @@ export const SignUp = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
 
   const router = useRouter();
 
@@ -47,12 +49,15 @@ export const SignUp = () => {
     if (isLoading) return;
 
     try {
+      setIsLoadingGoogle(true);
       await loginWithGoogle();
 
       router.push("/");
       toast.success(t("auth.login_successfully"));
     } catch (error) {
       toast.error(customErrorMessage(error));
+    } finally {
+      setIsLoadingGoogle(false);
     }
   };
 
@@ -73,7 +78,7 @@ export const SignUp = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="border-b">
                   <input
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingGoogle}
                     type="text"
                     name="name"
                     placeholder={t("auth.name")}
@@ -85,7 +90,7 @@ export const SignUp = () => {
 
                 <div className="border-b">
                   <input
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingGoogle}
                     type="text"
                     name="emailOrPhone"
                     placeholder={t("auth.email_or_phone_number")}
@@ -97,7 +102,7 @@ export const SignUp = () => {
 
                 <div className="border-b">
                   <input
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingGoogle}
                     type="password"
                     name="password"
                     placeholder={t("auth.password")}
@@ -108,7 +113,10 @@ export const SignUp = () => {
                 </div>
 
                 <div>
-                  <MyButton disabled={isLoading} className="w-full">
+                  <MyButton
+                    disabled={isLoading || isLoadingGoogle}
+                    className="w-full"
+                  >
                     {isLoading && (
                       <Loader className="mr-2 h-4 w-4 animate-spin"></Loader>
                     )}
@@ -120,15 +128,17 @@ export const SignUp = () => {
               <div className="pt-4">
                 <MyButton
                   onClick={handleGoogleSignIn}
+                  disabled={isLoadingGoogle || isLoading}
                   className="w-full border border-black bg-transparent text-black hover:bg-button-1"
                 >
+                  {isLoadingGoogle && <Loader8 />}
+
                   <Image
                     src={"/images/google.png"}
                     alt="Google logo"
                     width={20}
                     height={20}
                   />
-
                   {t("auth.sign_up_with_google")}
                 </MyButton>
               </div>

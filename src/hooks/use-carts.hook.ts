@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
 
@@ -180,7 +179,6 @@ export function useCompleteCheckout(userId: string, tempCartId: string) {
 
 export function usePostLoginActions(locale: string) {
   const { t } = useTranslation("common");
-  const router = useRouter();
 
   const { user } = useAuthStore();
 
@@ -212,5 +210,12 @@ export function usePostLoginActions(locale: string) {
     };
 
     handlePostLogin();
-  }, [user?.uid]);
+  }, [
+    addToCartMutation,
+    isLoading,
+    pendingCartItem,
+    setPendingCartItem,
+    t,
+    user?.uid,
+  ]);
 }

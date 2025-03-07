@@ -34,7 +34,7 @@ export function useAddWishlist(userId: string, locale: string) {
         product_id: productId,
         variant_id: variantId,
       }),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {
@@ -47,7 +47,7 @@ export function useRemoveWishlist(userId: string, locale: string) {
   return useMutation({
     mutationFn: (wishlistItemId: string) =>
       wishlistApi.removeFromWishlist(userId, wishlistItemId),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(QUERY_KEYS.wishlists.all(userId, locale));
     },
     onError: (error) => {
@@ -89,5 +89,5 @@ export function useTransferWishlist(locale: string) {
     };
 
     transferWishlist();
-  }, [user?.uid]);
+  }, [locale, user?.uid]);
 }
