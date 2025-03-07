@@ -10,15 +10,26 @@ interface AttributeValue {
   value: string;
 }
 
+interface AttributeValueBackend extends AttributeValue {
+  label: LocalizedText;
+}
+
 interface ProductAttribute {
   id: string;
   name: string;
   values: AttributeValue[];
 }
 
+interface ProductAttributeBackend extends ProductAttribute {
+  name: LocalizedText;
+  values: AttributeValueBackend[];
+}
+
 interface VariantAttribute {
   attributeId: string;
   valueId: string;
+  attributeName?: string;
+  valueLabel?: string;
 }
 
 interface ProductVariant {

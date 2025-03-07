@@ -38,7 +38,7 @@ export default memo(function ProductCard({
   product,
   variantId,
 }: ProductCardProps) {
-  console.log("ProductCard");
+  console.log(product);
   const { user } = useAuthStore();
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
   const isLoading = useAuthStore((state) => state.isLoading);

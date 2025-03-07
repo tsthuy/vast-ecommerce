@@ -118,3 +118,13 @@ html body[data-scroll-locked] {
 .yarl__thumbnails_wrapper {
   background-color: rgba(0, 0, 0, 0.6);
 }
+
+.custom-lightbox .yarl__container {
+  width: 60% !important;
+}
+
+@media (max-width: 1024px) {
+  .custom-lightbox .yarl__container {
+    width: 90% !important;
+  }
+}

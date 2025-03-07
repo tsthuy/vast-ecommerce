@@ -90,7 +90,7 @@ export function ManagerCarousel() {
             src={stat.image_url}
             alt="manager"
             fill
-            className="rounded-md object-contain pt-8 transition-all duration-500 ease-in-out hover:scale-110"
+            className="cursor-pointer rounded-md object-contain pt-8 transition-all duration-500 ease-in-out hover:scale-110"
           />
         </div>
 
@@ -111,9 +111,9 @@ export function ManagerCarousel() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-twitter"
                 text-secondary-2
               >
@@ -132,9 +132,9 @@ export function ManagerCarousel() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-instagra"
               >
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
@@ -156,9 +156,9 @@ export function ManagerCarousel() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="1.25"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-linkedin"
               >
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />

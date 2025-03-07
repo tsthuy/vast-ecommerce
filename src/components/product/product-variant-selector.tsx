@@ -17,8 +17,6 @@ export default memo(function VariantSelector({
   selectedVariant,
   disabled = false,
 }: VariantSelectorProps) {
-  console.log("VariantSelector");
-
   const colorAttribute = product.attributes.find(
     (attr) => attr.name === "Color"
   );

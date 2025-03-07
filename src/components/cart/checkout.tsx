@@ -27,7 +27,6 @@ import { NotFound } from "../not-found";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import Spinner from "../ui/spinner";
 
 import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
 import PaymentForm from "./payment-form";
@@ -127,10 +126,6 @@ export const CheckOut = () => {
     }
     router.push(`/payment/success?tempCartId=${tempCartId}`);
   };
-
-  if (cartLoading) {
-    return <Spinner />;
-  }
 
   if (!cartLoading && !cart) {
     return <NotFound />;

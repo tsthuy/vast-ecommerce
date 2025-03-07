@@ -21,7 +21,7 @@ const ProductThumbnails = ({
   return (
     <div
       ref={thumbnailsContainerRef}
-      className="custom-scrollbar flex min-w-[170px] flex-row gap-[16px] overflow-auto md:h-[600px] md:flex-col"
+      className="custom-scrollbar flex min-w-[170px] flex-row gap-[16px] overflow-auto pb-2 pr-2 md:h-[600px] md:flex-col xl:pb-0"
     >
       {images.map((image, index) => (
         <div

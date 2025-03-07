@@ -42,7 +42,7 @@ export function PerformancesCarousel() {
   function StatCard({ stat }: StatCardProps) {
     return (
       <Card
-        className={`flex w-[80%] flex-col items-center justify-center rounded py-[30px] text-black hover:bg-button-2 hover:text-white sm:w-[calc((100%-30px)/2)] lg:w-[calc((100%-90px)/4)] [&>div>svg]:hover:text-black [&>div]:hover:border-[#e67c7c] [&>div]:hover:bg-white`}
+        className={`flex w-[80%] cursor-pointer flex-col items-center justify-center rounded py-[30px] text-black hover:bg-button-2 hover:text-white sm:w-[calc((100%-30px)/2)] lg:w-[calc((100%-90px)/4)] [&>div>svg]:hover:text-black [&>div]:hover:border-[#e67c7c] [&>div]:hover:bg-white`}
       >
         <div
           className={`mb-4 rounded-full border-[12px] border-gray-300 bg-black p-4`}
