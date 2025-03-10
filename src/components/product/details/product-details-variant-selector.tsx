@@ -1,9 +1,9 @@
 import { memo } from "react";
 
 interface ProductVariantSelectionProps {
-  product: { attributes: ProductAttribute[]; variants: ProductVariant[] };
+  product: NewProduct;
   selectedVariant: ProductVariant;
-  onVariantChange: (color: string, size: string) => void;
+  onVariantChange: (colorId: string, sizeId: string) => void;
 }
 
 const ProductVariantSelection = ({
@@ -11,15 +11,54 @@ const ProductVariantSelection = ({
   selectedVariant,
   onVariantChange,
 }: ProductVariantSelectionProps) => {
+  console.log("selectedVariant", selectedVariant);
+  const colorAttribute = product.attributes.find(
+    (attr) =>
+      attr.name.toLowerCase() === "color" ||
+      attr.name.toLowerCase() === "màu sắc"
+  );
+  const sizeAttribute = product.attributes.find(
+    (attr) =>
+      attr.name.toLowerCase() === "size" ||
+      attr.name.toLowerCase() === "kích thước"
+  );
+
+  console.log(
+    colorAttribute?.values
+      .map((color) => (
+        <button
+          key={color.id}
+          className={`h-4 w-4 rounded-full border-2 ${
+            selectedVariant.attributes.some((attr) => attr.valueId === color.id)
+              ? "border-black"
+              : "border-gray-300"
+          }`}
+          style={{ backgroundColor: color.value }}
+          onClick={() =>
+            onVariantChange(
+              color.id,
+              selectedVariant.attributes.find(
+                (attr) => attr.attributeId === (sizeAttribute?.id || "attr2")
+              )?.valueId || "s1"
+            )
+          }
+        />
+      ))
+      .map((item) => {
+        return item.toString();
+      })
+  );
+
   return (
     <div className="mt-4">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-6">
-          <label className="block font-inter text-20">Colours:</label>
-          <div className="flex gap-2">
-            {product.attributes
-              .find((attr) => attr.name === "Color")
-              ?.values.map((color) => (
+        {colorAttribute && (
+          <div className="flex items-center gap-6">
+            <label className="block font-inter text-16">
+              {colorAttribute.name}:
+            </label>
+            <div className="flex gap-2">
+              {colorAttribute.values.map((color) => (
                 <button
                   key={color.id}
                   className={`h-4 w-4 rounded-full border-2 ${
@@ -34,20 +73,24 @@ const ProductVariantSelection = ({
                     onVariantChange(
                       color.id,
                       selectedVariant.attributes.find(
-                        (attr) => attr.attributeId === "attr2"
+                        (attr) =>
+                          attr.attributeId === (sizeAttribute?.id || "attr2")
                       )?.valueId || "s1"
                     )
                   }
                 />
               ))}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-6">
-          <label className="block font-inter text-20">Size:</label>
-          <div className="flex gap-2">
-            {product.attributes
-              .find((attr) => attr.name === "Size")
-              ?.values.map((size) => (
+        )}
+
+        {sizeAttribute && (
+          <div className="flex items-center gap-6">
+            <label className="block font-inter text-16">
+              {sizeAttribute.name}:
+            </label>
+            <div className="flex gap-2">
+              {sizeAttribute.values.map((size) => (
                 <button
                   key={size.id}
                   className={`rounded border px-3 py-1 ${
@@ -60,17 +103,19 @@ const ProductVariantSelection = ({
                   onClick={() =>
                     onVariantChange(
                       selectedVariant.attributes.find(
-                        (attr) => attr.attributeId === "attr1"
+                        (attr) =>
+                          attr.attributeId === colorAttribute?.id || "attr1"
                       )?.valueId || "c1",
                       size.id
                     )
                   }
                 >
-                  {size.value}
+                  {size.label}
                 </button>
               ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

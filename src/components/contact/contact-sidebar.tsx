@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 import { Mail, Phone } from "lucide-react";
 
-export const ContactSidebar = () => {
+export const ContactSidebar = memo(() => {
   const { t } = useTranslation("common");
   return (
     <div className="flex w-full flex-col justify-around gap-8 px-[35px] py-10 shadow sm:flex-row md:w-1/3 md:flex-col md:justify-normal">
@@ -36,4 +37,5 @@ export const ContactSidebar = () => {
       </div>
     </div>
   );
-};
+});
+ContactSidebar.displayName = "ContactSidebar";

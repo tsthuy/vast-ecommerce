@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import {
   EmailAuthProvider,
@@ -58,7 +58,7 @@ const formSchema = z
     }
   );
 
-export default function AccountContent() {
+export default memo(function AccountContent() {
   console.log("AccountContent");
   const { t } = useTranslation("common");
   const { user, setUser, isLoading: isLoadingAuth } = useAuthStore();
@@ -359,4 +359,4 @@ export default function AccountContent() {
       </Form>
     </div>
   );
-}
+});

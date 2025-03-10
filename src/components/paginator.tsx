@@ -1,11 +1,12 @@
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { memo } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface PaginatorProps {
-  onPrevious: () => void
-  onNext: () => void
+  onPrevious: () => void;
+  onNext: () => void;
 }
 
-export default function Paginator({ onPrevious, onNext }: PaginatorProps) {
+function Paginator({ onPrevious, onNext }: PaginatorProps) {
   return (
     <div className="flex gap-2">
       <button
@@ -22,5 +23,7 @@ export default function Paginator({ onPrevious, onNext }: PaginatorProps) {
         <ArrowRight className="size-5" />
       </button>
     </div>
-  )
+  );
 }
+
+export default memo(Paginator);

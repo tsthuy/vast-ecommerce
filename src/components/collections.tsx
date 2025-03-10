@@ -1,10 +1,11 @@
+import { memo } from "react";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
-export default function Collections() {
+function Collections() {
   const { t } = useTranslation("common");
 
   return (
@@ -142,3 +143,5 @@ export default function Collections() {
     </div>
   );
 }
+
+export default memo(Collections);

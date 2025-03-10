@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 
@@ -7,7 +8,7 @@ import { ServiceFeatures } from "../section";
 import { ManagerCarousel } from "./manager-carousel";
 import { PerformancesCarousel } from "./performance-carousel";
 
-export const About = () => {
+export const About = memo(() => {
   const { t } = useTranslation("common");
   return (
     <>
@@ -48,4 +49,5 @@ export const About = () => {
       </Container>
     </>
   );
-};
+});
+About.displayName = "About";

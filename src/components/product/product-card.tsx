@@ -112,6 +112,8 @@ export default memo(function ProductCard({
     }
 
     try {
+      console.log("selectedVariant", selectedVariant);
+      console.log("product", product.id);
       await addToCartMutation.mutateAsync({
         product_id: product.id,
         variant_id: selectedVariant.id,

@@ -1,5 +1,6 @@
-import { usePathname } from "next/navigation"
-import { Slash } from "lucide-react"
+import { memo } from "react";
+import { usePathname } from "next/navigation";
+import { Slash } from "lucide-react";
 
 import {
   Breadcrumb,
@@ -8,19 +9,19 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "~/components/ui/breadcrumb"
+} from "~/components/ui/breadcrumb";
 
-export function BreadcrumbNav() {
-  const pathname = usePathname()
+export const BreadcrumbNav = memo(function BreadcrumbNav() {
+  const pathname = usePathname();
 
-  const segments = pathname.split("/").filter((segment) => segment !== "")
+  const segments = pathname.split("/").filter((segment) => segment !== "");
 
   const formatSegment = (segment: string) => {
     return segment
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
-  }
+      .join(" ");
+  };
 
   return (
     <Breadcrumb className="p-4">
@@ -32,8 +33,8 @@ export function BreadcrumbNav() {
         </BreadcrumbItem>
 
         {segments.map((segment, index) => {
-          const href = `/${segments.slice(0, index + 1).join("/")}`
-          const isLast = index === segments.length - 1
+          const href = `/${segments.slice(0, index + 1).join("/")}`;
+          const isLast = index === segments.length - 1;
 
           return (
             <BreadcrumbItem key={href}>
@@ -51,9 +52,9 @@ export function BreadcrumbNav() {
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
-          )
+          );
         })}
       </BreadcrumbList>
     </Breadcrumb>
-  )
-}
+  );
+});

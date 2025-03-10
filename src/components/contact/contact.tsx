@@ -1,12 +1,15 @@
-import ContactForm from "./contact-form"
-import { ContactSidebar } from "./contact-sidebar"
+import { memo } from "react";
 
-export const Contact = () => {
-    return (
-        <div className="pt-[80px] pb-[140px] flex-col md:flex-row flex gap-[60px]">
-        <ContactSidebar />
+import ContactForm from "./contact-form";
+import { ContactSidebar } from "./contact-sidebar";
 
-        <ContactForm />
-        </div>
-    )   
-}
+export const Contact = memo(() => {
+  return (
+    <div className="flex flex-col gap-[60px] pb-[140px] pt-[80px] md:flex-row">
+      <ContactSidebar />
+
+      <ContactForm />
+    </div>
+  );
+});
+Contact.displayName = "Contact";

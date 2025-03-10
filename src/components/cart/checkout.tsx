@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -32,7 +32,7 @@ import CheckOutForm, { CheckOutFormHandle } from "./checkout-form";
 import PaymentForm from "./payment-form";
 import StripeProvider from "./stripe-provider";
 
-export const CheckOut = () => {
+export const CheckOut = memo(() => {
   console.log("CheckOut");
   const { t } = useTranslation("common");
   const { user } = useAuthStore();
@@ -378,4 +378,5 @@ export const CheckOut = () => {
       </div>
     </Container>
   );
-};
+});
+CheckOut.displayName = "CheckOut";

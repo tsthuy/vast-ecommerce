@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { memo, ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
@@ -39,4 +39,4 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   );
 };
 
-export default MainLayout;
+export default memo(MainLayout);

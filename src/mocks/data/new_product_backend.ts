@@ -22,19 +22,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -120,19 +161,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -221,19 +303,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -322,19 +445,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -423,19 +587,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -524,19 +729,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -625,19 +871,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],
@@ -726,19 +1013,60 @@ export const new_products_backend: NewProductBackend[] = [
     attributes: [
       {
         id: "attr1",
-        name: "Color",
+        name: {
+          en: "Color",
+          vi: "Màu sắc",
+        },
         values: [
-          { id: "c1", label: "Red", value: "#FF0000" },
-          { id: "c2", label: "Blue", value: "#2986cc" },
+          {
+            id: "c1",
+            label: {
+              en: "Red",
+              vi: "Đỏ",
+            },
+            value: "#FF0000",
+          },
+          {
+            id: "c2",
+            label: {
+              en: "Blue",
+              vi: "Xanh",
+            },
+            value: "#2986cc",
+          },
         ],
       },
       {
         id: "attr2",
-        name: "Size",
+        name: {
+          en: "Size",
+          vi: "Kích thước",
+        },
         values: [
-          { id: "s1", label: "Small", value: "S" },
-          { id: "s2", label: "Medium", value: "M" },
-          { id: "s3", label: "Large", value: "L" },
+          {
+            id: "s1",
+            label: {
+              en: "Small",
+              vi: "Nhỏ",
+            },
+            value: "S",
+          },
+          {
+            id: "s2",
+            label: {
+              en: "Medium",
+              vi: "Trung bình",
+            },
+            value: "M",
+          },
+          {
+            id: "s3",
+            label: {
+              en: "Large",
+              vi: "Lớn",
+            },
+            value: "L",
+          },
         ],
       },
     ],

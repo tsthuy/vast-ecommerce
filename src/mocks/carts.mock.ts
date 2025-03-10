@@ -5,6 +5,7 @@ import {
   loadFromLocalStorageWithExpiration,
   saveToLocalStorage,
 } from "~/utils/localstorage.util";
+import { filterProductByLocale } from "~/utils/product.util";
 
 import { coupons } from "./data/coupons";
 import { new_products_backend } from "./data/new_product_backend";
@@ -83,7 +84,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
       existingCartItem.quantity = newQuantity;
 
-      // Save the updated cartItems to localStorage
       saveToLocalStorage("cartItems", cartItems);
 
       return [
@@ -116,7 +116,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
         quantity,
       });
 
-      // Save the updated cartItems to localStorage
       saveToLocalStorage("cartItems", cartItems);
 
       return [201, { cart_item_id, user_id, product_id, variant_id, quantity }];
@@ -126,17 +125,24 @@ export const setupCartsMock = (mock: MockAdapter) => {
   mock.onGet("/api/cart/items").reply((config) => {
     const locale = config.headers?.["Accept-Language"] || "en";
     const user_id = config.params?.user_id;
+
     const userCartItems = cartItems.filter((item) => item.user_id === user_id);
+
     const cartItemsWithDetails = userCartItems
       .map((item) => {
-        const product = new_products_backend.find(
+        const productBackend = new_products_backend.find(
           (p) => p.id === item.product_id
         );
-        const variant = product?.variants.find(
+        if (!productBackend) {
+          return null;
+        }
+
+        const product = filterProductByLocale(productBackend, locale);
+
+        const variant = product.variants.find(
           (v: ProductVariant) => v.id === item.variant_id
         );
-
-        if (!product || !variant) {
+        if (!variant) {
           return null;
         }
 
@@ -145,12 +151,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
             const attribute = product.attributes.find(
               (a: ProductAttribute) => a.id === attr.attributeId
             );
-            const value = attribute?.values.find(
-              (v: AttributeValue) => v.id === attr.valueId
-            );
-
-            if (attribute && value) {
-              acc[attribute.name.toLowerCase()] = value.label;
+            if (attribute && attr.valueLabel) {
+              acc[attribute.name.toLowerCase()] = attr.valueLabel;
             }
             return acc;
           },
@@ -164,8 +166,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
           variant_id: item.variant_id,
           quantity: item.quantity,
           product: {
-            name: product.name[locale] || product.name.en,
-            description: product.description[locale] || product.description.en,
+            name: product.name,
+            description: product.description,
             price: variant.price,
             images: [variant.image.url],
             stock: variant.stock,
@@ -180,8 +182,14 @@ export const setupCartsMock = (mock: MockAdapter) => {
       0
     );
     const total_price = userCartItems.reduce((sum, item) => {
-      const product = new_products_schema.find((p) => p.id === item.product_id);
-      const variant = product?.variants.find(
+      const productBackend = new_products_backend.find(
+        (p) => p.id === item.product_id
+      );
+      if (!productBackend) {
+        return sum;
+      }
+      const product = filterProductByLocale(productBackend, locale);
+      const variant = product.variants.find(
         (v: ProductVariant) => v.id === item.variant_id
       );
       return sum + (variant?.price || 0) * item.quantity;
@@ -234,7 +242,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     cartItem.quantity = quantity;
 
-    // Save the updated cartItems to localStorage
     saveToLocalStorage("cartItems", cartItems);
 
     return [200, { cart_item_id, quantity }];
@@ -255,7 +262,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     cartItems.splice(cartItemIndex, 1);
 
-    // Save the updated cartItems to localStorage
     saveToLocalStorage("cartItems", cartItems);
 
     return [200, { success: true }];
@@ -263,7 +269,7 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
   mock.onPost(/\/api\/cart\/[^/]+\/move-from-wishlist/).reply((config) => {
     wishlistItems.length = 0;
-    saveToLocalStorage("wishlistItems", wishlistItems); // Update wishlistItems in localStorage
+    saveToLocalStorage("wishlistItems", wishlistItems);
 
     const urlParts = config.url?.split("/");
     const user_id = urlParts?.[3];
@@ -317,7 +323,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
       }
     );
 
-    // Save the updated cartItems to localStorage
     saveToLocalStorage("cartItems", cartItems);
 
     return [200, { success: true }];
@@ -374,14 +379,18 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
     const cartItemsWithDetails = tempCart.cart_items
       .map((item) => {
-        const product = new_products_backend.find(
+        const productBackend = new_products_backend.find(
           (p) => p.id === item.product_id
         );
-        const variant = product?.variants.find(
+        if (!productBackend) {
+          return null;
+        }
+
+        const product = filterProductByLocale(productBackend, locale);
+        const variant = product.variants.find(
           (v: ProductVariant) => v.id === item.variant_id
         );
-
-        if (!product || !variant) {
+        if (!variant) {
           return null;
         }
 
@@ -390,12 +399,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
             const attribute = product.attributes.find(
               (a: ProductAttribute) => a.id === attr.attributeId
             );
-            const value = attribute?.values.find(
-              (v: AttributeValue) => v.id === attr.valueId
-            );
-
-            if (attribute && value) {
-              acc[attribute.name.toLowerCase()] = value.label;
+            if (attribute && attr.valueLabel) {
+              acc[attribute.name.toLowerCase()] = attr.valueLabel;
             }
             return acc;
           },
@@ -408,8 +413,8 @@ export const setupCartsMock = (mock: MockAdapter) => {
           variant_id: item.variant_id,
           quantity: item.quantity,
           product: {
-            name: product.name[locale] || product.name.en,
-            description: product.description[locale] || product.description.en,
+            name: product.name,
+            description: product.description,
             price: variant.price,
             images: [variant.image.url],
             stock: variant.stock,
@@ -426,8 +431,14 @@ export const setupCartsMock = (mock: MockAdapter) => {
     );
 
     const total_price = tempCart.cart_items.reduce((sum, item) => {
-      const product = new_products_schema.find((p) => p.id === item.product_id);
-      const variant = product?.variants.find(
+      const productBackend = new_products_backend.find(
+        (p) => p.id === item.product_id
+      );
+      if (!productBackend) {
+        return sum;
+      }
+      const product = filterProductByLocale(productBackend, locale);
+      const variant = product.variants.find(
         (v: ProductVariant) => v.id === item.variant_id
       );
       return sum + (variant?.price || 0) * item.quantity;
@@ -499,7 +510,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
       value: coupon.value,
     };
 
-    // Save the updated tempCarts to localStorage
     saveToLocalStorage("tempCarts", tempCarts);
 
     return [
@@ -561,20 +571,17 @@ export const setupCartsMock = (mock: MockAdapter) => {
 
       orders.push(order);
 
-      // Xóa cart chính
       for (let i = cartItems.length - 1; i >= 0; i--) {
         if (cartItems[i].user_id === userId) {
           cartItems.splice(i, 1);
         }
       }
 
-      // Save the updated cartItems to localStorage
       saveToLocalStorage("cartItems", cartItems);
     }
 
     tempCarts.splice(tempCartIndex, 1);
 
-    // Save the updated tempCarts to localStorage
     saveToLocalStorage("tempCarts", tempCarts);
 
     return [

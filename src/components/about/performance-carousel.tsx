@@ -14,7 +14,7 @@ interface StatCardProps {
   stat: StatItem;
 }
 
-export function PerformancesCarousel() {
+export const PerformancesCarousel = React.memo(function PerformancesCarousel() {
   const { t } = useTranslation("common");
   const stats: StatItem[] = [
     {
@@ -66,4 +66,4 @@ export function PerformancesCarousel() {
       </div>
     </>
   );
-}
+});

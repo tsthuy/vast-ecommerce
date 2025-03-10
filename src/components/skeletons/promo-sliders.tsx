@@ -1,4 +1,6 @@
-export default function PromoSkeleton() {
+import { memo } from "react";
+
+export default memo(function PromoSkeleton() {
   return (
     <div className="pt-10">
       <div className="relative w-full">
@@ -39,5 +41,5 @@ export default function PromoSkeleton() {
         </div>
       </div>
     </div>
-  )
-}
+  );
+});

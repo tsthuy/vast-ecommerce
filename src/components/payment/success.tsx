@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "next-i18next";
@@ -13,7 +13,7 @@ import { useAuthStore } from "~/stores/auth.store";
 import Container from "../../components/container";
 import { Button } from "../../components/ui/button";
 
-export default function Success() {
+export default memo(function Success() {
   const { t } = useTranslation("common");
   const router = useRouter();
   const { user } = useAuthStore();
@@ -53,4 +53,4 @@ export default function Success() {
       </Button>
     </Container>
   );
-}
+});

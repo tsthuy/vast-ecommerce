@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,7 +31,7 @@ const formSchema = z.object({
   messages: z.string(),
 });
 
-export default function ContactForm() {
+export default memo(function ContactForm() {
   const { t } = useTranslation("common");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -191,4 +192,4 @@ export default function ContactForm() {
       </Form>
     </div>
   );
-}
+});

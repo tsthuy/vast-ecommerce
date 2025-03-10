@@ -150,6 +150,7 @@ export const useProductDetails = (
   };
 
   const handleVariantChange = (color: string, size: string) => {
+    console.log(color, size);
     const newVariant = product.variants.find(
       (variant) =>
         variant.attributes.some(

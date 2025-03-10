@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
@@ -16,7 +17,7 @@ import { ProductCard, ProductList } from "../product";
 import SectionHeading from "../section-heading";
 import { Button } from "../ui/button";
 
-export const WishList = () => {
+const WishList = memo(() => {
   const router = useRouter();
 
   const { t } = useTranslation("common");
@@ -110,4 +111,8 @@ export const WishList = () => {
       <ProductList products={products_for_u || []} limit={4} />
     </Container>
   );
-};
+});
+
+WishList.displayName = "WishList";
+
+export { WishList };

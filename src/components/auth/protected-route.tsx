@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useAuthStore } from "~/stores/auth.store";
@@ -7,7 +7,9 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
-export function ProtectedRoute({ children }: ProtectedRouteProps) {
+export const ProtectedRoute = memo(function ProtectedRoute({
+  children,
+}: ProtectedRouteProps) {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
 
@@ -28,4 +30,5 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   return <>{children}</>;
-}
+});
+ProtectedRoute.displayName = "ProtectedRoute";

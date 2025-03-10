@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
@@ -15,7 +16,7 @@ import { Separator } from "../ui/separator";
 
 import CartTable from "./cart-table";
 
-export const Cart = () => {
+export const Cart = memo(() => {
   console.log("Cart");
   const { t } = useTranslation("common");
 
@@ -126,4 +127,5 @@ export const Cart = () => {
       )}
     </Container>
   );
-};
+});
+Cart.displayName = "Cart";

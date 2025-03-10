@@ -1,10 +1,11 @@
-import Link from "next/link"
-import { Slash } from "lucide-react"
+import { memo } from "react";
+import Link from "next/link";
+import { Slash } from "lucide-react";
 
-import MyButton from "./custom/button"
-import Container from "./container"
+import MyButton from "./custom/button";
+import Container from "./container";
 
-export const NotFound = () => {
+const NotFound = memo(function NotFound() {
   return (
     <Container className="py-20 lg:pb-[140px] lg:pt-[80px]">
       <div className="flex h-full flex-col">
@@ -43,5 +44,7 @@ export const NotFound = () => {
         </div>
       </div>
     </Container>
-  )
-}
+  );
+});
+
+export { NotFound };

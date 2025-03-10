@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,7 +17,7 @@ import Container from "../container";
 import MyButton from "../custom/button";
 import Loader8 from "../loader8";
 
-export const SignUp = () => {
+export const SignUp = memo(() => {
   const { t } = useTranslation("common");
 
   const [name, setName] = useState("");
@@ -158,4 +158,6 @@ export const SignUp = () => {
       </div>
     </>
   );
-};
+});
+
+SignUp.displayName = "SignUp";

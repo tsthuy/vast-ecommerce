@@ -21,7 +21,7 @@ interface StatCardProps {
   stat: StatItem;
 }
 
-export function ManagerCarousel() {
+export const ManagerCarousel = React.memo(function ManagerCarousel() {
   const { t } = useTranslation("common");
   const teamMembers: StatItem[] = [
     {
@@ -206,4 +206,4 @@ export function ManagerCarousel() {
       </div>
     </div>
   );
-}
+});

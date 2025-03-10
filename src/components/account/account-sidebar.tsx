@@ -1,7 +1,8 @@
+import { memo } from "react";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
 
-export default function AccountSidebar() {
+export default memo(function AccountSidebar() {
   const { t } = useTranslation("common");
   return (
     <div className="flex flex-col sm:w-1/3 lg:w-1/4">
@@ -57,4 +58,4 @@ export default function AccountSidebar() {
       </div>
     </div>
   );
-}
+});

@@ -17,10 +17,24 @@ export default memo(function VariantSelector({
   selectedVariant,
   disabled = false,
 }: VariantSelectorProps) {
-  const colorAttribute = product.attributes.find(
-    (attr) => attr.name === "Color"
+  const colorAttribute = useMemo(
+    () =>
+      product.attributes.find(
+        (attr) =>
+          attr.name.toLowerCase() === "color" ||
+          attr.name.toLowerCase() === "màu sắc"
+      ),
+    [product.attributes]
   );
-  const sizeAttribute = product.attributes.find((attr) => attr.name === "Size");
+  const sizeAttribute = useMemo(
+    () =>
+      product.attributes.find(
+        (attr) =>
+          attr.name.toLowerCase() === "size" ||
+          attr.name.toLowerCase() === "kích thước"
+      ),
+    [product.attributes]
+  );
 
   const colors = useMemo(() => colorAttribute?.values || [], [colorAttribute]);
   const sizes = useMemo(() => sizeAttribute?.values || [], [sizeAttribute]);
@@ -31,7 +45,8 @@ export default memo(function VariantSelector({
         (attr) =>
           attr.attributeId === colorAttribute?.id && attr.valueId === color.id
       )
-    ) || colors[0]
+    ) ||
+      colors[0] || { id: "", label: "", value: "" }
   );
 
   const [selectedSize, setSelectedSize] = useState<AttributeValue>(
@@ -40,7 +55,8 @@ export default memo(function VariantSelector({
         (attr) =>
           attr.attributeId === sizeAttribute?.id && attr.valueId === size.id
       )
-    ) || sizes[0]
+    ) ||
+      sizes[0] || { id: "", label: "", value: "" }
   );
 
   const findVariant = (
@@ -73,7 +89,6 @@ export default memo(function VariantSelector({
   const handleColorChange = (color: AttributeValue) => {
     setSelectedColor(color);
     const newVariant = findVariant(color, selectedSize);
-
     if (newVariant) {
       onVariantChange(newVariant);
     }
@@ -82,7 +97,6 @@ export default memo(function VariantSelector({
   const handleSizeChange = (size: AttributeValue) => {
     setSelectedSize(size);
     const newVariant = findVariant(selectedColor, size);
-
     if (newVariant) {
       onVariantChange(newVariant);
     }
@@ -94,9 +108,8 @@ export default memo(function VariantSelector({
       {colors.length > 0 && (
         <div className="flex items-center gap-4 space-y-2">
           <div className="mt-2 text-12 font-medium">
-            Color: {selectedColor.label}
+            {colorAttribute?.name}: {selectedColor.label}
           </div>
-
           <div className="flex flex-wrap items-center justify-center gap-2">
             {colors.map((color) => {
               const stock = getStockForVariant(color, selectedSize);
@@ -117,7 +130,6 @@ export default memo(function VariantSelector({
                     className="absolute inset-1 rounded-full"
                     style={{ backgroundColor: color.value }}
                   />
-
                   {stock === 0 && (
                     <span className="absolute inset-0 flex items-center justify-center rounded-full bg-white bg-opacity-50">
                       <svg
@@ -146,9 +158,8 @@ export default memo(function VariantSelector({
       {sizes.length > 0 && (
         <div className="space-y-2">
           <span className="text-12 font-medium">
-            Size: {selectedSize.label}
+            {sizeAttribute?.name}: {selectedSize.label}
           </span>
-
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => {
               const stock = getStockForVariant(selectedColor, size);
@@ -166,7 +177,6 @@ export default memo(function VariantSelector({
                   disabled={disabled || stock === 0}
                 >
                   {size.label}
-
                   {stock > 0 && <span className="ml-1 text-xs">({stock})</span>}
                 </button>
               );
