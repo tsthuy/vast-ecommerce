@@ -1,40 +1,133 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Advanced Next.js E-commerce Platform [Design](<https://www.figma.com/design/vcC01RalNtKRSyLMSEmUBL/Full-E-Commerce-Website-UI-UX-Design-(Community)>)
 
-## Getting Started
+## Overview
 
-First, run the development server:
+A full-featured, production-ready e-commerce platform built with cutting-edge frontend technologies, focusing on performance, SEO, and user experience.
+
+## Key Features
+
+- **Full E-commerce Functionality**: Comprehensive frontend implementation
+- **Next.js Page Router**: Deep understanding of Next.js architecture
+- **Performance Optimized**:
+  - Utilizing `useCallback`, `memo`, `useMemo`
+  - Skeleton loading states
+  - Efficient data management
+- **SEO Optimized**:
+  - Leverage Next.js SEO capabilities
+  - Dynamic metadata for categories and top-selling products
+- **Internationalization**:
+  - Full i18n support (dynamic and static translations)
+  - Multi-language ready
+
+## Tech Stack
+
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Stripe](https://img.shields.io/badge/Stripe-008CDD?style=for-the-badge&logo=stripe&logoColor=white)
+![i18next](https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white)
+
+### Core Technologies
+
+- **Frontend**: Next.js (Page Router), React, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui
+- **State Management**:
+  - Zustand for global state
+  - TanStack Query for data caching
+- **Authentication**: Firebase
+- **Payments**: Stripe
+- **Internationalization**: i18next
+- **API Mocking**: Axios Mock Adapter
+
+## Unique Technical Implementations
+
+- Advanced product variant system
+- Dynamic multi-language support
+- SEO-optimized product and category pages
+- Responsive design for all device sizes
+- Integrated payment processing
+- Comprehensive form protection
+- Image lightbox for product visualization
+- Coupon code system
+
+## Prerequisites
+
+- Node.js (v20.7.0+)
+- npm (v10.2.0+)
+
+## Installation
+
+1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/tsthuy/vast-ecommerce.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to project directory
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+cd vast-ecommerce-frontend
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. Install dependencies
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Available Scripts
 
-## Learn More
+| Command              | Description                     |
+| -------------------- | ------------------------------- |
+| `npm run dev`        | Start development server        |
+| `npm run build:dev`  | Build for development           |
+| `npm run build:prod` | Build for production            |
+| `npm run start:dev`  | Start development build         |
+| `npm run start:prod` | Start production build          |
+| `npm run lint`       | Run ESLint                      |
+| `npm run interface`  | Generate i18n interfaces        |
+| `npm run toc`        | Generate i18n table of contents |
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project uses `cross-env` and `yenv` for environment management:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Supports multiple environments (development, production)
+- Automatically generates `.env` files
+- Secure environment variable handling
 
-## Deploy on Vercel
+## Key Performance Optimizations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Memoization techniques (`useCallback`, `memo`, `useMemo`)
+- Efficient data fetching with TanStack Query
+- Skeleton loading states
+- Minimal re-renders through intelligent state management
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Internationalization
+
+- Support for multiple languages
+- Dynamic and static translation capabilities
+- Easy translation resource management
+- Powered by i18next
+- Seamless language switching
+- Comprehensive translation file management
+
+## Payment Integration
+
+- Stripe payment gateway
+- Secure transaction processing
+- Multiple payment method support
+
+## Authentication
+
+- Firebase Authentication
+- Secure user management
+- Multiple authentication methods
+
+## Responsive Design
+
+- Fully responsive across all device sizes
+- Mobile-first approach
+- Adaptive layouts
