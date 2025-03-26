@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import intlTelInput from "intl-tel-input";
 
 import { cn } from "~/libs/utils";
@@ -125,4 +125,4 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
   );
 };
 
-export default PhoneInput;
+export default memo(PhoneInput);

@@ -11,7 +11,6 @@ export const setupProductsMock = (mock: MockAdapter) => {
   mock.onGet("/api/products-explore").reply((config) => {
     const locale = config.headers?.["Accept-Language"] || "en";
     const products = filterProductsByLocale(new_products_backend, locale);
-    console.log(products);
     return [200, products];
   });
 

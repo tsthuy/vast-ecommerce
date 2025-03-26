@@ -6,7 +6,6 @@ import { useTranslation } from "next-i18next";
 import { Input } from "./ui/input";
 
 const Footer = () => {
-  console.log("Footer");
   const { t } = useTranslation("common");
 
   return (

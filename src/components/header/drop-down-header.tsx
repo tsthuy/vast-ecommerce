@@ -22,7 +22,6 @@ const DropDownHeader = ({
   isInAccountPage,
   handleLogout,
 }: DropDownHeaderProps) => {
-  console.log("dropdowen re-rendered");
   const { t } = useTranslation("common");
   return (
     <DropdownMenu>

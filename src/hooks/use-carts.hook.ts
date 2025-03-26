@@ -149,7 +149,6 @@ export function useApplyCouponInCheckout(locale: string, tempCartId: string) {
         data.totalPrice
       ),
     onSuccess: (data) => {
-      console.log("Coupon applied successfully:", data);
       toast.success("Coupon applied successfully.");
       queryClient.invalidateQueries(
         QUERY_KEYS.carts.checkout(locale, tempCartId)

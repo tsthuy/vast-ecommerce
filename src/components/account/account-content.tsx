@@ -59,7 +59,6 @@ const formSchema = z
   );
 
 export default memo(function AccountContent() {
-  console.log("AccountContent");
   const { t } = useTranslation("common");
   const { user, setUser, isLoading: isLoadingAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);

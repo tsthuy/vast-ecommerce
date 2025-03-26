@@ -33,7 +33,6 @@ import PaymentForm from "./payment-form";
 import StripeProvider from "./stripe-provider";
 
 export const CheckOut = memo(() => {
-  console.log("CheckOut");
   const { t } = useTranslation("common");
   const { user } = useAuthStore();
   const router = useRouter();

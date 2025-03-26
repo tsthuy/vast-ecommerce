@@ -12,7 +12,6 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-  console.log("create intent");
   try {
     const { amount, userId } = req.body;
 

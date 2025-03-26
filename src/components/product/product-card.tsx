@@ -9,6 +9,7 @@ import { useTranslation } from "next-i18next";
 import { Eye, Heart, Trash } from "lucide-react";
 import { toast } from "sonner";
 
+import { renderStars } from "~/components/product/render-stars";
 import { Button } from "~/components/ui/button";
 
 import { useAddToCart } from "~/hooks/use-carts.hook";
@@ -23,7 +24,6 @@ import { cn } from "~/libs/utils";
 import { customErrorMessage } from "~/utils/custom-error.util";
 import { getProductSlug } from "~/utils/get-product-slug.util";
 import { getGuestUserId } from "~/utils/get-user.util";
-import { renderStars } from "~/utils/render-stars";
 
 import { useAuthStore } from "~/stores/auth.store";
 
@@ -38,7 +38,6 @@ export default memo(function ProductCard({
   product,
   variantId,
 }: ProductCardProps) {
-  console.log(product);
   const { user } = useAuthStore();
   const setPendingCartItem = useAuthStore((state) => state.setPendingCartItem);
   const isLoading = useAuthStore((state) => state.isLoading);
@@ -112,8 +111,6 @@ export default memo(function ProductCard({
     }
 
     try {
-      console.log("selectedVariant", selectedVariant);
-      console.log("product", product.id);
       await addToCartMutation.mutateAsync({
         product_id: product.id,
         variant_id: selectedVariant.id,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { FormControl } from "../ui/form";
 import { Input } from "../ui/input";
@@ -20,130 +20,133 @@ interface EnhancedGooglePlacesInputProps {
   className?: string;
 }
 
-export function EnhancedGooglePlacesInput({
-  value,
-  onChange,
-  className,
-}: EnhancedGooglePlacesInputProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [missingComponents, setMissingComponents] = useState<string[]>([]);
-  const [addressComponents, setAddressComponents] = useState<AddressComponent>(
-    {}
-  );
-  const [selectedAddress, setSelectedAddress] = useState("");
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.google || !inputRef.current)
-      return;
-
-    const google = window.google;
-
-    autocompleteRef.current = new google.maps.places.Autocomplete(
-      inputRef.current,
-      {
-        componentRestrictions: { country: "vi" },
-        fields: ["address_components", "formatted_address"],
-      }
+export const EnhancedGooglePlacesInput = memo(
+  function EnhancedGooglePlacesInput({
+    value,
+    onChange,
+    className,
+  }: EnhancedGooglePlacesInputProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(
+      null
     );
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [missingComponents, setMissingComponents] = useState<string[]>([]);
+    const [addressComponents, setAddressComponents] =
+      useState<AddressComponent>({});
+    const [selectedAddress, setSelectedAddress] = useState("");
 
-    const listener = autocompleteRef.current.addListener(
-      "place_changed",
-      () => {
-        const place = autocompleteRef.current?.getPlace();
-        if (!place?.address_components) return;
+    useEffect(() => {
+      if (typeof window === "undefined" || !window.google || !inputRef.current)
+        return;
 
-        const components: AddressComponent = {};
-        const missing: string[] = [];
+      const google = window.google;
 
-        place.address_components.forEach((component) => {
-          const types = component.types;
-
-          if (types.includes("locality") || types.includes("sublocality")) {
-            components.city = component.long_name;
-          }
-
-          if (types.includes("administrative_area_level_1")) {
-            components.state = component.long_name;
-          }
-
-          if (types.includes("postal_code")) {
-            components.postalCode = component.long_name;
-          }
-
-          if (types.includes("country")) {
-            components.country = component.long_name;
-          }
-        });
-
-        if (!components.city) missing.push("city");
-        if (!components.state) missing.push("state");
-        if (!components.postalCode) missing.push("postalCode");
-        if (!components.country) missing.push("country");
-
-        setAddressComponents(components);
-        setSelectedAddress(place.formatted_address || "");
-
-        if (missing.length > 0) {
-          setMissingComponents(missing);
-          setIsModalOpen(true);
-        } else {
-          const fullAddress = formatAddress(
-            components,
-            place.formatted_address || ""
-          );
-          onChange(fullAddress);
+      autocompleteRef.current = new google.maps.places.Autocomplete(
+        inputRef.current,
+        {
+          componentRestrictions: { country: "vi" },
+          fields: ["address_components", "formatted_address"],
         }
-      }
-    );
+      );
 
-    return () => {
-      google.maps.event.removeListener(listener);
-      autocompleteRef.current = null;
+      const listener = autocompleteRef.current.addListener(
+        "place_changed",
+        () => {
+          const place = autocompleteRef.current?.getPlace();
+          if (!place?.address_components) return;
+
+          const components: AddressComponent = {};
+          const missing: string[] = [];
+
+          place.address_components.forEach((component) => {
+            const types = component.types;
+
+            if (types.includes("locality") || types.includes("sublocality")) {
+              components.city = component.long_name;
+            }
+
+            if (types.includes("administrative_area_level_1")) {
+              components.state = component.long_name;
+            }
+
+            if (types.includes("postal_code")) {
+              components.postalCode = component.long_name;
+            }
+
+            if (types.includes("country")) {
+              components.country = component.long_name;
+            }
+          });
+
+          if (!components.city) missing.push("city");
+          if (!components.state) missing.push("state");
+          if (!components.postalCode) missing.push("postalCode");
+          if (!components.country) missing.push("country");
+
+          setAddressComponents(components);
+          setSelectedAddress(place.formatted_address || "");
+
+          if (missing.length > 0) {
+            setMissingComponents(missing);
+            setIsModalOpen(true);
+          } else {
+            const fullAddress = formatAddress(
+              components,
+              place.formatted_address || ""
+            );
+            onChange(fullAddress);
+          }
+        }
+      );
+
+      return () => {
+        google.maps.event.removeListener(listener);
+        autocompleteRef.current = null;
+      };
+    }, [onChange]);
+
+    const formatAddress = (
+      components: AddressComponent,
+      baseAddress: string
+    ): string => {
+      const parts = [
+        baseAddress,
+        components.city,
+        components.state,
+        components.postalCode,
+        components.country,
+      ].filter(Boolean);
+
+      return parts.join(", ");
     };
-  }, [onChange]);
 
-  const formatAddress = (
-    components: AddressComponent,
-    baseAddress: string
-  ): string => {
-    const parts = [
-      baseAddress,
-      components.city,
-      components.state,
-      components.postalCode,
-      components.country,
-    ].filter(Boolean);
+    const handleModalComplete = (completedComponents: AddressComponent) => {
+      const mergedComponents = { ...addressComponents, ...completedComponents };
+      const fullAddress = formatAddress(mergedComponents, selectedAddress);
+      onChange(fullAddress);
+    };
 
-    return parts.join(", ");
-  };
+    return (
+      <>
+        <FormControl>
+          <Input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className={className}
+          />
+        </FormControl>
 
-  const handleModalComplete = (completedComponents: AddressComponent) => {
-    const mergedComponents = { ...addressComponents, ...completedComponents };
-    const fullAddress = formatAddress(mergedComponents, selectedAddress);
-    onChange(fullAddress);
-  };
-
-  return (
-    <>
-      <FormControl>
-        <Input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={className}
+        <AddressCompletionModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          missingComponents={missingComponents}
+          initialComponents={addressComponents}
+          onComplete={handleModalComplete}
         />
-      </FormControl>
-
-      <AddressCompletionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        missingComponents={missingComponents}
-        initialComponents={addressComponents}
-        onComplete={handleModalComplete}
-      />
-    </>
-  );
-}
+      </>
+    );
+  }
+);

@@ -17,7 +17,6 @@ import { Separator } from "../ui/separator";
 import CartTable from "./cart-table";
 
 export const Cart = memo(() => {
-  console.log("Cart");
   const { t } = useTranslation("common");
 
   const {

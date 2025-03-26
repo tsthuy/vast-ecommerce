@@ -10,7 +10,6 @@ const Container: React.FC<ContainerProps> = ({
   className,
   ...props
 }) => {
-  console.log("Container");
   const containerStyles = `
     mx-auto
     max-w-[1186px]

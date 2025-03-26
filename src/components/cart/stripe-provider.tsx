@@ -22,7 +22,6 @@ interface StripeProviderProps {
 function StripeProvider({ children, clientSecret }: StripeProviderProps) {
   const router = useRouter();
   const locale = getStripeLocale(router.locale || "en");
-  console.log("stripe-provider.tsx", stripePromise);
   const promise = useMemo(() => stripePromise, []);
 
   const options = useMemo<StripeElementsOptions>(

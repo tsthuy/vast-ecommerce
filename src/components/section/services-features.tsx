@@ -3,7 +3,6 @@ import { useTranslation } from "next-i18next";
 import { Headphones, Shield, Truck } from "lucide-react";
 
 const ServiceFeatures = memo(function ServiceFeatures() {
-  console.log("ServiceFeatures");
   const { t } = useTranslation("common");
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import type React from "react";
 
 import { Button } from "../ui/button";
@@ -23,7 +23,7 @@ interface AddressCompletionModalProps {
   onComplete: (components: AddressComponent) => void;
 }
 
-export function AddressCompletionModal({
+export const AddressCompletionModal = memo(function AddressCompletionModal({
   isOpen,
   onClose,
   missingComponents,
@@ -114,4 +114,4 @@ export function AddressCompletionModal({
       </DialogContent>
     </Dialog>
   );
-}
+});

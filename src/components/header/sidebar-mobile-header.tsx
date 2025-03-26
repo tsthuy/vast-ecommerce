@@ -22,7 +22,6 @@ const SidebarMobileHeader = memo(
     navLinks,
     pathname,
   }: SidebarMobileHeaderProps) => {
-    console.log("mobile re-rendered");
     return (
       <div className="fixed inset-0 z-50 text-center lg:hidden">
         <div className="absolute inset-0 bg-black/50" onClick={toggleSidebar} />

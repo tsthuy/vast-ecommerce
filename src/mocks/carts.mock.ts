@@ -353,7 +353,6 @@ export const setupCartsMock = (mock: MockAdapter) => {
     }
 
     tempCarts.push(tempCart);
-    console.log("tempCarts", tempCarts);
 
     return [
       200,

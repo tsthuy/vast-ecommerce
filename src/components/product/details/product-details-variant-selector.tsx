@@ -11,7 +11,6 @@ const ProductVariantSelection = ({
   selectedVariant,
   onVariantChange,
 }: ProductVariantSelectionProps) => {
-  console.log("selectedVariant", selectedVariant);
   const colorAttribute = product.attributes.find(
     (attr) =>
       attr.name.toLowerCase() === "color" ||
@@ -21,32 +20,6 @@ const ProductVariantSelection = ({
     (attr) =>
       attr.name.toLowerCase() === "size" ||
       attr.name.toLowerCase() === "kích thước"
-  );
-
-  console.log(
-    colorAttribute?.values
-      .map((color) => (
-        <button
-          key={color.id}
-          className={`h-4 w-4 rounded-full border-2 ${
-            selectedVariant.attributes.some((attr) => attr.valueId === color.id)
-              ? "border-black"
-              : "border-gray-300"
-          }`}
-          style={{ backgroundColor: color.value }}
-          onClick={() =>
-            onVariantChange(
-              color.id,
-              selectedVariant.attributes.find(
-                (attr) => attr.attributeId === (sizeAttribute?.id || "attr2")
-              )?.valueId || "s1"
-            )
-          }
-        />
-      ))
-      .map((item) => {
-        return item.toString();
-      })
   );
 
   return (

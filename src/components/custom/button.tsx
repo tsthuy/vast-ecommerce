@@ -28,7 +28,7 @@ const MyButton: React.FC<MyButtonProps> = ({
   };
 
   const myButtonBaseStyles =
-    "xs:py-[25px] xs:px-[48px] text-16 text-text-secondary font-medium ";
+    "xs:py-[25px] xs:px-[48px] text-16 text-text-secondary font-medium";
 
   return (
     <Button

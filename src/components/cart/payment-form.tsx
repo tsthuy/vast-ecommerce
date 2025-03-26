@@ -32,7 +32,6 @@ interface PaymentFormProps {
 }
 
 function PaymentForm({ onPayNow, tempCartId }: PaymentFormProps) {
-  console.log("PaymentForm");
   const { t } = useTranslation("common");
   const router = useRouter();
   const stripe = useStripe();

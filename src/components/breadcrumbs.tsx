@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import { customErrorMessage } from "~/utils/custom-error.util";
 
 const Breadcrumbs = () => {
-  console.log("Breadcrumbs");
   const router = useRouter();
   const pathnames = router.asPath
     .split("/")

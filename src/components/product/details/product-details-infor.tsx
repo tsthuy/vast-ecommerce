@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { renderStars } from "~/utils/render-stars";
+import { renderStars } from "~/components/product/render-stars";
 
 interface ProductInfoProps {
   product: NewProduct;
