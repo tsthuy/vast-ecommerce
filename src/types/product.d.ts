@@ -65,3 +65,8 @@ interface NewProductBackend extends NewProduct {
   description: LocalizedText;
   attributes: ProductAttributeBackend[];
 }
+
+type ProductDetailsResponse = {
+  localizedProduct: NewProduct;
+  images: any[];
+};

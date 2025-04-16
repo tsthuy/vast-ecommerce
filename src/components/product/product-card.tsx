@@ -202,10 +202,7 @@ export default memo(function ProductCard({
                 <Trash className="size-5" />
               </button>
             ) : (
-              <button
-                className="rounded-full bg-white p-2 hover:bg-gray-200"
-                onClick={() => router.push(`/product/${product.id}`)}
-              >
+              <button className="rounded-full bg-white p-2 hover:bg-gray-200">
                 <Eye className="size-5" />
               </button>
             )
@@ -224,10 +221,7 @@ export default memo(function ProductCard({
                 />
               </button>
 
-              <button
-                className="rounded-full bg-white p-2 hover:bg-gray-200"
-                onClick={() => router.push(`/product/${product.id}`)}
-              >
+              <button className="rounded-full bg-white p-2 hover:bg-gray-200">
                 <Eye className="size-5" />
               </button>
             </>

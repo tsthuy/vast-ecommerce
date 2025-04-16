@@ -16,7 +16,7 @@ function Collections() {
           <CardContent className="relative flex aspect-square min-h-[600px] items-center p-0">
             <div className="relative flex size-[50%] items-center justify-center xs:size-3/5 sm:size-4/5">
               <Image
-                src="https://s3-alpha-sig.figma.com/img/1c36/0f79/0c1817d3afa266b3c9f8c81ff0ed4428?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=YAao6MbW~PAGffE2GoFEVBjpgeRaSWWoDwjc~CznN4xXzO-chZ0h9eNnq4IKfBES4NgZakPKGB0IVJ9XiX2Kz4evzVaKcUimN2kfOvlG5I~kxU7SCU3Pk8FBstAMV4fU1IZ9xUYyBRqgWAu-8f-JBtDLEcsgPJ1owZyMHBTbbvUcQC-NX2YFjfMM8stlzBO6rO5x0-fSQmhylQbrZ65vUNpXEcW7KyIn20uQQmvdOYR06ipqiqA2n-Wt~phhWEpXUntwrLgtHdf9e4y5Y0taqCCvIYv1hSJk5ezVXZRGCsJZLvYOkRb0b6EVouV6OPQyw19QK6NhkZWGMyvYdWCdAw__"
+                src="https://s3-alpha-sig.figma.com/img/1c36/0f79/0c1817d3afa266b3c9f8c81ff0ed4428?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=NYtjPHdKjsvXDaYFA5TdFzyP3MRFL5CGnIswJklwx2x05o0P9m2oy-TPMu3SFTf16~bChIVBEsBh3iT-0jvpEbStY6VOa8T1cRGfpXT~A4K6Cj2Mrn~sqDJF9JAF5zvIi9N7GEqC4E~aXT~PBqzQEXOR4GEDSFkbKaMaJplskvoarIxhjkbScnmUjkKrXk0-4fH-Y6xx4B98qON6u7swMmzNPasYBBg1HIQ3yPawDyEkFxD5xO~~38qgLLmXMaMZOj6NCtlnH1lcc7UbvRYqCv3V2SAmDliWdvhfHENEbb2kxw0~sfybHaV-0SfpokcnEP6AH0mGmeofw-7UZUR8GA__"
                 alt="PlayStation 5 Console"
                 fill
                 className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
@@ -112,7 +112,7 @@ function Collections() {
               <CardContent className="relative flex aspect-square min-h-[220px] items-center p-0 sm:justify-center">
                 <div className="relative size-[55%] xss:size-[70%]">
                   <Image
-                    src="https://s3-alpha-sig.figma.com/img/1531/5cd1/5102562cf220504d288fa568eaa816dd?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=JqKR~TifxYFmlKB9oYz0e6ksDak~mmBEX4iV0raWnvQ53oEMTwTmbRFkXmlWob2MVE2qZ-pYN5nfdKZsGANw6f-6Eo3flxmFbziA0h2O2Kzs6kbimXCgFYPBkRMjcyjzl2~tJXLFrJP59c7asSSe4dKQELlXCgjoVVnitHCc16GJXjzM6IVxhgekhknfsqNfCscm72j4tOKpkbGEtT160x1rKTKbN3ESR1i7726493fhSoHHQpDs~huo4gXTkBDYO9QYQoIBpWvxXcREUaENBzSlbwC2zAtK5jetJNdkKImjwyg-HThMObY9WSxSfIFjiXp0TEz2A8u-Y2TQqjomDg__"
+                    src="https://s3-alpha-sig.figma.com/img/1531/5cd1/5102562cf220504d288fa568eaa816dd?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=G28aXSN-C04ul-RAUWx4jrcbxChwfIEUUlu4VeXUjDGlkJF~jmFRzu7c5G34ITD~MMcoExgwDjrOcTvXoZPcih7VsOIBEANsM0aZz0DDkUsqHtJoe-Yp0HpmXO-bFQ3Iu0UkjtICZdGGKnoXlPz-fafJIhdJV8dh2-o9CYsfOjlAeANDg5rEhFVSLQ~zkBFd5JekvImRFKaFL7Z1UXTQvPdPkXaMF1efwtzqc1JfnF6J4hrcY3gGy5HOnvg7Rn5q70St64S0sDL7ssXOduZsN74GnNP2kwFr18lVzdSC7aVnRiuAMg9z1BqtP~lueuLWzbRSXRZQnL~xbovbhkwQTQ__"
                     alt="Perfume"
                     fill
                     className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"

@@ -1,10 +1,10 @@
 import { memo } from "react";
 import { useTranslation } from "next-i18next";
 
-import resources from "~/utils/resources.util";
+import Resources from "../utils/resources.util";
 
 interface SectionHeadingProps {
-  section_key: keyof typeof resources.common.section;
+  section_key: keyof typeof Resources.common.section;
 }
 
 export default memo(function SectionHeading({

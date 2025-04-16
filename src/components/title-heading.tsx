@@ -1,10 +1,10 @@
 import { memo } from "react";
 import { useTranslation } from "next-i18next";
 
-import resources from "~/utils/resources.util";
+import Resources from "../utils/resources.util";
 
 interface TitleHeadingProps {
-  heading_key: keyof typeof resources.common.heading;
+  heading_key: keyof typeof Resources.common.heading;
 }
 
 export default memo(function TitleHeading({ heading_key }: TitleHeadingProps) {

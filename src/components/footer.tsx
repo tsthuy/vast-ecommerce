@@ -161,7 +161,7 @@ const Footer = () => {
             <div className="flex flex-row">
               <div className="relative size-[76px]">
                 <Image
-                  src="https://s3-alpha-sig.figma.com/img/9913/87c0/5dd6d44594e01b675513068803e2426d?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Q-AxG7fZIPedIW-f27rRHgN8t80OrCtJWyq9PoMIlZN0X4VfA5LDBYorCqyPzc-mTntSOhZseSO525jGIs4URt3Oo-NU393dOgd1jCBeSrv06~B4bxJxWDdMpKnfsiFAXJWtw04RMNqnltrAwf1BVyUsHk8LE7EK8rDheCSfsYufxfIiqSn4gMTOb3KmoB~oC7yKMqTzpPfr7QwjG-1-a2UZx6DvEC2CpOLl4pcl0QdjJVFEnwueQej0Mtddk-g3walGnJ0fhm7MX~Ft6CkHSkfO3aSmm4h5LPt-0w6cvgj4blbf1WwE-0frlwW1VGzLpPDqQO1TgiwL9xVWWUSHHA__"
+                  src="https://s3-alpha-sig.figma.com/img/9913/87c0/5dd6d44594e01b675513068803e2426d?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=V2R6pYbCTKdQmFAttEEG2xvzM-9BYW6LjHrVdll2oXYLlHDbkyj4qAh6as8~Mjdh4YyDmkxrRvEANSPg58Bsf0sqLqeTA~XLQQBSbYpoDzaDaAyxfoq9javj2rjhkQa06whVBP-4lmQ3BJnqJRc-uksO~dCPDKyYseml5Q89i8B2M8P0ed9APFV4DRk4v1~wud2eswqGnIiaDZ~cNe-rAoTLbb9BdmCno5RCdnfwXNXM-Gs8lQ4GLy3XGddOG~oit7akwUrPLgOamMvFtXPJzYn9KgUHZi2L157JXNsoKpH76BiNJjzvXOn9ziZuIs8h2WKzbYdxARYbpHnMUwjN6A__"
                   alt="QR Code"
                   className="rounded-lg object-contain"
                   fill
@@ -171,7 +171,7 @@ const Footer = () => {
               <div className="flex flex-col gap-[8px]">
                 <button className="relative h-[30px] w-[104px] py-4">
                   <Image
-                    src="https://s3-alpha-sig.figma.com/img/a61d/4c71/10b18ab55a1e1a07ebf54a46ebb07284?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=QHAv6Wn48rmbL7CHEPmrk3ceiuAY-tVeZvNOD4uEdcWth6hP97AnLkNoZtgtu3lpQqJZwkdprWUiQcX9mKrqHRt7worZyWbiJdPBIqY7fIdVOIlkAJ8wZfer0WRAhPaw75f~q5ib-G4Jg8KuMmW8n53cEZSpcraOH6U-9Cu3XDMXyodlJzjmcUlXlhsn0cWvX31MfHkgIyf5Xk7puedwqhcNiZO1lCXbOZKYxmgKkJbv5n37LF4Ps9B9Ivfj8OxHe18oeiAASh3jhCD~r2x9OG2CiHjZbaEaD2VJmHhK5dOh7OJhEEewytrKHFLaq2xfOC53W0CzAVpOtBOl8bZ5lw__"
+                    src="https://s3-alpha-sig.figma.com/img/a61d/4c71/10b18ab55a1e1a07ebf54a46ebb07284?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ZjI4nXN8D-Sft9xzhEDaq~C9~x1P63YlklzxCLKdwchHVumSgPE88386JZziBmsRfDecVUEp5Fm1cOOr-hUkrXVYwxT7EjOz0kOP7Ys-3dBvhyz5V3iL0-zjwqgQ72mUqnZPB9VFWNSDbGosY2n1MmSfX~xLXXr4K~DJ~85StI2-4w2VJMLs93OMa38sOgJt~7K90PrwPvBxPlm9N73qCWuc9T4oxF~Br06HrS1Tex07vRtdsXsgeipiQxNsLAaXFaqHj7zJLoB53L6xfBljgc~xaHGWuSY88UjbAkO~jmUl7rPQcjQAxgeODJpZvOnLc9-gK8gneqGgqzMqUQgJQQ__"
                     alt="Google Play"
                     fill
                     className="rounded-lg object-cover"
@@ -180,7 +180,7 @@ const Footer = () => {
 
                 <button className="relative h-[30px] w-[104px] py-4">
                   <Image
-                    src="https://s3-alpha-sig.figma.com/img/3893/2d5a/ccb54c528f9bcf326ca48ea29bd6d890?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cnsza2m6ZxdoMDmOicWvFZY4XDMmPASb0dO1wRDsxWV0krBE8OrjZFasAd4WFeamnurqeJ~0uuM1-siJEAMmxGqaBoIVwMxOYql-3fW-uPlYShFkpYv3qDOX9iJaTY~qzWe9mrqvCA95qxpvJdiq3qMnZpOFnwX19IKaqXlPUI8fjl6FhpsjTk1icIHBDFhHg4EisjsXPG1oz5~-~nQglhappaNjhVaSB3gENNGJ8f0Ye9cnFdoL1nuESvLTXetggyD-yFgIuS67g2tiWwbLx3naKVnnavSpbgndu2o5LaqgVIZIRAzC1o~zfDFc6g8xai2sFX6zk~rLzTiYR5abug__"
+                    src="https://s3-alpha-sig.figma.com/img/3893/2d5a/ccb54c528f9bcf326ca48ea29bd6d890?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fVAnQe6AaYUais0Gm6Cr4Rq80ykp2knK~GDPp6w2-sQYZkZ7xI9g4-7J4Uy~UwR2cAaqge3fS4OXjQsLEn6kcRyF8LA0Pa3HcXRfAcSvzp4h2-~hrFp6a0LPWIHeGvcy6OGDX56lzu7N2LrNCPpAX-9KgXDeiZJPIZlxdPnU473eXNsJymk37WZzZlsUZBxjtuKMUJCZKJMq-yU~1N5huoKGSGWt1i6izkJhPggu6Bh~ViOY3zMa-YaaUj4SVQmo66csyuNxbDL57mxGrZcY7K4lzQ2b9p1bssVcLmrKwL36Lt35pFffj0Nqis7Jlhkg-XtwoelzUxIRQsjwcxMbwA__"
                     alt="App Store"
                     fill
                     className="rounded-lg object-cover"
