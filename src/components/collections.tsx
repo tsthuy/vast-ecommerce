@@ -16,7 +16,7 @@ function Collections() {
           <CardContent className="relative flex aspect-square min-h-[600px] items-center p-0">
             <div className="relative flex size-[50%] items-center justify-center xs:size-3/5 sm:size-4/5">
               <Image
-                src="https://s3-alpha-sig.figma.com/img/1c36/0f79/0c1817d3afa266b3c9f8c81ff0ed4428?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=NYtjPHdKjsvXDaYFA5TdFzyP3MRFL5CGnIswJklwx2x05o0P9m2oy-TPMu3SFTf16~bChIVBEsBh3iT-0jvpEbStY6VOa8T1cRGfpXT~A4K6Cj2Mrn~sqDJF9JAF5zvIi9N7GEqC4E~aXT~PBqzQEXOR4GEDSFkbKaMaJplskvoarIxhjkbScnmUjkKrXk0-4fH-Y6xx4B98qON6u7swMmzNPasYBBg1HIQ3yPawDyEkFxD5xO~~38qgLLmXMaMZOj6NCtlnH1lcc7UbvRYqCv3V2SAmDliWdvhfHENEbb2kxw0~sfybHaV-0SfpokcnEP6AH0mGmeofw-7UZUR8GA__"
+                src="/images/station.png"
                 alt="PlayStation 5 Console"
                 fill
                 className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
@@ -112,7 +112,7 @@ function Collections() {
               <CardContent className="relative flex aspect-square min-h-[220px] items-center p-0 sm:justify-center">
                 <div className="relative size-[55%] xss:size-[70%]">
                   <Image
-                    src="https://s3-alpha-sig.figma.com/img/1531/5cd1/5102562cf220504d288fa568eaa816dd?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=G28aXSN-C04ul-RAUWx4jrcbxChwfIEUUlu4VeXUjDGlkJF~jmFRzu7c5G34ITD~MMcoExgwDjrOcTvXoZPcih7VsOIBEANsM0aZz0DDkUsqHtJoe-Yp0HpmXO-bFQ3Iu0UkjtICZdGGKnoXlPz-fafJIhdJV8dh2-o9CYsfOjlAeANDg5rEhFVSLQ~zkBFd5JekvImRFKaFL7Z1UXTQvPdPkXaMF1efwtzqc1JfnF6J4hrcY3gGy5HOnvg7Rn5q70St64S0sDL7ssXOduZsN74GnNP2kwFr18lVzdSC7aVnRiuAMg9z1BqtP~lueuLWzbRSXRZQnL~xbovbhkwQTQ__"
+                    src="/images/perfume.png"
                     alt="Perfume"
                     fill
                     className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
