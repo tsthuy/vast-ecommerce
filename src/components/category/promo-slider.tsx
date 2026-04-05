@@ -1,11 +1,12 @@
 "use client";
 
-import { memo, useCallback, useEffect, useState } from "react";
+// eslint-disable-next-line simple-import-sort/imports
+import { ArrowRight } from "lucide-react";
+import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import { ArrowRight } from "lucide-react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 import { usePromo } from "~/hooks/use-promo.hook";
 
@@ -82,11 +83,11 @@ const PromoSlider = memo(function PromoSlider() {
 
                       <Link
                         href="#"
-                        className="flex items-center gap-2 text-16 font-medium text-text-secondary underline underline-offset-8 hover:text-button-2"
+                        className="group flex items-center gap-2 text-16 font-medium text-text-secondary underline underline-offset-8 hover:text-button-2"
                       >
                         {t("common.shop_now")}
 
-                        <ArrowRight className="size-5 text-white hover:text-button-2" />
+                        <ArrowRight className="size-5 text-white group-hover:text-button-2" />
                       </Link>
                     </div>
                   </div>
