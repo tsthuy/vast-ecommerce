@@ -126,7 +126,7 @@ export function useCreateCheckoutCart(userId: string, locale: string) {
       cartApi.createCheckoutCart(userId, data.cartItems, data.appliedCoupon),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.carts.all(userId, locale),
+        queryKey: QUERY_KEYS.carts.all(userId, locale).queryKey,
       });
     },
   });
